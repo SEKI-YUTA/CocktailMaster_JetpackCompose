@@ -10,22 +10,27 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHost
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 
 @Composable
 fun MyTopAppBar(navController: NavHostController) {
+    val showBackButton = remember { mutableStateOf(false) }
+    navController.addOnDestinationChangedListener() { controller, destination, arguments ->
+        showBackButton.value = controller.previousBackStackEntry != null
+    }
     TopAppBar(
         navigationIcon = {
-//            if(navController.backQueue.size > 2) {
-//                IconButton(
-//                    onClick = {
-//                        navController.popBackStack()
-//                    }
-//                ) {
-//                    Icon(Icons.Default.ArrowBack, contentDescription = null)
-//                }
-//            }
+            if(showBackButton.value) {
+                IconButton(
+                    onClick = {
+                        navController.popBackStack()
+                    }
+                ) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = null)
+                }
+            }
         },
         title = {},
         actions = {

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -19,9 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
 import com.example.cocktailmaster.ui.screen.CraftableCocktailListScreen
 import com.example.cocktailmaster.ui.screen.TopScreen
@@ -34,18 +38,7 @@ fun MainHost() {
     Scaffold(
         topBar = {
             Surface(shadowElevation = 4.dp) {
-                TopAppBar(
-                    title = {},
-                    actions = {
-                        IconButton(
-                            onClick = {
-                                // 設定画面へ遷移
-                            }
-                        ) {
-                            Icon(Icons.Default.Settings, contentDescription = null)
-                        }
-                    }
-                )
+                MyTopAppBar(navController = navController)
             }
         },
         

@@ -8,6 +8,6 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 名前を変えたほうがいいかも
  */
 interface CocktailApiRepository {
-    suspend fun getAllLiqueur(): List<CocktailIngredient_Data>
+    suspend fun getAllIngredients(): List<CocktailIngredient_Data>
     suspend fun craftableCocktails(): List<Cocktail_Data>
 }

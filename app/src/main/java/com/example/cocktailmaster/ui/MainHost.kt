@@ -22,6 +22,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
+import com.example.cocktailmaster.ui.screen.CraftableCocktailListScreen
 import com.example.cocktailmaster.ui.screen.TopScreen
 
 // ここでナビゲーションのルーティングとかをしている
@@ -57,6 +59,12 @@ fun MainHost() {
         ) {
             composable(Screen.TopScreen.name) {
                 TopScreen(navController = navController, viewModel = mainViewModel)
+            }
+            composable(Screen.AddCocktailIngredientScreen.name) {
+                AddCocktailIngredientScreen(navController = navController, viewModel = mainViewModel)
+            }
+            composable(Screen.CraftableCocktailListScreen.name) {
+                CraftableCocktailListScreen(navController = navController, viewModel = mainViewModel)
             }
         }
     }

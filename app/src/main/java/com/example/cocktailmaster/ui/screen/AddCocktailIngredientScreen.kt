@@ -11,11 +11,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.cocktailmaster.ui.MainViewModel
+import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.IngredientListItem
 
 @Composable
 fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: MainViewModel) {
     val ingredientList = viewModel.ingredientList.collectAsState().value
+    viewModel.setCurrentScreen(Screen.AddCocktailIngredientScreen)
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn() {
             items(ingredientList) { ingredient_ui ->

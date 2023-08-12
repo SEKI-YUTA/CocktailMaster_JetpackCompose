@@ -32,6 +32,7 @@ import com.example.cocktailmaster.ui.component.MenuButton
 @Composable
 fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
     val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
+    viewModel.setCurrentScreen(Screen.TopScreen)
     Box {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(

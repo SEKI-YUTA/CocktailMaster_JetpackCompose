@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.cocktailmaster.CocktailMasterApplication
 import com.example.cocktailmaster.data.CocktailApiRepository
 import com.example.cocktailmaster.data.CocktailApiRepository_FakeImpl
+import com.example.cocktailmaster.data.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.OwnedLiqueurRepository
 import com.example.cocktailmaster.data.OwnedLiqueurRepository_FakeImpl
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
@@ -95,7 +96,8 @@ class MainViewModel(
             initializer {
                 val tmp: Context =
                     (this[APPLICATION_KEY] as CocktailMasterApplication).appContainer.context
-                val cocktailApiRepository = CocktailApiRepository_FakeImpl()
+//                val cocktailApiRepository = CocktailApiRepository_FakeImpl()
+                val cocktailApiRepository = CocktailApiRepository_Impl()
                 val ownedLiqueurRepository = OwnedLiqueurRepository_FakeImpl()
                 MainViewModel(
                     tmp,

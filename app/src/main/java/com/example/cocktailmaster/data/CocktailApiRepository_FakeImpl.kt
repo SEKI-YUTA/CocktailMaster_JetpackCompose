@@ -6,7 +6,7 @@ import kotlinx.coroutines.delay
 
 // フェイクリポジトリ
 // 全ての材料と作れるカクテルの情報を返す
-class CocktailApiRepository_Impl: CocktailApiRepository {
+class CocktailApiRepository_FakeImpl: CocktailApiRepository {
     override suspend fun getAllIngredients(): List<CocktailIngredient_Data> {
         delay(500)
         return DemoData.liqueurList

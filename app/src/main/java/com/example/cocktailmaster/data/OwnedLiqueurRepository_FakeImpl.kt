@@ -4,7 +4,7 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import kotlinx.coroutines.delay
 
 
-class OwnedLiqueurRepository_Impl: OwnedLiqueurRepository {
+class OwnedLiqueurRepository_FakeImpl: OwnedLiqueurRepository {
     override suspend fun getAllOwnedLiqueur(): List<CocktailIngredient_Data> {
         // 本番はここでデータベースからデータを引っ張ってくる処理をする
         delay(500)

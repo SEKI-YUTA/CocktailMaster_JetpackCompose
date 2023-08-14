@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class Cocktail_Data(
     val name: String,
     val imageUri: String? = null,
-    val description: String?,
+    val description: String = "",
     val craftable: Boolean = false,
     val ingredients: List<CocktailIngredient_Data>
 ) {

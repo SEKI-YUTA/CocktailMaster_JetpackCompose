@@ -8,6 +8,6 @@ package com.example.cocktailmaster.ui.model
 data class CocktailIngredient_UI(
     val name: String,
     val imageUri: String?,
-    val isOwned: Boolean,
-    val description: String?,
+    val isOwned: Boolean = false,
+    val description: String = "",
 )

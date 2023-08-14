@@ -21,7 +21,7 @@ data class CocktailIngredient_Data(
     @SerialName("IsOwned")
     val isOwned: Boolean = false,
     @SerialName("Description")
-    val description: String?,
+    val description: String = "",
     @SerialName("IsAlcohol")
     val isAlcohol: Boolean = false,
 ) {

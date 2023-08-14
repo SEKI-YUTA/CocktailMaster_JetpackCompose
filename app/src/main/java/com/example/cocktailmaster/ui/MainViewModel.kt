@@ -26,6 +26,7 @@ import kotlinx.coroutines.withContext
 class MainViewModel(
     private val context: Context,
     private val cocktailApiRepository: CocktailApiRepository,
+    // ローカルデータの操作を後でリポジトリに引越しする予定
     private val ownedLiqueurRepository: OwnedLiqueurRepository,
 ) : ViewModel() {
 

@@ -16,14 +16,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.cocktailmaster.data.db.AppDatabase
 import com.example.cocktailmaster.ui.MainViewModel
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.MenuButton
+import kotlinx.coroutines.flow.collect
 
 /*
 所有中の酒をリスト表示して

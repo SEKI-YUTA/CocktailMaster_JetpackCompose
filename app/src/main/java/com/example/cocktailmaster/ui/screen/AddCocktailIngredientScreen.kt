@@ -23,6 +23,7 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
             items(ingredientList) { ingredient_ui ->
                 IngredientListItem(ingredient_UI = ingredient_ui, tailIcon = Icons.Default.Add) {
                     println("tapped: ${ingredient_ui.name}")
+                    viewModel.addOwnedIngredient(ingredient_ui)
                 }
             }
         }

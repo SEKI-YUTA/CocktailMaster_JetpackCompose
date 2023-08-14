@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.cocktailmaster.CocktailMasterApplication
+import com.example.cocktailmaster.data.db.AppDatabase
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
@@ -18,6 +19,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -33,7 +35,7 @@ class MainViewModel(
                 _isLoading.value = true
                 val asyncList = listOf(
                     async { fetchAllIngredientsFromAPI() },
-                    async { readOwnedLiqueurList() },
+                    async { readOwnedIngredientList() },
                 )
                 asyncList.awaitAll()
                 _isLoading.value = false
@@ -60,12 +62,23 @@ class MainViewModel(
         _currentScreen.value = screen
     }
 
-    fun readOwnedLiqueurList() {
+    fun readOwnedIngredientList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val ownedLiqueurList = ownedLiqueurRepository.getAllOwnedLiqueur()
-                    .map { liqueurData -> liqueurData.toUIModel() }
-                _ownedCocktailIngredients.value = ownedLiqueurList
+//                val ownedLiqueurList = ownedLiqueurRepository.getAllOwnedLiqueur()
+//                    .map { liqueurData -> liqueurData.toUIModel() }
+//                _ownedCocktailIngredients.value = ownedLiqueurList
+                AppDatabase.getDatabase(context).ownedIngredientDao().getAll().collect() {
+                    _ownedCocktailIngredients.value = it.map { ownedIngredientData -> ownedIngredientData.toUIModel() }
+                }
+            }
+        }
+    }
+
+    fun addOwnedIngredient(ingredient: CocktailIngredient_UI) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                AppDatabase.getDatabase(context).ownedIngredientDao().insertIngredient(ingredient.toDataModel())
             }
         }
     }

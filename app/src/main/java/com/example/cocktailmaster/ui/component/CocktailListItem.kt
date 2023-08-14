@@ -17,8 +17,16 @@ import com.example.cocktailmaster.ui.model.Cocktail_UI
 fun CocktailListItem(cocktail_UI: Cocktail_UI) {
     val ingredientsStr = cocktail_UI.ingredients.joinToString(", ") { it.name }
     Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),) {
-        Text(cocktail_UI.name, style = TextStyle(fontSize = 20.sp))
-        Text(ingredientsStr, style = TextStyle(fontSize = 16.sp))
+        Text(
+            cocktail_UI.name,
+            style = TextStyle(fontSize = 20.sp),
+            maxLines = 1
+        )
+        Text(
+            ingredientsStr,
+            style = TextStyle(fontSize = 16.sp),
+            maxLines = 2
+        )
     }
 }
 

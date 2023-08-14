@@ -1,10 +1,11 @@
 package com.example.cocktailmaster.ui.component
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -32,16 +33,24 @@ fun IngredientListItem(
     ) {
         Column(
             modifier = Modifier
-                .weight(1f)
+                .weight(1f),
+            verticalArrangement = Arrangement.Center
         ) {
-            Text(text = ingredient_UI.name, style = TextStyle(fontSize = 20.sp))
             Text(
-                text = ingredient_UI.description ?: "",
-                style = TextStyle(fontSize = 16.sp)
+                text = ingredient_UI.name,
+                style = TextStyle(fontSize = 20.sp),
+                maxLines = 1
             )
+            if (ingredient_UI.description != "") {
+                Text(
+                    text = ingredient_UI.description,
+                    style = TextStyle(fontSize = 16.sp),
+                    maxLines = 2
+                )
+            }
         }
-        if(tailIcon != null) {
-            IconButton(onClick = { onIconTapAction(ingredient_UI)}) {
+        if (tailIcon != null) {
+            IconButton(onClick = { onIconTapAction(ingredient_UI) }) {
                 Icon(imageVector = tailIcon, contentDescription = null)
             }
         }
@@ -54,5 +63,18 @@ fun IngredientListItemPreview() {
     val data = DemoData.liqueurList[0].toUIModel()
     IngredientListItem(
         ingredient_UI = data,
-    ){}
+    ) {}
+}
+
+@Preview(showBackground = true)
+@Composable
+fun IngredientListItemPreview2() {
+    val data = CocktailIngredient_UI(
+        name = "テキーラ",
+        imageUri = null,
+    )
+    IngredientListItem(
+        ingredient_UI = data,
+        tailIcon = Icons.Default.Add
+    ) {}
 }

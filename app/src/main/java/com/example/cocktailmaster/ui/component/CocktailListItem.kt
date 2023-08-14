@@ -15,7 +15,8 @@ import com.example.cocktailmaster.ui.model.Cocktail_UI
 
 @Composable
 fun CocktailListItem(cocktail_UI: Cocktail_UI) {
-    val ingredientsStr = cocktail_UI.ingredients.joinToString(", ") { it.name }
+//    val ingredientsStr = cocktail_UI.ingredients.joinToString(", ") { it.name }
+    val ingredientsStr = cocktail_UI.ingredients.joinToString(", ")
     Column(modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),) {
         Text(
             cocktail_UI.name,

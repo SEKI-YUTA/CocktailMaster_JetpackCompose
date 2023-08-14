@@ -5,5 +5,5 @@ data class Cocktail_UI(
     val imageUri: String?,
     val description: String = "",
     val craftable: Boolean = false,
-    val ingredients: List<CocktailIngredient_UI>
+    val ingredients: List<String>
 )

@@ -1,5 +1,7 @@
-package com.example.cocktailmaster.data
+package com.example.cocktailmaster.data.repository
 
+import com.example.cocktailmaster.data.DemoData
+import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.model.Cocktail_Data
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import kotlinx.coroutines.delay

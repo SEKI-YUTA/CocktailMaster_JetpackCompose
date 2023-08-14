@@ -1,4 +1,4 @@
-package com.example.cocktailmaster.data
+package com.example.cocktailmaster.data.interfaces
 
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 

@@ -7,11 +7,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.cocktailmaster.CocktailMasterApplication
-import com.example.cocktailmaster.data.CocktailApiRepository
-import com.example.cocktailmaster.data.CocktailApiRepository_FakeImpl
-import com.example.cocktailmaster.data.CocktailApiRepository_Impl
-import com.example.cocktailmaster.data.OwnedLiqueurRepository
-import com.example.cocktailmaster.data.OwnedLiqueurRepository_FakeImpl
+import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
+import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
+import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
+import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_FakeImpl
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers

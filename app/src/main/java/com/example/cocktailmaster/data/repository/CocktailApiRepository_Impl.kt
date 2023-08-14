@@ -13,8 +13,9 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
         return ingredientList
     }
 
-    override suspend fun craftableCocktails(): List<Cocktail_Data> {
+    override suspend fun craftableCocktails(query: List<String>): List<Cocktail_Data> {
         println("craftableCocktails")
-        return listOf()
+        val cocktailList = CocktailApi.retrofitService.craftableCocktails(query)
+        return cocktailList
     }
 }

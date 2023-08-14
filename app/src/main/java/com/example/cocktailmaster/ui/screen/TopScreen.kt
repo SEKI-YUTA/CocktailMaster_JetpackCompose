@@ -46,7 +46,7 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
             ) {
                 MenuButton(text = "カクテル一覧へ", icon = Icons.Default.List) {
                     println("カクテル一覧へ")
-                    viewModel.findCraftableCocktail(ownedIngredients)
+                    viewModel.findCraftableCocktail()
                     navController.navigate(Screen.CraftableCocktailListScreen.name)
                 }
                 MenuButton(text = "追加画面へ", icon = Icons.Default.Add) {

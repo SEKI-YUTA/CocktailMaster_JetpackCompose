@@ -14,7 +14,7 @@ class CocktailApiRepository_FakeImpl: CocktailApiRepository {
         return DemoData.liqueurList
     }
 
-    override suspend fun craftableCocktails(): List<Cocktail_Data> {
+    override suspend fun craftableCocktails(query: List<String>): List<Cocktail_Data> {
         delay(500)
         return DemoData.cocktailList
     }

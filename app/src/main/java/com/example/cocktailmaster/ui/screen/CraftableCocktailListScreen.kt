@@ -15,6 +15,7 @@ import com.example.cocktailmaster.ui.component.CocktailListItem
 @Composable
 fun CraftableCocktailListScreen(navController: NavHostController, viewModel: MainViewModel) {
     val craftableCocktailList = viewModel.craftableCocktailList.collectAsState().value
+    viewModel.findCraftableCocktail()
     viewModel.setCurrentScreen(Screen.CraftableCocktailListScreen)
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn() {

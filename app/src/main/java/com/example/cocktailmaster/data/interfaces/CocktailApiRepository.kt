@@ -9,5 +9,7 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
  */
 interface CocktailApiRepository {
     suspend fun getAllIngredients(): List<CocktailIngredient_Data>
-    suspend fun craftableCocktails(): List<Cocktail_Data>
+    // こんな感じでパラメータを渡す（使える素材)
+    // ingredients[]=ジン&ingredients[]=ジンジャーエール&ingredients[]=ラム
+    suspend fun craftableCocktails(query: List<String>): List<Cocktail_Data>
 }

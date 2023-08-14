@@ -94,10 +94,11 @@ class MainViewModel(
         }
     }
 
-    fun findCraftableCocktail(ingredientList: List<CocktailIngredient_UI>) {
+    fun findCraftableCocktail() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val tmpList = cocktailApiRepository.craftableCocktails().map { it.toUIModel() }
+                val query = ownedCocktailIngredients.value.map { it.name }
+                val tmpList = cocktailApiRepository.craftableCocktails(query).map { it.toUIModel() }
                 _craftableCocktailList.value = tmpList
             }
         }

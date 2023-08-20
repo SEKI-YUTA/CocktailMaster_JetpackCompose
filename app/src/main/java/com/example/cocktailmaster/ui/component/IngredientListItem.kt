@@ -71,7 +71,6 @@ fun IngredientListItemPreview() {
 fun IngredientListItemPreview2() {
     val data = CocktailIngredient_UI(
         name = "テキーラ",
-        imageUri = null,
     )
     IngredientListItem(
         ingredient_UI = data,

@@ -20,7 +20,7 @@ data class Cocktail_Data(
     val craftable: Boolean = false,
 
     @SerialName("Ingredients")
-    val ingredients: List<String>
+    val ingredients: List<CocktailIngredient_Data> = emptyList(),
 ) {
     fun toUIModel(): Cocktail_UI {
         return Cocktail_UI(
@@ -28,7 +28,7 @@ data class Cocktail_Data(
             imageUri = imageUri,
             description = description,
             craftable = craftable,
-            ingredients = ingredients
+            ingredients = ingredients.map { it.toUIModel() }
         )
     }
 }

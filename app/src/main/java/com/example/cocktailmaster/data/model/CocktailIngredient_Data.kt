@@ -20,31 +20,28 @@ data class CocktailIngredient_Data(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
 
+    @SerialName("IsOwned")
+    @ColumnInfo(name = "is_owned")
+    val isOwned: Boolean = false,
+
     @SerialName("Name")
     @ColumnInfo(name = "name")
     val name: String,
 
-    @SerialName("ImageUri")
-    @ColumnInfo(name = "image_uri")
-    val imageUri: String? = null,
-
-    @SerialName("IsOwned")
-    @ColumnInfo(name = "is_owned")
-    val isOwned: Boolean = false,
+    @SerialName("Vol")
+    @ColumnInfo(name = "vol")
+    val vol: Int = 0,
 
     @SerialName("Description")
     @ColumnInfo(name = "description")
     val description: String = "",
 
-    @SerialName("IsAlcohol")
-    @ColumnInfo(name = "is_alcohol")
-    val isAlcohol: Boolean = false,
 ) {
     fun toUIModel(): CocktailIngredient_UI {
         return CocktailIngredient_UI(
             name = name,
-            imageUri = imageUri,
             isOwned = isOwned,
+            vol = vol,
             description = description,
         )
     }

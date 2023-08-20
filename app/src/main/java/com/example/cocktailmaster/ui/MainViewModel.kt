@@ -11,7 +11,6 @@ import com.example.cocktailmaster.data.db.AppDatabase
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
-import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_FakeImpl
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
@@ -20,7 +19,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -81,6 +79,14 @@ class MainViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 AppDatabase.getDatabase(context).ownedIngredientDao().insertIngredient(ingredient.toDataModel())
+            }
+        }
+    }
+
+    fun deleteOwnedIngredient(ingredient: CocktailIngredient_UI) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                AppDatabase.getDatabase(context).ownedIngredientDao().deleteIngredient(ingredient.toDataModel())
             }
         }
     }

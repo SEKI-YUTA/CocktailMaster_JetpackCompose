@@ -18,7 +18,7 @@ import kotlinx.serialization.Serializable
 data class CocktailIngredient_Data(
     @SerialName("ID")
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
+    val id: Int = 0,
 
     @SerialName("IsOwned")
     @ColumnInfo(name = "is_owned")
@@ -39,6 +39,7 @@ data class CocktailIngredient_Data(
 ) {
     fun toUIModel(): CocktailIngredient_UI {
         return CocktailIngredient_UI(
+            id = id,
             name = name,
             isOwned = isOwned,
             vol = vol,

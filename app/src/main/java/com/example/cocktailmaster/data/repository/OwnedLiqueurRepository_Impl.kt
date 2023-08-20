@@ -13,4 +13,8 @@ class OwnedLiqueurRepository_Impl(
     override suspend fun provideAllIngredient(): Flow<List<CocktailIngredient_Data>> {
         return AppDatabase.getDatabase(context).ownedIngredientDao().getAll()
     }
+
+    override suspend fun deleteIngredient(ingredient: CocktailIngredient_Data) {
+        AppDatabase.getDatabase(context).ownedIngredientDao().deleteIngredient(ingredient)
+    }
 }

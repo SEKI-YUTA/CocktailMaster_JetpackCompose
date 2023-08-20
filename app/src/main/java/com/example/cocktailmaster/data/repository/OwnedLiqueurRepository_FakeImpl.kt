@@ -16,4 +16,8 @@ class OwnedLiqueurRepository_FakeImpl: OwnedLiqueurRepository {
             DemoData.liqueurList
         }
     }
+
+    override suspend fun deleteIngredient(ingredient: CocktailIngredient_Data) {
+        TODO("Not yet implemented")
+    }
 }

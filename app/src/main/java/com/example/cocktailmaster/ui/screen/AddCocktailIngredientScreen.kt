@@ -30,7 +30,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.navigation.NavHostController
 import com.example.cocktailmaster.ui.MainViewModel
 import com.example.cocktailmaster.ui.Screen
@@ -48,12 +47,17 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn {
             items(ingredientList) { ingredient_ui ->
-                IngredientListItem(ingredient_UI = ingredient_ui, tailIcon = Icons.Default.Add) {
-                    println("tapped: ${ingredient_ui.name}")
-                    currentIngredient.value = it
-                    isShowingDialog.value = true
+                IngredientListItem(
+                    ingredient_UI = ingredient_ui,
+                    tailIcon = Icons.Default.Add,
+                    onIconTapAction = {
+                        println("tapped: ${ingredient_ui.name}")
+                        currentIngredient.value = it
+                        isShowingDialog.value = true
 //                    viewModel.addOwnedIngredient(ingredient_ui)
-                }
+                    },
+                    onDeleteAction = {}
+                )
             }
         }
 
@@ -76,12 +80,12 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
                         Text(
                             "材料名: ${currentIngredient.value?.name}",
                             modifier = Modifier.padding(bottom = 8.dp),
-                                    style = TextStyle(fontSize = 20.sp)
+                            style = TextStyle(fontSize = 20.sp)
                         )
                         Row(modifier = Modifier) {
                             TextField(value = userInputName.value,
                                 placeholder = {
-                                      Text("補足情報")
+                                    Text("補足情報")
                                 },
                                 onValueChange = {
                                     userInputName.value = it
@@ -102,7 +106,8 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
                             TextButton(
                                 onClick = {
                                     // 追加処理
-                                    val tmp = currentIngredient.value?.copy(description = userInputName.value)
+                                    val tmp =
+                                        currentIngredient.value?.copy(description = userInputName.value)
                                     tmp?.let {
                                         viewModel.addOwnedIngredient(tmp)
                                     }

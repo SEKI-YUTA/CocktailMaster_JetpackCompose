@@ -8,6 +8,7 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 */
 // 例：ジン、ウォッカ、ラム、テキーラ、ウイスキー、ブランデーなどのカクテルの原料になるもの
 data class CocktailIngredient_UI(
+    val id: Int = 0,
     val name: String,
     val isOwned: Boolean = false,
     val vol: Int = 0,
@@ -15,6 +16,7 @@ data class CocktailIngredient_UI(
 ) {
     fun toDataModel(): CocktailIngredient_Data {
         return CocktailIngredient_Data(
+            id = id,
             name = name,
             vol = vol,
             isOwned = isOwned,

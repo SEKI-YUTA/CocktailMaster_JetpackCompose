@@ -1,6 +1,7 @@
 package com.example.cocktailmaster.data.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
@@ -13,4 +14,8 @@ interface OwnedIngredientDAO {
 
     @Insert
     fun insertIngredient(ingredient: CocktailIngredient_Data)
+
+
+    @Delete
+    fun deleteIngredient(ingredient: CocktailIngredient_Data)
 }

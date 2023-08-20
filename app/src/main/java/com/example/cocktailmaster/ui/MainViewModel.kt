@@ -12,6 +12,7 @@ import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_FakeImpl
+import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
@@ -69,8 +70,8 @@ class MainViewModel(
 //                val ownedLiqueurList = ownedLiqueurRepository.getAllOwnedLiqueur()
 //                    .map { liqueurData -> liqueurData.toUIModel() }
 //                _ownedCocktailIngredients.value = ownedLiqueurList
-                AppDatabase.getDatabase(context).ownedIngredientDao().getAll().collect() {
-                    _ownedCocktailIngredients.value = it.map { ownedIngredientData -> ownedIngredientData.toUIModel() }
+                ownedLiqueurRepository.provideAllIngredient().collect() {
+                    _ownedCocktailIngredients.value = it.map { liqueurData -> liqueurData.toUIModel() }
                 }
             }
         }
@@ -112,7 +113,7 @@ class MainViewModel(
                     (this[APPLICATION_KEY] as CocktailMasterApplication).appContainer.context
 //                val cocktailApiRepository = CocktailApiRepository_FakeImpl()
                 val cocktailApiRepository = CocktailApiRepository_Impl()
-                val ownedLiqueurRepository = OwnedLiqueurRepository_FakeImpl()
+                val ownedLiqueurRepository = OwnedLiqueurRepository_Impl(tmp)
                 MainViewModel(
                     tmp,
                     cocktailApiRepository = cocktailApiRepository,

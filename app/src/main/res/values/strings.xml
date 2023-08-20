@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CocktailMaster</string>
+    <string name="alcohol_volume_unit">度</string>
+    <string name="ingredientStr">材料</string>
+
+    <string name="can_make_cocktail_str">作ることができるカクテル</string>
 </resources>

@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -44,12 +46,19 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                MenuButton(text = "カクテル一覧へ", icon = Icons.Default.List) {
+                MenuButton(
+                    text = "カクテル一覧へ",
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Default.List) {
                     println("カクテル一覧へ")
                     viewModel.findCraftableCocktail()
                     navController.navigate(Screen.CraftableCocktailListScreen.name)
                 }
-                MenuButton(text = "追加画面へ", icon = Icons.Default.Add) {
+                Spacer(modifier = Modifier.width(16.dp))
+                MenuButton(
+                    text = "追加画面へ",
+                    modifier = Modifier.weight(1f),
+                    icon = Icons.Default.Add) {
                     println("追加画面へ")
                    navController.navigate(Screen.AddCocktailIngredientScreen.name)
                 }

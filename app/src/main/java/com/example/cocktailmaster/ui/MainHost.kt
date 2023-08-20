@@ -38,7 +38,9 @@ fun MainHost() {
     Scaffold(
         topBar = {
             Surface(shadowElevation = 4.dp) {
-                MyTopAppBar(navController = navController)
+                MyTopAppBar(
+                    navController = navController
+                )
             }
         },
         

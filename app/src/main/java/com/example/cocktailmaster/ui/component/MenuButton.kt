@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -35,8 +36,15 @@ fun MenuButton(
             .padding(8.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = icon, contentDescription = null)
-            Text(text = text, style = TextStyle(fontSize = 16.sp))
+            Icon(
+                imageVector = icon,
+                contentDescription = null
+            )
+            Text(
+                text = text,
+                modifier.weight(1f),
+                style = TextStyle(fontSize = 16.sp, textAlign = TextAlign.Center)
+            )
         }
     }
 }

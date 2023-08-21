@@ -53,10 +53,9 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
-                    text = "追加画面へ",
+                    text = "材料追加画面へ",
                     modifier = Modifier.weight(1f),
                     icon = Icons.Default.Add) {
-                    println("追加画面へ")
                    navController.navigate(Screen.AddCocktailIngredientScreen.name)
                 }
             }

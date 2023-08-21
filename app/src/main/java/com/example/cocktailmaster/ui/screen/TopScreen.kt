@@ -22,7 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.cocktailmaster.ui.MainViewModel
+import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.MenuButton

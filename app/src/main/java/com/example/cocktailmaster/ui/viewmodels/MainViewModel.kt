@@ -1,4 +1,4 @@
-package com.example.cocktailmaster.ui
+package com.example.cocktailmaster.ui.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -12,6 +12,7 @@ import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
+import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers

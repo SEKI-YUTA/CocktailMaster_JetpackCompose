@@ -2,7 +2,6 @@ package com.example.cocktailmaster.ui.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.ui.MainViewModel
+import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.CocktailListItem
 

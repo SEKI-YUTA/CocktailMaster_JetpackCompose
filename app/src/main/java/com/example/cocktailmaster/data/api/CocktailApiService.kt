@@ -1,4 +1,4 @@
-package com.example.cocktailmaster.data
+package com.example.cocktailmaster.data.api
 
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import com.example.cocktailmaster.data.model.Cocktail_Data

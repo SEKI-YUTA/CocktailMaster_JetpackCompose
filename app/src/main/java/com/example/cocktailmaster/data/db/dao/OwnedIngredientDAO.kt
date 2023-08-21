@@ -1,4 +1,4 @@
-package com.example.cocktailmaster.data.dao
+package com.example.cocktailmaster.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

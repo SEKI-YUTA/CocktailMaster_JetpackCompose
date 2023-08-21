@@ -1,6 +1,6 @@
 package com.example.cocktailmaster.data.repository
 
-import com.example.cocktailmaster.data.CocktailApi
+import com.example.cocktailmaster.data.api.CocktailApi
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import com.example.cocktailmaster.data.model.Cocktail_Data

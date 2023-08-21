@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.cocktailmaster.data.dao.OwnedIngredientDAO
+import com.example.cocktailmaster.data.db.dao.OwnedIngredientDAO
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 
 

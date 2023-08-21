@@ -18,10 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.IngredientListItem
@@ -44,23 +46,22 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 MenuButton(
-                    text = "カクテル一覧へ",
+                    text = stringResource(R.string.cocktail_list_str),
                     modifier = Modifier.weight(1f),
                     icon = Icons.Default.List) {
-                    println("カクテル一覧へ")
                     viewModel.findCraftableCocktail()
                     navController.navigate(Screen.CraftableCocktailListScreen.name)
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
-                    text = "材料追加画面へ",
+                    text = stringResource(R.string.add_ingredient_str),
                     modifier = Modifier.weight(1f),
                     icon = Icons.Default.Add) {
                    navController.navigate(Screen.AddCocktailIngredientScreen.name)
                 }
             }
             Text(
-                "所有中の材料",
+                text = stringResource(R.string.owned_ingredient_str),
                 style = TextStyle(fontSize = 22.sp),
                 modifier = Modifier.padding(16.dp)
             )

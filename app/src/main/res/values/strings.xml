@@ -4,4 +4,15 @@
     <string name="ingredientStr">材料</string>
 
     <string name="can_make_cocktail_str">作ることができるカクテル</string>
+    <string name="cocktail_list_str">カクテル一覧へ</string>
+    <string name="add_ingredient_str">材料追加画面へ</string>
+    <string name="owned_ingredient_str">所有中の材料</string>
+    <string name="dialog_title_add_ingredient">材料を追加</string>
+    <string name="dialog_title_edit_ingredient">材料を編集</string>
+    <string name="supplement_information_str">補足情報</string>
+    <string name="cancel_str">キャンセル</string>
+    <string name="add_str">追加</string>
+    <string name="edit_str">編集</string>
+    <string name="remove_str">削除</string>
+    <string name="added_message">追加しました。</string>
 </resources>

@@ -21,11 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 
 @Composable
@@ -36,7 +38,8 @@ fun AddEditIngredientDialog(
     onDoneEvent: (CocktailIngredient_UI) -> Unit,
 ) {
     val userInputName = remember { mutableStateOf("") }
-    val dialogTitle = if (isAddMode) "材料を追加" else "材料を編集"
+    val dialogTitle = if (isAddMode) stringResource(R.string.dialog_title_add_ingredient) else stringResource(
+            R.string.dialog_title_edit_ingredient)
     Dialog(
         onDismissRequest = {
             isShowingDialog.value = false
@@ -67,7 +70,7 @@ fun AddEditIngredientDialog(
                         onValueChange = {
                             userInputName.value = it
                         },
-                        placeholder = "補足情報"
+                        placeholder = stringResource(R.string.supplement_information_str)
                     )
                 }
                 Row(
@@ -80,7 +83,7 @@ fun AddEditIngredientDialog(
                             userInputName.value = ""
                         }
                     ) {
-                        Text("キャンセル")
+                        Text(stringResource(R.string.cancel_str))
                     }
                     TextButton(
                         onClick = {
@@ -90,7 +93,7 @@ fun AddEditIngredientDialog(
                            onDoneEvent(tmp)
                         }
                     ) {
-                        Text("追加")
+                        Text(stringResource(R.string.add_str))
                     }
                 }
             }

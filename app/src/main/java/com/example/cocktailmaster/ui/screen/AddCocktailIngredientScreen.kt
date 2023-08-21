@@ -16,7 +16,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.Screen
@@ -54,8 +56,7 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
                 viewModel.addOwnedIngredient(ingredient_ui)
                 isShowingDialog.value = false
                 userInputName.value = ""
-
-                Toast.makeText(context, "追加しました。", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.added_message), Toast.LENGTH_SHORT).show()
             }
         }
     }

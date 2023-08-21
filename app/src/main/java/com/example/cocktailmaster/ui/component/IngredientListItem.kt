@@ -92,7 +92,7 @@ fun IngredientListItem(
                 }) {
                 DropdownMenuItem(
                     text = {
-                        Text("編集")
+                        Text(stringResource(R.string.edit_str))
                     },
                     onClick = {
                         isShowingDialog.value = true
@@ -101,7 +101,7 @@ fun IngredientListItem(
                 )
                 DropdownMenuItem(
                     text = {
-                        Text("削除")
+                        Text(stringResource(R.string.remove_str))
                     },
                     onClick = {
                         onDeleteAction(ingredient_UI)

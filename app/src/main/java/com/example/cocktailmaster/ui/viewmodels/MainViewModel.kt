@@ -18,6 +18,7 @@ import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -103,9 +104,11 @@ class MainViewModel(
     fun fetchAllIngredientsFromAPI() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                _isLoading.value = true
                 val allIngredients = cocktailApiRepository.getAllIngredients()
                     .map { ingredientData -> ingredientData.toUIModel() }
                 _ingredientList.value = allIngredients
+                _isLoading.value = false
             }
         }
     }
@@ -113,9 +116,13 @@ class MainViewModel(
     fun findCraftableCocktail() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
+                _craftableCocktailList.value = emptyList()
+                _isLoading.value = true
+                delay(500)
                 val query = ownedCocktailIngredients.value.map { it.name }
                 val tmpList = cocktailApiRepository.craftableCocktails(query).map { it.toUIModel() }
                 _craftableCocktailList.value = tmpList
+                _isLoading.value = false
             }
         }
 

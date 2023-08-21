@@ -15,4 +15,8 @@
     <string name="edit_str">編集</string>
     <string name="remove_str">削除</string>
     <string name="added_message">追加しました。</string>
+    <string name="loading_message">読み込み中...</string>
+    <string name="craftable_cocktail_not_found">作れるカクテルはありません</string>
+    <string name="owned_ingredient_not_found">持っている材料はありません</string>
+    <string name="not_found_ingredient">材料がみつかりません</string>
 </resources>

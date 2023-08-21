@@ -26,7 +26,9 @@ import androidx.navigation.NavHostController
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.Screen
+import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
+import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MenuButton
 
 /*
@@ -80,6 +82,9 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                         }
                     )
                 }
+            }
+            if(ownedIngredients.isEmpty()) {
+                CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
         }
     }

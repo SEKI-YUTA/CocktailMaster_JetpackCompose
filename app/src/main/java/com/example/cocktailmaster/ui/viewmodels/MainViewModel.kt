@@ -118,7 +118,6 @@ class MainViewModel(
             withContext(Dispatchers.IO) {
                 _craftableCocktailList.value = emptyList()
                 _isLoading.value = true
-                delay(500)
                 val query = ownedCocktailIngredients.value.map { it.name }
                 val tmpList = cocktailApiRepository.craftableCocktails(query).map { it.toUIModel() }
                 _craftableCocktailList.value = tmpList

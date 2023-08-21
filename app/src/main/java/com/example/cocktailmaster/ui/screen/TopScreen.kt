@@ -71,9 +71,12 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                         ingredient_UI = ingredient_UI,
                         tailIcon = null,
                         onIconTapAction = {},
-                        onDeleteAction = {
-                            println(it)
-                            viewModel.deleteOwnedIngredient(it)
+                        onDeleteAction = { ingredient ->
+                            println(ingredient)
+                            viewModel.deleteOwnedIngredient(ingredient)
+                        },
+                        onEditAction = { ingredient_ui ->
+                            viewModel.editOwnedIngredient(ingredient_ui)
                         }
                     )
                 }

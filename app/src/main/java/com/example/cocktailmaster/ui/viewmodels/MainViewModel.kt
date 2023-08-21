@@ -84,6 +84,14 @@ class MainViewModel(
         }
     }
 
+    fun editOwnedIngredient(ingredient: CocktailIngredient_UI) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                AppDatabase.getDatabase(context).ownedIngredientDao().updateIngredient(ingredient.toDataModel())
+            }
+        }
+    }
+
     fun deleteOwnedIngredient(ingredient: CocktailIngredient_UI) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {

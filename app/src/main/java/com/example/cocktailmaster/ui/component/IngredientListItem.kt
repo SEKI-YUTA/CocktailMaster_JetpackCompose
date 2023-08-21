@@ -1,14 +1,10 @@
 package com.example.cocktailmaster.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -18,13 +14,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -42,10 +35,12 @@ fun IngredientListItem(
     modifier: Modifier = Modifier,
     ingredient_UI: CocktailIngredient_UI,
     tailIcon: ImageVector? = null,
-    onIconTapAction: (CocktailIngredient_UI) -> Unit,
-    onDeleteAction: (CocktailIngredient_UI) -> Unit
+    onIconTapAction: (CocktailIngredient_UI) -> Unit = {},
+    onDeleteAction: (CocktailIngredient_UI) -> Unit = {},
+    onEditAction: (CocktailIngredient_UI) -> Unit = {}
 ) {
     val menuShowing = remember { mutableStateOf(false) }
+    val isShowingDialog = remember { mutableStateOf(false) }
     Card(
         modifier = modifier
             .padding(8.dp)
@@ -97,15 +92,33 @@ fun IngredientListItem(
                 }) {
                 DropdownMenuItem(
                     text = {
+                        Text("編集")
+                    },
+                    onClick = {
+                        isShowingDialog.value = true
+                        menuShowing.value = false
+                    }
+                )
+                DropdownMenuItem(
+                    text = {
                         Text("削除")
                     },
                     onClick = {
-                        // 削除処理を書く
                         onDeleteAction(ingredient_UI)
                         menuShowing.value = false
                     }
                 )
             }
+        }
+        if(isShowingDialog.value) {
+            AddEditIngredientDialog(
+                isShowingDialog = isShowingDialog,
+                currentIngredient = ingredient_UI,
+                onDoneEvent = { ingredient_ui ->
+                    onEditAction(ingredient_ui)
+                    isShowingDialog.value = false
+                }
+            )
         }
     }
 }
@@ -116,8 +129,6 @@ fun IngredientListItemPreview() {
     val data = DemoData.liqueurList[0].toUIModel()
     IngredientListItem(
         ingredient_UI = data,
-        onIconTapAction = {},
-        onDeleteAction = {}
     )
 }
 
@@ -130,7 +141,5 @@ fun IngredientListItemPreview2() {
     IngredientListItem(
         ingredient_UI = data,
         tailIcon = Icons.Default.Add,
-        onIconTapAction = {},
-        onDeleteAction = {}
     )
 }

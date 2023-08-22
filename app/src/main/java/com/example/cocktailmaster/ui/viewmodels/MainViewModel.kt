@@ -114,6 +114,7 @@ class MainViewModel(
     }
 
     fun findCraftableCocktail() {
+        println("findCraftableCocktail")
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 _craftableCocktailList.value = emptyList()

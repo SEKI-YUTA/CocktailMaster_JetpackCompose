@@ -51,7 +51,6 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     text = stringResource(R.string.cocktail_list_str),
                     modifier = Modifier.weight(1f),
                     icon = Icons.Default.List) {
-                    viewModel.findCraftableCocktail()
                     navController.navigate(Screen.CraftableCocktailListScreen.name) {
                         launchSingleTop = true
                     }

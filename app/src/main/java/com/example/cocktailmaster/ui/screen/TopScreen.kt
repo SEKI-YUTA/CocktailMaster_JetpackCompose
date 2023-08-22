@@ -52,14 +52,18 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     modifier = Modifier.weight(1f),
                     icon = Icons.Default.List) {
                     viewModel.findCraftableCocktail()
-                    navController.navigate(Screen.CraftableCocktailListScreen.name)
+                    navController.navigate(Screen.CraftableCocktailListScreen.name) {
+                        launchSingleTop = true
+                    }
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
                     modifier = Modifier.weight(1f),
                     icon = Icons.Default.Add) {
-                   navController.navigate(Screen.AddCocktailIngredientScreen.name)
+                   navController.navigate(Screen.AddCocktailIngredientScreen.name) {
+                       launchSingleTop = true
+                   }
                 }
             }
             Text(

@@ -38,6 +38,7 @@ import com.example.cocktailmaster.ui.component.MenuButton
 @Composable
 fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
     val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
+    val networkConnected = viewModel.isNetworkConnected.collectAsState().value
     viewModel.setCurrentScreen(Screen.TopScreen)
     Box {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -50,6 +51,7 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                 MenuButton(
                     text = stringResource(R.string.cocktail_list_str),
                     modifier = Modifier.weight(1f),
+                    enabled = networkConnected,
                     icon = Icons.Default.List) {
                     navController.navigate(Screen.CraftableCocktailListScreen.name) {
                         launchSingleTop = true
@@ -59,6 +61,7 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
                     modifier = Modifier.weight(1f),
+                    enabled = networkConnected,
                     icon = Icons.Default.Add) {
                    navController.navigate(Screen.AddCocktailIngredientScreen.name) {
                        launchSingleTop = true

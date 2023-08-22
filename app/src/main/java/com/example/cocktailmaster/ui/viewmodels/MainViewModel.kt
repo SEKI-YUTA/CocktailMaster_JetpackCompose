@@ -15,6 +15,7 @@ import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
+import com.example.cocktailmaster.util.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -31,8 +32,12 @@ class MainViewModel(
     private val ownedLiqueurRepository: OwnedLiqueurRepository,
 ) : ViewModel() {
 
+    private val _isNetworkConnected = MutableStateFlow(false)
+    val isNetworkConnected = _isNetworkConnected.asStateFlow()
+
     init {
         viewModelScope.launch {
+            AppUtil.checkNetworkConnection(context, _isNetworkConnected)
             withContext(Dispatchers.IO) {
                 _isLoading.value = true
                 val asyncList = listOf(
@@ -44,6 +49,7 @@ class MainViewModel(
             }
         }
     }
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 

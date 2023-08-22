@@ -2,6 +2,7 @@
 
 package com.example.cocktailmaster.ui.component
 
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
 fun AddEditIngredientDialog(
@@ -102,18 +105,42 @@ fun AddEditIngredientDialog(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
-fun AddEditIngredientDialogPreview() {
+fun AddEditIngredientDialogPreview_Light() {
     val isShowingDialog = remember { mutableStateOf(true) }
     val currentIngredient = CocktailIngredient_UI(
         id = 1,
         name = "テキーラ",
         description = "メキシコのお酒"
     )
-    AddEditIngredientDialog(
-        isShowingDialog = isShowingDialog,
-        currentIngredient = currentIngredient,
-        onDoneEvent = {}
+    CocktailMasterTheme {
+        Surface {
+            AddEditIngredientDialog(
+                isShowingDialog = isShowingDialog,
+                currentIngredient = currentIngredient,
+                onDoneEvent = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun AddEditIngredientDialogPreview_Night() {
+    val isShowingDialog = remember { mutableStateOf(true) }
+    val currentIngredient = CocktailIngredient_UI(
+        id = 1,
+        name = "テキーラ",
+        description = "メキシコのお酒"
     )
+    CocktailMasterTheme {
+        Surface {
+            AddEditIngredientDialog(
+                isShowingDialog = isShowingDialog,
+                currentIngredient = currentIngredient,
+                onDoneEvent = {}
+            )
+        }
+    }
 }

@@ -1,9 +1,11 @@
 package com.example.cocktailmaster.ui.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.ui.model.Cocktail_UI
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
 fun CocktailListItem(cocktail_UI: Cocktail_UI) {
@@ -44,8 +47,24 @@ fun CocktailListItem(cocktail_UI: Cocktail_UI) {
 
 @Preview(showBackground = true)
 @Composable
-fun CocktailListItemPreview() {
-    CocktailListItem(
-        DemoData.cocktailList[0].toUIModel()
-    )
+fun CocktailListItemPreview_Light() {
+    CocktailMasterTheme {
+        Surface {
+            CocktailListItem(
+                DemoData.cocktailList[0].toUIModel()
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun CocktailListItemPreview_Night() {
+    CocktailMasterTheme {
+        Surface {
+            CocktailListItem(
+                DemoData.cocktailList[0].toUIModel()
+            )
+        }
+    }
 }

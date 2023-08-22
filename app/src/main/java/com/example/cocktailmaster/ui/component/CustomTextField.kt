@@ -1,5 +1,6 @@
 package com.example.cocktailmaster.ui.component
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +21,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
 fun CustomTextField(
@@ -83,22 +86,30 @@ fun CustomTextField(
 
 @Preview(showBackground = true)
 @Composable
-fun CustomTextFieldPreview() {
-    CustomTextField(
-        value = "Hello",
-        placeholder = "Placeholder",
-        clearAction = {},
-        onValueChange = {}
-    )
+fun CustomTextFieldPreview_Light() {
+    CocktailMasterTheme {
+        Surface() {
+            CustomTextField(
+                value = "Hello",
+                placeholder = "Placeholder",
+                clearAction = {},
+                onValueChange = {}
+            )
+        }
+    }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun CustomTextFieldPreview2() {
-    CustomTextField(
-        value = "",
-        placeholder = "Placeholder",
-        clearAction = {},
-        onValueChange = {}
-    )
+fun CustomTextFieldPreview_Night() {
+    CocktailMasterTheme {
+        Surface {
+            CustomTextField(
+                value = "",
+                placeholder = "Placeholder",
+                clearAction = {},
+                onValueChange = {}
+            )
+        }
+    }
 }

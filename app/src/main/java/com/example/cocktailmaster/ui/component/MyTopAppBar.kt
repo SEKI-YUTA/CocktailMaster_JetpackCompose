@@ -2,17 +2,22 @@
 
 package com.example.cocktailmaster.ui.component
 
+import android.content.res.Configuration
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
 fun MyTopAppBar(navController: NavHostController) {
@@ -43,4 +48,24 @@ fun MyTopAppBar(navController: NavHostController) {
             }
         }
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MyAppBarPreview_Light() {
+    CocktailMasterTheme {
+        Surface {
+            MyTopAppBar(navController = rememberNavController())
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun MyAppBarPreview_Night() {
+    CocktailMasterTheme {
+        Surface {
+            MyTopAppBar(navController = rememberNavController())
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.cocktailmaster.ui.component
 
+import android.content.res.Configuration
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
 fun IngredientListItem(
@@ -125,21 +128,27 @@ fun IngredientListItem(
 
 @Preview(showBackground = true)
 @Composable
-fun IngredientListItemPreview() {
+fun IngredientListItemPreview_Light() {
     val data = DemoData.liqueurList[0].toUIModel()
-    IngredientListItem(
-        ingredient_UI = data,
-    )
+    CocktailMasterTheme {
+        Surface {
+            IngredientListItem(
+                ingredient_UI = data,
+                tailIcon = Icons.Default.Add
+            )
+        }
+    }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun IngredientListItemPreview2() {
-    val data = CocktailIngredient_UI(
-        name = "テキーラ",
-    )
-    IngredientListItem(
-        ingredient_UI = data,
-        tailIcon = Icons.Default.Add,
-    )
+fun IngredientListItemPreview_Night() {
+    val data = DemoData.liqueurList[0].toUIModel()
+    CocktailMasterTheme {
+        Surface {
+            IngredientListItem(
+                ingredient_UI = data,
+            )
+        }
+    }
 }

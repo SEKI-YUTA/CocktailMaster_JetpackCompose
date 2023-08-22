@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -30,16 +31,18 @@ fun MenuButton(
     text: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onTapAction: () -> Unit
 ) {
     Box(
-        modifier = modifier
-            .clickable { onTapAction() }
+        modifier =
+            modifier.clickable(enabled = enabled, onClick = onTapAction)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.surfaceVariant),
                 shape = RoundedCornerShape(99.dp)
             )
-            .padding(8.dp),
+            .padding(8.dp)
+            .alpha(if(enabled) 1f else 0.4f)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(

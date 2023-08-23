@@ -9,8 +9,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.cocktailmaster.CocktailMasterApplication
 import com.example.cocktailmaster.data.db.AppDatabase
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
-import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
+import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
@@ -19,7 +19,6 @@ import com.example.cocktailmaster.util.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -77,7 +76,8 @@ class MainViewModel(
 //                    .map { liqueurData -> liqueurData.toUIModel() }
 //                _ownedCocktailIngredients.value = ownedLiqueurList
                 ownedLiqueurRepository.provideAllIngredient().collect() {
-                    _ownedCocktailIngredients.value = it.map { liqueurData -> liqueurData.toUIModel() }
+                    _ownedCocktailIngredients.value =
+                        it.map { liqueurData -> liqueurData.toUIModel() }
                 }
             }
         }
@@ -86,7 +86,8 @@ class MainViewModel(
     fun addOwnedIngredient(ingredient: CocktailIngredient_UI) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                AppDatabase.getDatabase(context).ownedIngredientDao().insertIngredient(ingredient.toDataModel())
+                AppDatabase.getDatabase(context).ownedIngredientDao()
+                    .insertIngredient(ingredient.toDataModel())
             }
         }
     }
@@ -94,7 +95,8 @@ class MainViewModel(
     fun editOwnedIngredient(ingredient: CocktailIngredient_UI) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                AppDatabase.getDatabase(context).ownedIngredientDao().updateIngredient(ingredient.toDataModel())
+                AppDatabase.getDatabase(context).ownedIngredientDao()
+                    .updateIngredient(ingredient.toDataModel())
             }
         }
     }
@@ -102,7 +104,8 @@ class MainViewModel(
     fun deleteOwnedIngredient(ingredient: CocktailIngredient_UI) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                AppDatabase.getDatabase(context).ownedIngredientDao().deleteIngredient(ingredient.toDataModel())
+                AppDatabase.getDatabase(context).ownedIngredientDao()
+                    .deleteIngredient(ingredient.toDataModel())
             }
         }
     }

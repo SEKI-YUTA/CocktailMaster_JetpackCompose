@@ -24,12 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
-import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MenuButton
+import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
 /*
 所有中の酒をリスト表示して
@@ -52,7 +51,8 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     text = stringResource(R.string.cocktail_list_str),
                     modifier = Modifier.weight(1f),
                     enabled = networkConnected,
-                    icon = Icons.Default.List) {
+                    icon = Icons.Default.List
+                ) {
                     navController.navigate(Screen.CraftableCocktailListScreen.name) {
                         launchSingleTop = true
                     }
@@ -62,10 +62,11 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     text = stringResource(R.string.add_ingredient_str),
                     modifier = Modifier.weight(1f),
                     enabled = networkConnected,
-                    icon = Icons.Default.Add) {
-                   navController.navigate(Screen.AddCocktailIngredientScreen.name) {
-                       launchSingleTop = true
-                   }
+                    icon = Icons.Default.Add
+                ) {
+                    navController.navigate(Screen.AddCocktailIngredientScreen.name) {
+                        launchSingleTop = true
+                    }
                 }
             }
             Text(
@@ -89,7 +90,7 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     )
                 }
             }
-            if(ownedIngredients.isEmpty()) {
+            if (ownedIngredients.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
         }

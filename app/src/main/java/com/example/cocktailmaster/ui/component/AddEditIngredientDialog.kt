@@ -3,7 +3,6 @@
 package com.example.cocktailmaster.ui.component
 
 import android.content.res.Configuration
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,15 +14,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,8 +38,10 @@ fun AddEditIngredientDialog(
     onDoneEvent: (CocktailIngredient_UI) -> Unit,
 ) {
     val userInputName = remember { mutableStateOf("") }
-    val dialogTitle = if (isAddMode) stringResource(R.string.dialog_title_add_ingredient) else stringResource(
-            R.string.dialog_title_edit_ingredient)
+    val dialogTitle =
+        if (isAddMode) stringResource(R.string.dialog_title_add_ingredient) else stringResource(
+            R.string.dialog_title_edit_ingredient
+        )
     Dialog(
         onDismissRequest = {
             isShowingDialog.value = false
@@ -60,7 +58,7 @@ fun AddEditIngredientDialog(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Text(
-                    "材料名: ${currentIngredient?.name}",
+                    "材料名: ${currentIngredient.name}",
                     modifier = Modifier.padding(bottom = 8.dp),
                     style = TextStyle(fontSize = 20.sp)
                 )
@@ -94,7 +92,7 @@ fun AddEditIngredientDialog(
                             val tmp = currentIngredient.copy(
                                 description = userInputName.value
                             )
-                           onDoneEvent(tmp)
+                            onDoneEvent(tmp)
                         }
                     ) {
                         Text(stringResource(R.string.add_str))

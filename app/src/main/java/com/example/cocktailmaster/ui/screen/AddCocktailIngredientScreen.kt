@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,6 +36,7 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
     var userInputName = remember { mutableStateOf("") }
     val ingredientList = viewModel.ingredientList.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
+    val isFetchfailed = viewModel.isFetchFailed.collectAsState().value
     val context = LocalContext.current
     viewModel.setCurrentScreen(Screen.AddCocktailIngredientScreen)
     Box(modifier = Modifier.fillMaxSize()) {
@@ -54,8 +56,15 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
             }
             if (isLoading) {
                 LoadingMessage()
-            }
-            if (!isLoading && ingredientList.isEmpty()) {
+            } else if(isFetchfailed) {
+                CenterMessage(
+                    message = stringResource(R.string.fetch_failed_message),
+                    icon = Icons.Default.Refresh,
+                    iconTapAction = {
+                        viewModel.fetchAllIngredientsFromAPI()
+                    }
+                )
+            } else if (!isLoading && ingredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.not_found_ingredient))
             }
         }

@@ -52,6 +52,9 @@ class MainViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
 
+    private val _isFetchFailed = MutableStateFlow(false)
+    val isFetchFailed = _isFetchFailed.asStateFlow()
+
     private val _currentScreen = MutableStateFlow(Screen.TopScreen)
     val currentScreen = _currentScreen.asStateFlow()
 
@@ -114,12 +117,15 @@ class MainViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 _isLoading.value = true
+                _isFetchFailed.value = false
                 val allIngredients = cocktailApiRepository.getAllIngredients()
-                if(allIngredients.first().fetchFailed) {
+                if(allIngredients.size > 0 && allIngredients.first().fetchFailed) {
                     println("ingredient fetch failed")
+                    _isFetchFailed.value = true
                     _isLoading.value = false
                 } else {
                     _ingredientList.value = allIngredients.map { it.toUIModel() }
+                    _isFetchFailed.value = false
                     _isLoading.value = false
                 }
             }
@@ -132,13 +138,16 @@ class MainViewModel(
             withContext(Dispatchers.IO) {
                 _craftableCocktailList.value = emptyList()
                 _isLoading.value = true
+                _isFetchFailed.value = false
                 val query = ownedCocktailIngredients.value.map { it.name }
                 val tmpList = cocktailApiRepository.craftableCocktails(query)
-                if(tmpList.first().fetchFailed) {
+                if(tmpList.size > 0 && tmpList.first().fetchFailed) {
                     println("cocktailt fetch failed")
+                    _isFetchFailed.value = true
                     _isLoading.value = false
                 } else {
                     _craftableCocktailList.value = tmpList.map { it.toUIModel() }
+                    _isFetchFailed.value = false
                     _isLoading.value = false
                 }
             }

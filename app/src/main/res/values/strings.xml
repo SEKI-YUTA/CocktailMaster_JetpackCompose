@@ -19,4 +19,5 @@
     <string name="craftable_cocktail_not_found">作れるカクテルはありません</string>
     <string name="owned_ingredient_not_found">持っている材料はありません</string>
     <string name="not_found_ingredient">材料がみつかりません</string>
+    <string name="fetch_failed_message">データの取得に失敗しました。</string>
 </resources>

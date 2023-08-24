@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +28,7 @@ import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 fun CraftableCocktailListScreen(navController: NavHostController, viewModel: MainViewModel) {
     val craftableCocktailList = viewModel.craftableCocktailList.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
+    val isFetchfailed = viewModel.isFetchFailed.collectAsState().value
     viewModel.setCurrentScreen(Screen.CraftableCocktailListScreen)
     LaunchedEffect(key1 = true) {
         println("launchedEffect")
@@ -46,9 +49,15 @@ fun CraftableCocktailListScreen(navController: NavHostController, viewModel: Mai
 
             if (isLoading) {
                 LoadingMessage()
-            }
-
-            if (!isLoading && craftableCocktailList.isEmpty()) {
+            } else if(isFetchfailed) {
+                CenterMessage(
+                    message = stringResource(R.string.fetch_failed_message),
+                    icon = Icons.Default.Refresh,
+                    iconTapAction = {
+                        viewModel.findCraftableCocktail()
+                    }
+                )
+            } else if (!isLoading && craftableCocktailList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
             }
         }

@@ -21,6 +21,8 @@ data class Cocktail_Data(
 
     @SerialName("Ingredients")
     val ingredients: List<CocktailIngredient_Data> = emptyList(),
+
+    val fetchFailed: Boolean = false,
 ) {
     fun toUIModel(): Cocktail_UI {
         return Cocktail_UI(

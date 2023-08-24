@@ -115,9 +115,13 @@ class MainViewModel(
             withContext(Dispatchers.IO) {
                 _isLoading.value = true
                 val allIngredients = cocktailApiRepository.getAllIngredients()
-                    .map { ingredientData -> ingredientData.toUIModel() }
-                _ingredientList.value = allIngredients
-                _isLoading.value = false
+                if(allIngredients.first().fetchFailed) {
+                    println("ingredient fetch failed")
+                    _isLoading.value = false
+                } else {
+                    _ingredientList.value = allIngredients.map { it.toUIModel() }
+                    _isLoading.value = false
+                }
             }
         }
     }
@@ -129,9 +133,14 @@ class MainViewModel(
                 _craftableCocktailList.value = emptyList()
                 _isLoading.value = true
                 val query = ownedCocktailIngredients.value.map { it.name }
-                val tmpList = cocktailApiRepository.craftableCocktails(query).map { it.toUIModel() }
-                _craftableCocktailList.value = tmpList
-                _isLoading.value = false
+                val tmpList = cocktailApiRepository.craftableCocktails(query)
+                if(tmpList.first().fetchFailed) {
+                    println("cocktailt fetch failed")
+                    _isLoading.value = false
+                } else {
+                    _craftableCocktailList.value = tmpList.map { it.toUIModel() }
+                    _isLoading.value = false
+                }
             }
         }
 

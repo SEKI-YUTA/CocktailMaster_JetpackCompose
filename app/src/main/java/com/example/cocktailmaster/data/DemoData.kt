@@ -6,19 +6,19 @@ import com.example.cocktailmaster.data.model.Cocktail_Data
 class DemoData {
     companion object {
         val cocktailList = listOf<Cocktail_Data>(
-            Cocktail_Data("ジンバッグ", null, "ジンとジンジャーエールを混ぜたカクテル", true, listOf(
-                CocktailIngredient_Data( name ="ジン", description = "スピリッツ", vol = 40),
-                CocktailIngredient_Data(name = "ジンジャーエール", description = "ジンジャーエール", vol = 0)
+            Cocktail_Data(name = "ジンバッグ", description = "ジンとジンジャーエールを混ぜたカクテル", ingredients = listOf(
+                CocktailIngredient_Data(shortName = "ジン", longName = "ドライ・ジン", description = "スピリッツ", vol = 40),
+                CocktailIngredient_Data(shortName = "ジンジャーエール", longName = "ジンジャーエール", description = "ジンジャーエール", vol = 0)
             )),
         )
 
         val liqueurList = listOf(
-            CocktailIngredient_Data( name ="ジン", description = "スピリッツ", vol = 40),
-            CocktailIngredient_Data( name ="ウォッカ", description = "スピリッツ", vol = 40),
-            CocktailIngredient_Data( name ="ラム", description = "スピリッツ", vol = 40),
-            CocktailIngredient_Data( name ="テキーラ", description = "", vol = 40),
-            CocktailIngredient_Data( name ="ジンジャーエール", description = "", vol = 0),
-            CocktailIngredient_Data( name ="オレンジジュース", description = "", vol = 0),
+            CocktailIngredient_Data(shortName = "ジン", longName ="ドライ・ジン", description = "スピリッツ", vol = 40),
+            CocktailIngredient_Data(shortName = "ウォッカ", longName ="ウォッカ", description = "スピリッツ", vol = 40),
+            CocktailIngredient_Data(shortName = "ラム", longName ="ホワイトラム", description = "スピリッツ", vol = 40),
+            CocktailIngredient_Data(shortName = "テキーラ", longName ="テキーラ", description = "", vol = 40),
+            CocktailIngredient_Data(shortName = "ジンジャーエール", longName ="ジンジャーエール", description = "", vol = 0),
+            CocktailIngredient_Data(shortName = "オレンジジュース", longName ="オレンジジュース", description = "", vol = 0),
         )
     }
 }

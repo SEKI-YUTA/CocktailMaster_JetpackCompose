@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
@@ -58,7 +59,7 @@ fun AddEditIngredientDialog(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Text(
-                    "材料名: ${currentIngredient.name}",
+                    "材料名: ${currentIngredient.longName}",
                     modifier = Modifier.padding(bottom = 8.dp),
                     style = TextStyle(fontSize = 20.sp)
                 )
@@ -107,11 +108,7 @@ fun AddEditIngredientDialog(
 @Composable
 fun AddEditIngredientDialogPreview_Light() {
     val isShowingDialog = remember { mutableStateOf(true) }
-    val currentIngredient = CocktailIngredient_UI(
-        id = 1,
-        name = "テキーラ",
-        description = "メキシコのお酒"
-    )
+    val currentIngredient = DemoData.liqueurList.first().toUIModel()
     CocktailMasterTheme {
         Surface {
             AddEditIngredientDialog(
@@ -127,11 +124,7 @@ fun AddEditIngredientDialogPreview_Light() {
 @Composable
 fun AddEditIngredientDialogPreview_Night() {
     val isShowingDialog = remember { mutableStateOf(true) }
-    val currentIngredient = CocktailIngredient_UI(
-        id = 1,
-        name = "テキーラ",
-        description = "メキシコのお酒"
-    )
+    val currentIngredient = DemoData.liqueurList.first().toUIModel()
     CocktailMasterTheme {
         Surface {
             AddEditIngredientDialog(

@@ -47,7 +47,6 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
                         ingredient_UI = ingredient_ui,
                         tailIcon = Icons.Default.Add,
                         onIconTapAction = {
-                            println("tapped: ${ingredient_ui.name}")
                             currentIngredient.value = it
                             isShowingDialog.value = true
                         },

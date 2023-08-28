@@ -139,7 +139,7 @@ class MainViewModel(
                 _craftableCocktailList.value = emptyList()
                 _isLoading.value = true
                 _isFetchFailed.value = false
-                val query = ownedCocktailIngredients.value.map { it.name }
+                val query = ownedCocktailIngredients.value.map { it.longName }
                 val tmpList = cocktailApiRepository.craftableCocktails(query)
                 if(tmpList.size > 0 && tmpList.first().fetchFailed) {
                     println("cocktailt fetch failed")

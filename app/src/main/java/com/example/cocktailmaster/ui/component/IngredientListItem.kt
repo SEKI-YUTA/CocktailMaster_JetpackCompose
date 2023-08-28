@@ -67,7 +67,7 @@ fun IngredientListItem(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = ingredient_UI.name,
+                    text = ingredient_UI.longName,
                     style = TextStyle(fontSize = 20.sp),
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1

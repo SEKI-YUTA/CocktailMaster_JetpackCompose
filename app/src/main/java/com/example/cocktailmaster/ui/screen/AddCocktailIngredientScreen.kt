@@ -67,7 +67,7 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp)
             ) {
-                Text("絞り込み", modifier = Modifier.padding(end = 8.dp))
+                Text("絞り込み: ", modifier = Modifier.padding(end = 8.dp))
                 MyDropDownMenu(
                     categories = categories,
                     selectedValue = userSelectCategory,

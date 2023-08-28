@@ -16,36 +16,46 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Entity(tableName = "owned_ingredient")
 data class CocktailIngredient_Data(
-    @SerialName("ID")
+    @SerialName("ingredient_id")
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
 
-    @SerialName("IsOwned")
-    @ColumnInfo(name = "is_owned")
-    val isOwned: Boolean = false,
+    @SerialName("short_name")
+    @ColumnInfo(name = "short_name")
+    val shortName: String,
 
-    @SerialName("Name")
-    @ColumnInfo(name = "name")
-    val name: String,
+    @SerialName("long_name")
+    @ColumnInfo(name = "long_name")
+    val longName: String,
 
-    @SerialName("Vol")
-    @ColumnInfo(name = "vol")
-    val vol: Int = 0,
-
-    @SerialName("Description")
+    @SerialName("description")
     @ColumnInfo(name = "description")
     val description: String = "",
 
+    @SerialName("vol")
+    @ColumnInfo(name = "vol")
+    val vol: Int = 0,
+
+    @SerialName("ingredient_category_id")
+    @ColumnInfo(name = "ingredient_category_id")
+    val ingredientCategoryId: Int = 0,
+
+    @SerialName("category")
+    @ColumnInfo(name = "category")
+    val category: String = "",
+
     val fetchFailed: Boolean = false,
 
-) {
+    ) {
     fun toUIModel(): CocktailIngredient_UI {
         return CocktailIngredient_UI(
             id = id,
-            name = name,
-            isOwned = isOwned,
-            vol = vol,
+            shortName = shortName,
+            longName = longName,
             description = description,
+            vol = vol,
+            ingredientCategoryId = ingredientCategoryId,
+            category = category,
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -69,8 +70,9 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
             ) {
                 Text("絞り込み: ", modifier = Modifier.padding(end = 8.dp))
                 MyDropDownMenu(
-                    categories = categories,
-                    selectedValue = userSelectCategory,
+                    modifier = Modifier.fillMaxWidth(),
+                    items = categories,
+                    selectedVal = userSelectCategory,
                 ) {
                     println(it)
                     userSelectCategory = it

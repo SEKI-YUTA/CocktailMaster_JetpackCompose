@@ -8,6 +8,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -50,80 +52,45 @@ import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 @Composable
 fun MyDropDownMenu(
     modifier: Modifier = Modifier,
-    categories: List<String>,
-    selectedValue: String,
-    onValueChanged: (String) -> Unit
+    items: List<String>,
+    selectedVal: String,
+    onItemSelected: (String) -> Unit
 ) {
-    val context = LocalContext.current
-    var isDropDownExpanded by remember { mutableStateOf(false) }
+    var expanded by remember { mutableStateOf(false)}
 
-    Box(
-        modifier = modifier
+    Column(
+        modifier = modifier,
     ) {
-        ExposedDropdownMenuBox(
-            expanded = isDropDownExpanded,
-            onExpandedChange = {
-                isDropDownExpanded = it
-            }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(horizontal = 8.dp)
         ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .height(60.dp)
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-            ) {
-                BasicTextField(
-                    value = selectedValue,
-                    onValueChange = {},
-                    readOnly = true,
-
-                    textStyle = TextStyle(
-                        color = if(isSystemInDarkTheme()) Color.White else Color.Black,
-                        lineHeightStyle = LineHeightStyle.Default,
-                        lineHeight = 60.sp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor(),
-                    decorationBox = {innerTextField ->
-                        innerTextField()
-//                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = isDropDownExpanded)
-                    }
+            Text(selectedVal, modifier = Modifier.weight(1f))
+            IconButton(onClick = {
+                expanded = true
+            }) {
+                Icon(
+                    imageVector =
+                    if(expanded) Icons.Filled.ArrowDropDown else Icons.Filled.ArrowDropDown,
+                    contentDescription = null
                 )
             }
-            ExposedDropdownMenu(
-                expanded = isDropDownExpanded,
-                onDismissRequest = {
-                    isDropDownExpanded = false
-                }
-            ) {
-                categories.map {
-                    DropdownMenuItem(
-                        text = {
-                            Text(text = it)
-                        },
-                        onClick = {
-                            onValueChanged(it)
-                            isDropDownExpanded = false
-                            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                        }
-                    )
-                }
-            }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MyDropDownMenuPreview_Light() {
-    CocktailMasterTheme {
-        Surface {
-            MyDropDownMenu(
-                categories = listOf("すべて") + ConstantValues.ingredientCategories,
-                selectedValue = "すべて",
-                onValueChanged = {}
-            )
+        DropdownMenu(
+            modifier = Modifier.fillMaxWidth(),
+            expanded = expanded,
+            onDismissRequest = {
+                expanded = false
+            }
+        ) {
+            items.map {
+                DropdownMenuItem(text = {
+                    Text(it)
+                }, onClick = {
+                    onItemSelected(it)
+                    expanded = false
+                })
+            }
         }
     }
 }

@@ -62,7 +62,7 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
     val context = LocalContext.current
 
     //    val categories = listOf("すべて") + ConstantValues.ingredientCategories
-    val categories by remember {
+    val categories by remember(ingredientList) {
         derivedStateOf {
             listOf("すべて") + LinkedHashSet(ingredientList.map { it.category }).toMutableList()
         }

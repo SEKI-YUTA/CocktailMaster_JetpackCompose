@@ -2,6 +2,7 @@
 
 package com.example.cocktailmaster.ui.component
 
+import android.content.res.Configuration
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -91,6 +92,20 @@ fun MyDropDownMenu(
                     expanded = false
                 })
             }
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun MyDropDownPreview_Light() {
+    CocktailMasterTheme {
+        Surface {
+            MyDropDownMenu(
+                items = ConstantValues.ingredientCategories,
+                selectedVal = ConstantValues.ingredientCategories[0],
+                onItemSelected = {}
+            )
         }
     }
 }

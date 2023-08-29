@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,12 +56,20 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
     var isShowingDialog = remember { mutableStateOf(false) }
     var currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
     var userInputName = remember { mutableStateOf("") }
-    val categories = listOf("すべて") + ConstantValues.ingredientCategories
-    var userSelectCategory by remember { mutableStateOf(categories[0]) }
     val ingredientList = viewModel.ingredientList.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
     val isFetchfailed = viewModel.isFetchFailed.collectAsState().value
     val context = LocalContext.current
+
+    //    val categories = listOf("すべて") + ConstantValues.ingredientCategories
+    val categories by remember {
+        derivedStateOf {
+            listOf("すべて") + LinkedHashSet(ingredientList.map { it.category }).toMutableList()
+        }
+    }
+    var userSelectCategory by remember { mutableStateOf(categories[0]) }
+
+
     viewModel.setCurrentScreen(Screen.AddCocktailIngredientScreen)
     Box(modifier = Modifier.fillMaxSize()) {
         Column {

@@ -93,6 +93,7 @@ fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: Mai
                         IngredientListItem(
                             ingredient_UI = ingredient_ui,
                             tailIcon = Icons.Default.Add,
+                            enableContextMenu = false,
                             onIconTapAction = {
                                 currentIngredient.value = it
                                 isShowingDialog.value = true

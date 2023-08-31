@@ -38,6 +38,7 @@ fun IngredientListItem(
     modifier: Modifier = Modifier,
     ingredient_UI: CocktailIngredient_UI,
     tailIcon: ImageVector? = null,
+    enableContextMenu: Boolean = true,
     onIconTapAction: (CocktailIngredient_UI) -> Unit = {},
     onDeleteAction: (CocktailIngredient_UI) -> Unit = {},
     onEditAction: (CocktailIngredient_UI) -> Unit = {}
@@ -50,9 +51,11 @@ fun IngredientListItem(
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
-                        // 削除と編集ボタンを表示する処理を書く
-                        println("Long Pressed")
-                        menuShowing.value = true
+                        if(enableContextMenu) {
+                            // 削除と編集ボタンを表示する処理を書く
+                            println("Long Pressed")
+                            menuShowing.value = true
+                        }
                     }
                 )
             },

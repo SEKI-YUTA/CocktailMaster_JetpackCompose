@@ -87,6 +87,7 @@ class MainViewModel(
     }
 
     fun addOwnedIngredient(ingredient: CocktailIngredient_UI) {
+        ingredient.id = 0
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 AppDatabase.getDatabase(context).ownedIngredientDao()

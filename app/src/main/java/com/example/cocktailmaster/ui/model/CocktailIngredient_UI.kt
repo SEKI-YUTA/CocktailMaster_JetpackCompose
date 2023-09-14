@@ -8,7 +8,7 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 */
 // 例：ジン、ウォッカ、ラム、テキーラ、ウイスキー、ブランデーなどのカクテルの原料になるもの
 data class CocktailIngredient_UI(
-    val id: Int = 0,
+    var id: Int = 0,
     val shortName: String,
     val longName: String,
     val description: String = "",

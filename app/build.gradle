@@ -28,6 +28,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "versions"
+    productFlavors {
+        physical {
+            dimension "versions"
+            applicationIdSuffix ".physical"
+            buildConfigField("String", "BASE_URL", "\"https://cocktail-api.fly.dev/\"")
+        }
+        emulator {
+            dimension "versions"
+            applicationIdSuffix ".emulator"
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:9090/\"")
+        }
+    }
     compileOptions {
         sourceCompatibility 17
         targetCompatibility 17
@@ -37,6 +50,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.4.2'

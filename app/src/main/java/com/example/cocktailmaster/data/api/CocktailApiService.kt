@@ -1,5 +1,6 @@
 package com.example.cocktailmaster.data.api
 
+import com.example.cocktailmaster.BuildConfig
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import com.example.cocktailmaster.data.model.Cocktail_Data
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -9,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private const val BASE_URL = "http://10.0.2.2:9090/"
+private const val BASE_URL = BuildConfig.BASE_URL
 
 private val json = Json { ignoreUnknownKeys = true }
 

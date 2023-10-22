@@ -21,8 +21,6 @@ import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
 fun CocktailListItem(cocktail_UI: Cocktail_UI) {
-//    val ingredientsStr = cocktail_UI.ingredients.joinToString(", ")
-    println(cocktail_UI.ingredients)
     val ingredientsStr = cocktail_UI.ingredients.joinToString(", ") { it.longName }
     Card(
         modifier = Modifier.padding(8.dp)

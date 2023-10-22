@@ -46,7 +46,6 @@ fun CraftableCocktailListScreen(navController: NavHostController, viewModel: Mai
 
     viewModel.setCurrentScreen(Screen.CraftableCocktailListScreen)
     LaunchedEffect(key1 = true) {
-        println("launchedEffect")
         viewModel.findCraftableCocktail()
     }
     Box {

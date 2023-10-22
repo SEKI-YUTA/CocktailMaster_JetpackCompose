@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.example.cocktailmaster.ui
+package com.example.cocktailmaster
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
 import com.example.cocktailmaster.ui.screen.CraftableCocktailListScreen

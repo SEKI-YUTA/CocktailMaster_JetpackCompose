@@ -41,6 +41,15 @@ android {
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:9090/\"")
         }
     }
+
+    variantFilter { variant ->
+        def names = variant.flavors*.name
+        def buildType = variant.buildType.name
+        if(names.contains("emulator") && buildType.contains("release")) {
+            setIgnore(true)
+        }
+    }
+
     compileOptions {
         sourceCompatibility 17
         targetCompatibility 17

@@ -52,7 +52,7 @@ import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
 @Composable
-fun AddCocktailIngredientScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
     var isShowingDialog = remember { mutableStateOf(false) }
     var currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
     var userInputName = remember { mutableStateOf("") }

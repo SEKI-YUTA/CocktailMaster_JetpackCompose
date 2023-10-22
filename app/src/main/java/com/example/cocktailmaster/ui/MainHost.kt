@@ -46,10 +46,10 @@ fun MainHost() {
                 TopScreen(navController = navController, viewModel = mainViewModel)
             }
             composable(Screen.AddCocktailIngredientScreen.name) {
-                AddCocktailIngredientScreen(navController = navController, viewModel = mainViewModel)
+                AddCocktailIngredientScreen(viewModel = mainViewModel)
             }
             composable(Screen.CraftableCocktailListScreen.name) {
-                CraftableCocktailListScreen(navController = navController, viewModel = mainViewModel)
+                CraftableCocktailListScreen(viewModel = mainViewModel)
             }
         }
     }

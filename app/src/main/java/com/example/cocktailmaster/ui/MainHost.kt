@@ -43,7 +43,19 @@ fun MainHost() {
                 .padding(padding)
         ) {
             composable(Screen.TopScreen.name) {
-                TopScreen(navController = navController, viewModel = mainViewModel)
+                TopScreen(
+                    viewModel = mainViewModel,
+                    navigateToAddIngredient = {
+                        navController.navigate(Screen.AddCocktailIngredientScreen.name) {
+                            launchSingleTop = true
+                        }
+                    },
+                    navigateToCraftableCocktail = {
+                        navController.navigate(Screen.CraftableCocktailListScreen.name) {
+                            launchSingleTop = true
+                        }
+                    }
+                )
             }
             composable(Screen.AddCocktailIngredientScreen.name) {
                 AddCocktailIngredientScreen(viewModel = mainViewModel)

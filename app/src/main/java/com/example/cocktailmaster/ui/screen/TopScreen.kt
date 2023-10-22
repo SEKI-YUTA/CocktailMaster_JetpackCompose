@@ -35,7 +35,11 @@ import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 追加画面と現在所有中の酒で作ることができるカクテルを表示する画面へ遷移できる
 */
 @Composable
-fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun TopScreen(
+    viewModel: MainViewModel,
+    navigateToCraftableCocktail: () -> Unit = {},
+    navigateToAddIngredient: () -> Unit = {}
+) {
     val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
     val networkConnected = viewModel.isNetworkConnected.collectAsState().value
     viewModel.setCurrentScreen(Screen.TopScreen)
@@ -53,9 +57,7 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     enabled = networkConnected,
                     icon = Icons.Default.List
                 ) {
-                    navController.navigate(Screen.CraftableCocktailListScreen.name) {
-                        launchSingleTop = true
-                    }
+                    navigateToCraftableCocktail()
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
@@ -64,9 +66,7 @@ fun TopScreen(navController: NavHostController, viewModel: MainViewModel) {
                     enabled = networkConnected,
                     icon = Icons.Default.Add
                 ) {
-                    navController.navigate(Screen.AddCocktailIngredientScreen.name) {
-                        launchSingleTop = true
-                    }
+                    navigateToAddIngredient()
                 }
             }
             Text(

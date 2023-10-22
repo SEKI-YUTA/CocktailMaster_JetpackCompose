@@ -9,6 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -23,8 +24,9 @@ import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 // ここでナビゲーションのルーティングとかをしている
 @Composable
 fun MainHost() {
+    val context = LocalContext.current
     val navController = rememberNavController()
-    val mainViewModel = viewModel<MainViewModel>(factory = MainViewModel.Factory)
+    val mainViewModel = viewModel<MainViewModel>(factory = MainViewModel.provideFactory(context = context))
     Scaffold(
         topBar = {
             Surface(shadowElevation = 4.dp) {

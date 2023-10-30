@@ -33,7 +33,7 @@ import com.example.cocktailmaster.ui.component.MyDropDownMenu
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
 @Composable
-fun CraftableCocktailListScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun CraftableCocktailListScreen(viewModel: MainViewModel) {
     val craftableCocktailList = viewModel.craftableCocktailList.collectAsState().value
     val isLoading = viewModel.isLoading.collectAsState().value
     val isFetchfailed = viewModel.isFetchFailed.collectAsState().value
@@ -46,7 +46,6 @@ fun CraftableCocktailListScreen(navController: NavHostController, viewModel: Mai
 
     viewModel.setCurrentScreen(Screen.CraftableCocktailListScreen)
     LaunchedEffect(key1 = true) {
-        println("launchedEffect")
         viewModel.findCraftableCocktail()
     }
     Box {

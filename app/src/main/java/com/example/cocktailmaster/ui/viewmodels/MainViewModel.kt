@@ -2,6 +2,7 @@ package com.example.cocktailmaster.ui.viewmodels
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
@@ -157,18 +158,18 @@ class MainViewModel(
     }
 
     companion object {
-        val Factory = viewModelFactory {
-            initializer {
-                val tmp: Context =
-                    (this[APPLICATION_KEY] as CocktailMasterApplication).appContainer.context
+        fun provideFactory(context: Context): ViewModelProvider.Factory {
 //                val cocktailApiRepository = CocktailApiRepository_FakeImpl()
-                val cocktailApiRepository = CocktailApiRepository_Impl()
-                val ownedLiqueurRepository = OwnedLiqueurRepository_Impl(tmp)
-                MainViewModel(
-                    tmp,
-                    cocktailApiRepository = cocktailApiRepository,
-                    ownedLiqueurRepository = ownedLiqueurRepository
-                )
+            val cocktailApiRepository = CocktailApiRepository_Impl()
+            val ownedLiqueurRepository = OwnedLiqueurRepository_Impl(context)
+            return object: ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return MainViewModel(
+                        context = context,
+                        cocktailApiRepository = cocktailApiRepository,
+                        ownedLiqueurRepository = ownedLiqueurRepository) as T
+                }
             }
         }
     }

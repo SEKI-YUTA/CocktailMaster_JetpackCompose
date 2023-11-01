@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,31 +22,31 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.CocktailListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MyDropDownMenu
-import com.example.cocktailmaster.ui.viewmodels.MainViewModel
+import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 
 @Composable
-fun CraftableCocktailListScreen(viewModel: MainViewModel) {
-    val craftableCocktailList = viewModel.craftableCocktailList.collectAsState().value
-    val isLoading = viewModel.isLoading.collectAsState().value
-    val isFetchfailed = viewModel.isFetchFailed.collectAsState().value
-    val categories by remember(craftableCocktailList) {
+fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel) {
+    val viewState = viewModel.viewState.collectAsState().value
+    val craftableList by remember(viewState) {
         derivedStateOf {
-            listOf("すべて") + LinkedHashSet(craftableCocktailList.map { it.category }).toMutableList()
+            viewState.craftableCocktailList
+        }
+    }
+    val categories by remember(craftableList) {
+        derivedStateOf {
+            listOf("すべて") + LinkedHashSet(craftableList.map { it.category }).toMutableList()
         }
     }
     var userSelectCategory by remember { mutableStateOf(categories[0]) }
 
-    viewModel.setCurrentScreen(Screen.CraftableCocktailListScreen)
-    LaunchedEffect(key1 = true) {
-        viewModel.findCraftableCocktail()
-    }
+//    LaunchedEffect(key1 = true) {
+//        viewModel.findCraftableCocktail()
+//    }
     Box {
         Column {
             Row(
@@ -71,24 +70,24 @@ fun CraftableCocktailListScreen(viewModel: MainViewModel) {
                 style = TextStyle(fontSize = 22.sp)
             )
             LazyColumn {
-                items(craftableCocktailList) { cocktail_UI ->
-                    if(userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
+                items(craftableList) { cocktail_UI ->
+                    if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
                         CocktailListItem(cocktail_UI = cocktail_UI)
                     }
                 }
             }
 
-            if (isLoading) {
+            if (viewState.isLoading) {
                 LoadingMessage()
-            } else if(isFetchfailed) {
+            } else if (viewState.isFetchFailed) {
                 CenterMessage(
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-                        viewModel.findCraftableCocktail()
+//                        viewModel.findCraftableCocktail()
                     }
                 )
-            } else if (!isLoading && craftableCocktailList.isEmpty()) {
+            } else if (!viewState.isLoading && craftableList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
             }
         }

@@ -8,6 +8,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -15,11 +16,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
 import com.example.cocktailmaster.ui.screen.CraftableCocktailListScreen
 import com.example.cocktailmaster.ui.screen.TopScreen
+import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenEvent
+import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
 // ここでナビゲーションのルーティングとかをしている
@@ -28,6 +32,7 @@ fun MainHost() {
     val context = LocalContext.current
     val navController = rememberNavController()
     val mainViewModel = viewModel<MainViewModel>(factory = MainViewModel.provideFactory(context = context))
+    val ownedIngredientList = mainViewModel.ownedCocktailIngredients.collectAsState().value
     Scaffold(
         topBar = {
             Surface(shadowElevation = 4.dp) {
@@ -64,7 +69,14 @@ fun MainHost() {
                 AddCocktailIngredientScreen(viewModel = mainViewModel)
             }
             composable(Screen.CraftableCocktailListScreen.name) {
-                CraftableCocktailListScreen(viewModel = mainViewModel)
+                val craftableCocktailListScreenViewModel = CraftableCocktailListScreenViewModel()
+                craftableCocktailListScreenViewModel.onEvent(
+                    CraftableCocktailListScreenEvent.FetchCraftableCocktailList(
+                        apiRepository = CocktailApiRepository_Impl(),
+                        ingredientList = ownedIngredientList.map { it.longName }
+                    )
+                )
+                CraftableCocktailListScreen(viewModel = craftableCocktailListScreenViewModel)
             }
         }
     }

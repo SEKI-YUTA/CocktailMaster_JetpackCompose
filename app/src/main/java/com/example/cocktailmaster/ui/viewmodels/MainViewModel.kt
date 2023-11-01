@@ -3,11 +3,7 @@ package com.example.cocktailmaster.ui.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.cocktailmaster.CocktailMasterApplication
 import com.example.cocktailmaster.data.db.AppDatabase
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
@@ -28,7 +24,6 @@ import kotlinx.coroutines.withContext
 class MainViewModel(
     private val context: Context,
     private val cocktailApiRepository: CocktailApiRepository,
-    // ローカルデータの操作を後でリポジトリに引越しする予定
     private val ownedLiqueurRepository: OwnedLiqueurRepository,
 ) : ViewModel() {
 
@@ -76,10 +71,7 @@ class MainViewModel(
     fun readOwnedIngredientList() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-//                val ownedLiqueurList = ownedLiqueurRepository.getAllOwnedLiqueur()
-//                    .map { liqueurData -> liqueurData.toUIModel() }
-//                _ownedCocktailIngredients.value = ownedLiqueurList
-                ownedLiqueurRepository.provideAllIngredient().collect() {
+                ownedLiqueurRepository.provideAllIngredient().collect {
                     _ownedCocktailIngredients.value =
                         it.map { liqueurData -> liqueurData.toUIModel() }
                 }
@@ -121,7 +113,7 @@ class MainViewModel(
                 _isLoading.value = true
                 _isFetchFailed.value = false
                 val allIngredients = cocktailApiRepository.getAllIngredients()
-                if(allIngredients.size > 0 && allIngredients.first().fetchFailed) {
+                if (allIngredients.size > 0 && allIngredients.first().fetchFailed) {
                     println("ingredient fetch failed")
                     _isFetchFailed.value = true
                     _isLoading.value = false
@@ -143,7 +135,7 @@ class MainViewModel(
                 _isFetchFailed.value = false
                 val query = ownedCocktailIngredients.value.map { it.longName }
                 val tmpList = cocktailApiRepository.craftableCocktails(query)
-                if(tmpList.size > 0 && tmpList.first().fetchFailed) {
+                if (tmpList.size > 0 && tmpList.first().fetchFailed) {
                     println("cocktailt fetch failed")
                     _isFetchFailed.value = true
                     _isLoading.value = false
@@ -159,16 +151,16 @@ class MainViewModel(
 
     companion object {
         fun provideFactory(context: Context): ViewModelProvider.Factory {
-//                val cocktailApiRepository = CocktailApiRepository_FakeImpl()
             val cocktailApiRepository = CocktailApiRepository_Impl()
             val ownedLiqueurRepository = OwnedLiqueurRepository_Impl(context)
-            return object: ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return MainViewModel(
                         context = context,
                         cocktailApiRepository = cocktailApiRepository,
-                        ownedLiqueurRepository = ownedLiqueurRepository) as T
+                        ownedLiqueurRepository = ownedLiqueurRepository
+                    ) as T
                 }
             }
         }

@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
@@ -51,7 +50,7 @@ fun IngredientListItem(
     tailIcon: ImageVector? = null,
     enableContextMenu: Boolean = true,
     ownedCount: Int = 0,
-    showBadgeWhenOwned: Boolean = false,
+    showOwnedCountBadge: Boolean = false,
     onIconTapAction: (CocktailIngredient_UI) -> Unit = {},
     onDeleteAction: (CocktailIngredient_UI) -> Unit = {},
     onEditAction: (CocktailIngredient_UI) -> Unit = {}
@@ -102,7 +101,7 @@ fun IngredientListItem(
                         )
                     }
                 }
-                Text("${ingredient_UI.vol}${stringResource(id = R.string.alcohol_volume_unit)}")
+                Text("vol: ${ingredient_UI.vol}${stringResource(id = R.string.alcohol_volume_unit)}")
                 if (tailIcon != null) {
                     IconButton(onClick = { onIconTapAction(ingredient_UI) }) {
                         Icon(imageVector = tailIcon, contentDescription = null)
@@ -146,7 +145,7 @@ fun IngredientListItem(
                 )
             }
         }
-        if(showBadgeWhenOwned && ownedCount > 0) {
+        if(showOwnedCountBadge && ownedCount > 0) {
             CountBadge(
                 modifier = Modifier.constrainAs(badgeRef){
                     top.linkTo(parent.top)
@@ -180,7 +179,7 @@ fun IngredientListItemPreview_Light() {
             IngredientListItem(
                 ownedCount = 1,
                 ingredient_UI = data,
-                showBadgeWhenOwned = true,
+                showOwnedCountBadge = true,
                 tailIcon = Icons.Default.Add
             )
         }
@@ -195,7 +194,7 @@ fun IngredientListItemPreview_Night() {
         Surface {
             IngredientListItem(
                 ownedCount = 1,
-                showBadgeWhenOwned = true,
+                showOwnedCountBadge = true,
                 ingredient_UI = data,
             )
         }

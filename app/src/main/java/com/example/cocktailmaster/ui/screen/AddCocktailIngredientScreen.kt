@@ -44,7 +44,7 @@ fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
     val currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
     val userInputName = remember { mutableStateOf("") }
     val ingredientList = viewModel.ingredientList.collectAsState().value
-    val isLoading = viewModel.isLoading.collectAsState().value
+    val isCocktailIngredientListLoading = viewModel.isCocktailIngredientListLoading.collectAsState().value
     val isFetchFailed = viewModel.isFetchFailed.collectAsState().value
     val context = LocalContext.current
     val ownedIngredientList = viewModel.ownedCocktailIngredients.collectAsState().value
@@ -98,17 +98,17 @@ fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
                     }
                 }
             }
-            if (isLoading) {
+            if (isCocktailIngredientListLoading) {
                 LoadingMessage()
             } else if(isFetchFailed) {
                 CenterMessage(
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-                        viewModel.fetchAllIngredientsFromAPI()
+//                        viewModel.fetchAllIngredientsFromAPI()
                     }
                 )
-            } else if (!isLoading && ingredientList.isEmpty()) {
+            } else if (!isCocktailIngredientListLoading && ingredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.not_found_ingredient))
             }
         }

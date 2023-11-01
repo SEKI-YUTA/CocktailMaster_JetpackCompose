@@ -22,11 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
+import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MenuButton
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
@@ -42,6 +42,7 @@ fun TopScreen(
 ) {
     val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
     val networkConnected = viewModel.isNetworkConnected.collectAsState().value
+    val isOwnedIngredientListLoading = viewModel.isOwnedIngredientListLoading.collectAsState().value
     viewModel.setCurrentScreen(Screen.TopScreen)
     Box {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -90,7 +91,9 @@ fun TopScreen(
                     )
                 }
             }
-            if (ownedIngredients.isEmpty()) {
+            if(isOwnedIngredientListLoading) {
+                LoadingMessage()
+            } else if (ownedIngredients.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
         }

@@ -11,7 +11,6 @@ import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
-import com.example.cocktailmaster.util.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -27,24 +26,25 @@ class MainViewModel(
 ) : ViewModel() {
     init {
         viewModelScope.launch {
-            AppUtil.checkNetworkConnection(context, _isNetworkConnected)
+//            AppUtil.checkNetworkConnection(context, _isNetworkConnected)
             withContext(Dispatchers.IO) {
-                _isLoading.value = true
                 val asyncList = listOf(
                     async { fetchAllIngredientsFromAPI() },
                     async { readOwnedIngredientList() },
                 )
                 asyncList.awaitAll()
-                _isLoading.value = false
             }
         }
     }
 
-    private val _isNetworkConnected = MutableStateFlow(false)
+    private val _isNetworkConnected = MutableStateFlow(true)
     val isNetworkConnected = _isNetworkConnected.asStateFlow()
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _isCocktailIngredientListLoading = MutableStateFlow(false)
+    val isCocktailIngredientListLoading = _isCocktailIngredientListLoading.asStateFlow()
+
+    private val _isOwnedIngredientListLoading = MutableStateFlow(false)
+    val isOwnedIngredientListLoading = _isOwnedIngredientListLoading.asStateFlow()
 
     private val _isFetchFailed = MutableStateFlow(false)
     val isFetchFailed = _isFetchFailed.asStateFlow()
@@ -64,13 +64,22 @@ class MainViewModel(
         _currentScreen.value = screen
     }
 
-    fun readOwnedIngredientList() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                ownedLiqueurRepository.provideAllIngredient().collect {
-                    _ownedCocktailIngredients.value =
-                        it.map { liqueurData -> liqueurData.toUIModel() }
-                }
+    suspend fun readOwnedIngredientList() {
+        withContext(Dispatchers.IO) {
+            _isOwnedIngredientListLoading.value = true
+            _ownedCocktailIngredients.value =
+                async {
+                    ownedLiqueurRepository.getAllIngredient().map { it.toUIModel() }
+                }.await()
+            _isOwnedIngredientListLoading.value = false
+        }
+    }
+
+    suspend fun observeOwnedIngredientList() {
+        withContext(Dispatchers.IO) {
+            ownedLiqueurRepository.provideAllIngredientFlow().collect {
+                _ownedCocktailIngredients.value =
+                    it.map { liqueurData -> liqueurData.toUIModel() }
             }
         }
     }
@@ -103,21 +112,20 @@ class MainViewModel(
         }
     }
 
-    fun fetchAllIngredientsFromAPI() {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _isLoading.value = true
+    suspend fun fetchAllIngredientsFromAPI() {
+        withContext(Dispatchers.IO) {
+            _isCocktailIngredientListLoading.value = true
+            _isFetchFailed.value = false
+            val allIngredients = async {
+                cocktailApiRepository.getAllIngredients()
+            }.await()
+            if (allIngredients.isNotEmpty() && allIngredients.first().fetchFailed) {
+                _isFetchFailed.value = true
+                _isCocktailIngredientListLoading.value = false
+            } else {
+                _ingredientList.value = allIngredients.map { it.toUIModel() }
                 _isFetchFailed.value = false
-                val allIngredients = cocktailApiRepository.getAllIngredients()
-                if (allIngredients.size > 0 && allIngredients.first().fetchFailed) {
-                    println("ingredient fetch failed")
-                    _isFetchFailed.value = true
-                    _isLoading.value = false
-                } else {
-                    _ingredientList.value = allIngredients.map { it.toUIModel() }
-                    _isFetchFailed.value = false
-                    _isLoading.value = false
-                }
+                _isCocktailIngredientListLoading.value = false
             }
         }
     }

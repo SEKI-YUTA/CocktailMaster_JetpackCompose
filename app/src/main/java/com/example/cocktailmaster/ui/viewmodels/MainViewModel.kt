@@ -25,10 +25,6 @@ class MainViewModel(
     private val cocktailApiRepository: CocktailApiRepository,
     private val ownedLiqueurRepository: OwnedLiqueurRepository,
 ) : ViewModel() {
-
-    private val _isNetworkConnected = MutableStateFlow(false)
-    val isNetworkConnected = _isNetworkConnected.asStateFlow()
-
     init {
         viewModelScope.launch {
             AppUtil.checkNetworkConnection(context, _isNetworkConnected)
@@ -43,6 +39,9 @@ class MainViewModel(
             }
         }
     }
+
+    private val _isNetworkConnected = MutableStateFlow(false)
+    val isNetworkConnected = _isNetworkConnected.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()

@@ -11,6 +11,7 @@ import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.util.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -24,20 +25,7 @@ class MainViewModel(
     private val cocktailApiRepository: CocktailApiRepository,
     private val ownedLiqueurRepository: OwnedLiqueurRepository,
 ) : ViewModel() {
-    init {
-        viewModelScope.launch {
-//            AppUtil.checkNetworkConnection(context, _isNetworkConnected)
-            withContext(Dispatchers.IO) {
-                val asyncList = listOf(
-                    async { fetchAllIngredientsFromAPI() },
-                    async { readOwnedIngredientList() },
-                )
-                asyncList.awaitAll()
-            }
-        }
-    }
-
-    private val _isNetworkConnected = MutableStateFlow(true)
+    private val _isNetworkConnected = MutableStateFlow(false)
     val isNetworkConnected = _isNetworkConnected.asStateFlow()
 
     private val _isCocktailIngredientListLoading = MutableStateFlow(false)
@@ -59,6 +47,18 @@ class MainViewModel(
     private val _ingredientList = MutableStateFlow<List<CocktailIngredient_UI>>(emptyList())
     val ingredientList = _ingredientList.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            AppUtil.checkNetworkConnection(context, _isNetworkConnected)
+            withContext(Dispatchers.IO) {
+                val asyncList = listOf(
+                    async { fetchAllIngredientsFromAPI() },
+                    async { readOwnedIngredientList() },
+                )
+                asyncList.awaitAll()
+            }
+        }
+    }
 
     fun setCurrentScreen(screen: Screen) {
         _currentScreen.value = screen

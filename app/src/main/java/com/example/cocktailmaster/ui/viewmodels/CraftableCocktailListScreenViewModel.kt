@@ -1,8 +1,10 @@
 package com.example.cocktailmaster.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
+import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -11,15 +13,20 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 sealed class CraftableCocktailListScreenEvent {
-    data class FetchCraftableCocktailList(
-        val apiRepository: CocktailApiRepository,
-        val ingredientList: List<String>
-    ): CraftableCocktailListScreenEvent()
+    object FetchCraftableCocktailList: CraftableCocktailListScreenEvent()
 }
 
-class CraftableCocktailListScreenViewModel: ViewModel() {
+class CraftableCocktailListScreenViewModel(
+    val apiRepository: CocktailApiRepository,
+    val ingredientList: List<CocktailIngredient_UI>
+): ViewModel() {
     val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
+
+    init {
+        println("init")
+        onEvent(CraftableCocktailListScreenEvent.FetchCraftableCocktailList)
+    }
 
     fun onEvent(event: CraftableCocktailListScreenEvent) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,8 +36,8 @@ class CraftableCocktailListScreenViewModel: ViewModel() {
                         isLoading = true,
                     )
                     async {fetchCraftableCocktail(
-                        apiRepository = event.apiRepository,
-                        ingredientList = event.ingredientList
+                        apiRepository = apiRepository,
+                        ingredientList = ingredientList.map { it.longName }
                     )}.await()
                     _viewState.value = _viewState.value.copy(
                         isLoading = false,
@@ -49,6 +56,24 @@ class CraftableCocktailListScreenViewModel: ViewModel() {
             craftableCocktailList = tmp,
         )
     }
+
+    companion object {
+        fun provideFactory(
+            apiRepository: CocktailApiRepository,
+            ingredientList: List<CocktailIngredient_UI>
+        ): ViewModelProvider.Factory {
+            return object: ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CraftableCocktailListScreenViewModel(
+                        apiRepository = apiRepository,
+                        ingredientList = ingredientList
+                    ) as T
+                }
+            }
+        }
+    }
+
     data class CraftableCocktailListScreenViewState(
         val isLoading: Boolean,
         val isFetchFailed: Boolean,

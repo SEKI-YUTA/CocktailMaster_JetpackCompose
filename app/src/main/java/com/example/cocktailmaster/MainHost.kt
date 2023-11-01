@@ -22,7 +22,6 @@ import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
 import com.example.cocktailmaster.ui.screen.CraftableCocktailListScreen
 import com.example.cocktailmaster.ui.screen.TopScreen
-import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenEvent
 import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
@@ -33,6 +32,7 @@ fun MainHost() {
     val navController = rememberNavController()
     val mainViewModel = viewModel<MainViewModel>(factory = MainViewModel.provideFactory(context = context))
     val ownedIngredientList = mainViewModel.ownedCocktailIngredients.collectAsState().value
+
     Scaffold(
         topBar = {
             Surface(shadowElevation = 4.dp) {
@@ -69,11 +69,10 @@ fun MainHost() {
                 AddCocktailIngredientScreen(viewModel = mainViewModel)
             }
             composable(Screen.CraftableCocktailListScreen.name) {
-                val craftableCocktailListScreenViewModel = CraftableCocktailListScreenViewModel()
-                craftableCocktailListScreenViewModel.onEvent(
-                    CraftableCocktailListScreenEvent.FetchCraftableCocktailList(
+                val craftableCocktailListScreenViewModel = viewModel<CraftableCocktailListScreenViewModel>(
+                    factory = CraftableCocktailListScreenViewModel.provideFactory(
                         apiRepository = CocktailApiRepository_Impl(),
-                        ingredientList = ownedIngredientList.map { it.longName }
+                        ingredientList = ownedIngredientList
                     )
                 )
                 CraftableCocktailListScreen(viewModel = craftableCocktailListScreenViewModel)

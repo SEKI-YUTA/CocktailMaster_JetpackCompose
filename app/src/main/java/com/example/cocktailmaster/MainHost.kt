@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
+import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
@@ -25,6 +26,7 @@ import com.example.cocktailmaster.ui.screen.TopScreen
 import com.example.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewModel
 import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
+import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
 
 // ここでナビゲーションのルーティングとかをしている
 @Composable
@@ -52,8 +54,16 @@ fun MainHost() {
                 .padding(padding)
         ) {
             composable(Screen.TopScreen.name) {
+                val topScreenViewModel = viewModel<TopScreenViewModel>(
+                    factory =TopScreenViewModel.provideFactory(
+                        ownedLiqueurRepository = OwnedLiqueurRepository_Impl(context = context),
+                        onUpdateOwnedLiqueur = {
+                            mainViewModel.updateOwnedIngredientList(it)
+                        }
+                    )
+                )
                 TopScreen(
-                    viewModel = mainViewModel,
+                    viewModel = topScreenViewModel,
                     navigateToAddIngredient = {
                         navController.navigate(Screen.AddCocktailIngredientScreen.name) {
                             launchSingleTop = true
@@ -63,6 +73,12 @@ fun MainHost() {
                         navController.navigate(Screen.CraftableCocktailListScreen.name) {
                             launchSingleTop = true
                         }
+                    },
+                    onDeleteOwnedIngredient = {
+                        mainViewModel.deleteOwnedIngredient(it)
+                    },
+                    onEditOwnedIngredient = {
+                        mainViewModel.editOwnedIngredient(it)
                     }
                 )
             }

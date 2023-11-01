@@ -56,6 +56,7 @@ class MainViewModel(
                     async { readOwnedIngredientList() },
                 )
                 asyncList.awaitAll()
+                observeOwnedIngredientList()
             }
         }
     }

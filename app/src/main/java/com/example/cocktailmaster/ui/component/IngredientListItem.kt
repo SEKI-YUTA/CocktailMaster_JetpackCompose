@@ -101,7 +101,7 @@ fun IngredientListItem(
                         )
                     }
                 }
-                Text("${ingredient_UI.vol}${stringResource(id = R.string.alcohol_volume_unit)}")
+                Text("vol: ${ingredient_UI.vol}${stringResource(id = R.string.alcohol_volume_unit)}")
                 if (tailIcon != null) {
                     IconButton(onClick = { onIconTapAction(ingredient_UI) }) {
                         Icon(imageVector = tailIcon, contentDescription = null)

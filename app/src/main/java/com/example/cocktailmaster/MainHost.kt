@@ -22,6 +22,7 @@ import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
 import com.example.cocktailmaster.ui.screen.CraftableCocktailListScreen
 import com.example.cocktailmaster.ui.screen.TopScreen
+import com.example.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewModel
 import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 
@@ -66,7 +67,16 @@ fun MainHost() {
                 )
             }
             composable(Screen.AddCocktailIngredientScreen.name) {
-                AddCocktailIngredientScreen(viewModel = mainViewModel)
+                val addCocktailIngredientScreenViewModel = viewModel<AddCocktailIngredientScreenViewModel>(
+                    factory = AddCocktailIngredientScreenViewModel.provideFactory()
+                )
+                AddCocktailIngredientScreen(
+                    viewModel = addCocktailIngredientScreenViewModel,
+                    ownedIngredientList = ownedIngredientList,
+                    onAddOwnedIngredient = {
+                        mainViewModel.addOwnedIngredient(it)
+                    }
+                )
             }
             composable(Screen.CraftableCocktailListScreen.name) {
                 val craftableCocktailListScreenViewModel = viewModel<CraftableCocktailListScreenViewModel>(

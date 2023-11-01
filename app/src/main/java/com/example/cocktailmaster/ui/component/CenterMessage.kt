@@ -42,7 +42,7 @@ fun CenterMessage(
                 IconButton(
                     modifier = Modifier.padding(top = 8.dp),
                     onClick = {
-                        if(iconTapAction != null) iconTapAction()
+                        iconTapAction()
                     }
                 ) {
                     Icon(

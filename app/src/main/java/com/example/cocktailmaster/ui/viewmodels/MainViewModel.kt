@@ -28,17 +28,8 @@ class MainViewModel(
     private val _isNetworkConnected = MutableStateFlow(false)
     val isNetworkConnected = _isNetworkConnected.asStateFlow()
 
-    private val _isCocktailIngredientListLoading = MutableStateFlow(false)
-    val isCocktailIngredientListLoading = _isCocktailIngredientListLoading.asStateFlow()
-
     private val _isOwnedIngredientListLoading = MutableStateFlow(false)
     val isOwnedIngredientListLoading = _isOwnedIngredientListLoading.asStateFlow()
-
-    private val _isFetchFailed = MutableStateFlow(false)
-    val isFetchFailed = _isFetchFailed.asStateFlow()
-
-    private val _currentScreen = MutableStateFlow(Screen.TopScreen)
-    val currentScreen = _currentScreen.asStateFlow()
 
     private val _ownedCocktailIngredients =
         MutableStateFlow<List<CocktailIngredient_UI>>(emptyList())
@@ -61,8 +52,10 @@ class MainViewModel(
         }
     }
 
-    fun setCurrentScreen(screen: Screen) {
-        _currentScreen.value = screen
+    fun updateOwnedIngredientList(
+        ingredientList: List<CocktailIngredient_UI>
+    ) {
+        _ownedCocktailIngredients.value = ingredientList
     }
 
     suspend fun readOwnedIngredientList() {
@@ -115,19 +108,10 @@ class MainViewModel(
 
     suspend fun fetchAllIngredientsFromAPI() {
         withContext(Dispatchers.IO) {
-            _isCocktailIngredientListLoading.value = true
-            _isFetchFailed.value = false
             val allIngredients = async {
                 cocktailApiRepository.getAllIngredients()
             }.await()
-            if (allIngredients.isNotEmpty() && allIngredients.first().fetchFailed) {
-                _isFetchFailed.value = true
-                _isCocktailIngredientListLoading.value = false
-            } else {
-                _ingredientList.value = allIngredients.map { it.toUIModel() }
-                _isFetchFailed.value = false
-                _isCocktailIngredientListLoading.value = false
-            }
+            _ingredientList.value = allIngredients.map { it.toUIModel() }
         }
     }
 

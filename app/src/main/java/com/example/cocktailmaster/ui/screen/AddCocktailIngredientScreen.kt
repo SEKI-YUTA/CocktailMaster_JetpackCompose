@@ -88,7 +88,7 @@ fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
                             ingredient_UI = ingredient_ui,
                             tailIcon = Icons.Default.Add,
                             enableContextMenu = false,
-                            showBadgeWhenOwned = true,
+                            showOwnedCountBadge = true,
                             ownedCount = checkContainsCount(ownedIngredientList_LogName, ingredient_ui.longName),
                             onIconTapAction = {
                                 currentIngredient.value = it

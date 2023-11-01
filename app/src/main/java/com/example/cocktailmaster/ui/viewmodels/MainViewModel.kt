@@ -11,7 +11,6 @@ import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
-import com.example.cocktailmaster.ui.model.Cocktail_UI
 import com.example.cocktailmaster.util.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -61,8 +60,6 @@ class MainViewModel(
     private val _ingredientList = MutableStateFlow<List<CocktailIngredient_UI>>(emptyList())
     val ingredientList = _ingredientList.asStateFlow()
 
-    private val _craftableCocktailList = MutableStateFlow<List<Cocktail_UI>>(emptyList())
-    val craftableCocktailList = _craftableCocktailList.asStateFlow()
 
     fun setCurrentScreen(screen: Screen) {
         _currentScreen.value = screen
@@ -124,29 +121,6 @@ class MainViewModel(
                 }
             }
         }
-    }
-
-    fun findCraftableCocktail() {
-        println("findCraftableCocktail")
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                _craftableCocktailList.value = emptyList()
-                _isLoading.value = true
-                _isFetchFailed.value = false
-                val query = ownedCocktailIngredients.value.map { it.longName }
-                val tmpList = cocktailApiRepository.craftableCocktails(query)
-                if (tmpList.size > 0 && tmpList.first().fetchFailed) {
-                    println("cocktailt fetch failed")
-                    _isFetchFailed.value = true
-                    _isLoading.value = false
-                } else {
-                    _craftableCocktailList.value = tmpList.map { it.toUIModel() }
-                    _isFetchFailed.value = false
-                    _isLoading.value = false
-                }
-            }
-        }
-
     }
 
     companion object {

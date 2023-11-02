@@ -5,16 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailmaster.data.db.AppDatabase
-import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
-import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
-import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
-import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
-import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
-import com.example.cocktailmaster.util.AppUtil
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,60 +14,16 @@ import kotlinx.coroutines.withContext
 
 class MainViewModel(
     private val context: Context,
-    private val cocktailApiRepository: CocktailApiRepository,
-    private val ownedLiqueurRepository: OwnedLiqueurRepository,
 ) : ViewModel() {
-    private val _isNetworkConnected = MutableStateFlow(false)
-    val isNetworkConnected = _isNetworkConnected.asStateFlow()
-
-    private val _isOwnedIngredientListLoading = MutableStateFlow(false)
-    val isOwnedIngredientListLoading = _isOwnedIngredientListLoading.asStateFlow()
 
     private val _ownedCocktailIngredients =
         MutableStateFlow<List<CocktailIngredient_UI>>(emptyList())
     val ownedCocktailIngredients = _ownedCocktailIngredients.asStateFlow()
 
-    private val _ingredientList = MutableStateFlow<List<CocktailIngredient_UI>>(emptyList())
-    val ingredientList = _ingredientList.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            AppUtil.checkNetworkConnection(context, _isNetworkConnected)
-            withContext(Dispatchers.IO) {
-                val asyncList = listOf(
-                    async { fetchAllIngredientsFromAPI() },
-                    async { readOwnedIngredientList() },
-                )
-                asyncList.awaitAll()
-                observeOwnedIngredientList()
-            }
-        }
-    }
-
     fun updateOwnedIngredientList(
         ingredientList: List<CocktailIngredient_UI>
     ) {
         _ownedCocktailIngredients.value = ingredientList
-    }
-
-    suspend fun readOwnedIngredientList() {
-        withContext(Dispatchers.IO) {
-            _isOwnedIngredientListLoading.value = true
-            _ownedCocktailIngredients.value =
-                async {
-                    ownedLiqueurRepository.getAllIngredient().map { it.toUIModel() }
-                }.await()
-            _isOwnedIngredientListLoading.value = false
-        }
-    }
-
-    suspend fun observeOwnedIngredientList() {
-        withContext(Dispatchers.IO) {
-            ownedLiqueurRepository.provideAllIngredientFlow().collect {
-                _ownedCocktailIngredients.value =
-                    it.map { liqueurData -> liqueurData.toUIModel() }
-            }
-        }
     }
 
     fun addOwnedIngredient(ingredient: CocktailIngredient_UI) {
@@ -106,26 +54,13 @@ class MainViewModel(
         }
     }
 
-    suspend fun fetchAllIngredientsFromAPI() {
-        withContext(Dispatchers.IO) {
-            val allIngredients = async {
-                cocktailApiRepository.getAllIngredients()
-            }.await()
-            _ingredientList.value = allIngredients.map { it.toUIModel() }
-        }
-    }
-
     companion object {
         fun provideFactory(context: Context): ViewModelProvider.Factory {
-            val cocktailApiRepository = CocktailApiRepository_Impl()
-            val ownedLiqueurRepository = OwnedLiqueurRepository_Impl(context)
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return MainViewModel(
                         context = context,
-                        cocktailApiRepository = cocktailApiRepository,
-                        ownedLiqueurRepository = ownedLiqueurRepository
                     ) as T
                 }
             }

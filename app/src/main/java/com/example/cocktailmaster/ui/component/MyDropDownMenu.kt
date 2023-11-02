@@ -49,10 +49,8 @@ fun MyDropDownMenu(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .clickable {
-                    expanded = true
-                }
+                .clickable { expanded = true }
+                .padding(8.dp)
         ) {
             Text(selectedVal, modifier = Modifier.weight(1f))
             Box(

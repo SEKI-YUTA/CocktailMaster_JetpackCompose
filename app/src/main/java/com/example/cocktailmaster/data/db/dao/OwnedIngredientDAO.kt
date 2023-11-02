@@ -11,7 +11,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface OwnedIngredientDAO {
     @Query("SELECT * FROM owned_ingredient")
-    fun getAll(): Flow<List<CocktailIngredient_Data>>
+    fun getAllCocktailIngredientFlow(): Flow<List<CocktailIngredient_Data>>
+
+    @Query("SELECT * FROM owned_ingredient")
+    fun getAllCocktailIngredient(): List<CocktailIngredient_Data>
 
     @Insert
     fun insertIngredient(ingredient: CocktailIngredient_Data)

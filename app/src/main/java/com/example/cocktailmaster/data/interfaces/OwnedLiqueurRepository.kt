@@ -5,7 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 // Roomデータベースから所有中のリキュール（ジンとか）の情報を拾う
 interface OwnedLiqueurRepository {
-    suspend fun provideAllIngredient(): Flow<List<CocktailIngredient_Data>>
+    suspend fun provideAllIngredientFlow(): Flow<List<CocktailIngredient_Data>>
+    suspend fun getAllIngredient(): List<CocktailIngredient_Data>
 
     suspend fun deleteIngredient(ingredient: CocktailIngredient_Data)
 }

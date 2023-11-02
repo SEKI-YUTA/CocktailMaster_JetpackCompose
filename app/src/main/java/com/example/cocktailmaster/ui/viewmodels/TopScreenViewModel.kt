@@ -22,7 +22,7 @@ class TopScreenViewModel(
     init {
         viewModelScope.launch(Dispatchers.IO) {
             readOwnedIngredient()
-            observeOwnedIngredient()
+            collectOwnedIngredient()
         }
     }
 
@@ -57,7 +57,7 @@ class TopScreenViewModel(
         }
     }
 
-    suspend fun observeOwnedIngredient() {
+    suspend fun collectOwnedIngredient() {
         withContext(Dispatchers.IO) {
             ownedLiqueurRepository.provideAllIngredientFlow().collect { list ->
                 val tmp = list.map { it.toUIModel() }

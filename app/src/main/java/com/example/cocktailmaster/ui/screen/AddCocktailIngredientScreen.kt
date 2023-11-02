@@ -29,25 +29,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MyDropDownMenu
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
-import com.example.cocktailmaster.ui.viewmodels.MainViewModel
+import com.example.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewModel
 
 @Composable
-fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
+fun AddCocktailIngredientScreen(
+    viewModel: AddCocktailIngredientScreenViewModel,
+    ownedIngredientList: List<CocktailIngredient_UI>,
+    onAddOwnedIngredient: (CocktailIngredient_UI) -> Unit = {},
+) {
     val isShowingDialog = remember { mutableStateOf(false) }
     val currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
     val userInputName = remember { mutableStateOf("") }
-    val ingredientList = viewModel.ingredientList.collectAsState().value
-    val isLoading = viewModel.isLoading.collectAsState().value
-    val isFetchFailed = viewModel.isFetchFailed.collectAsState().value
     val context = LocalContext.current
-    val ownedIngredientList = viewModel.ownedCocktailIngredients.collectAsState().value
+    val viewState = viewModel.viewState.collectAsState().value
     val ownedIngredientList_LogName by remember(ownedIngredientList) {
         derivedStateOf {
             ownedIngredientList.map { cocktailingredientUi ->
@@ -55,16 +55,12 @@ fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
             }
         }
     }
-
-    val categories by remember(ingredientList) {
+    val categories by remember(viewState) {
         derivedStateOf {
-            listOf("すべて") + LinkedHashSet(ingredientList.map { it.category }).toMutableList()
+            listOf("すべて") + LinkedHashSet(viewState.ingredientList.map { it.category }).toMutableList()
         }
     }
     var userSelectCategory by remember { mutableStateOf(categories[0]) }
-
-
-    viewModel.setCurrentScreen(Screen.AddCocktailIngredientScreen)
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             Row(
@@ -82,33 +78,37 @@ fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
                 }
             }
             LazyColumn {
-                items(ingredientList) { ingredient_ui ->
-                    if(ingredient_ui.category == userSelectCategory || userSelectCategory == "すべて") {
+                items(viewState.ingredientList) { ingredient_ui ->
+                    if (ingredient_ui.category == userSelectCategory || userSelectCategory == "すべて") {
                         IngredientListItem(
                             ingredient_UI = ingredient_ui,
                             tailIcon = Icons.Default.Add,
                             enableContextMenu = false,
                             showOwnedCountBadge = true,
-                            ownedCount = checkContainsCount(ownedIngredientList_LogName, ingredient_ui.longName),
+                            ownedCount = checkContainsCount(
+                                ownedIngredientList_LogName,
+                                ingredient_ui.longName
+                            ),
                             onIconTapAction = {
                                 currentIngredient.value = it
                                 isShowingDialog.value = true
+                                println(ownedIngredientList)
                             },
                         )
                     }
                 }
             }
-            if (isLoading) {
+            if (viewState.isLoading) {
                 LoadingMessage()
-            } else if(isFetchFailed) {
+            } else if (viewState.isFetchFailed) {
                 CenterMessage(
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-                        viewModel.fetchAllIngredientsFromAPI()
+//                        viewModel.fetchAllIngredientsFromAPI()
                     }
                 )
-            } else if (!isLoading && ingredientList.isEmpty()) {
+            } else if (!viewState.isLoading && viewState.ingredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.not_found_ingredient))
             }
         }
@@ -118,7 +118,8 @@ fun AddCocktailIngredientScreen(viewModel: MainViewModel) {
                 isShowingDialog = isShowingDialog,
                 currentIngredient = currentIngredient.value!!,
             ) { ingredient_ui ->
-                viewModel.addOwnedIngredient(ingredient_ui)
+//                viewModel.addOwnedIngredient(ingredient_ui)
+                onAddOwnedIngredient(ingredient_ui)
                 isShowingDialog.value = false
                 userInputName.value = ""
                 Toast.makeText(

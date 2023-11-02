@@ -22,13 +22,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
+import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MenuButton
-import com.example.cocktailmaster.ui.viewmodels.MainViewModel
+import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
 
 /*
 所有中の酒をリスト表示して
@@ -36,13 +36,16 @@ import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 */
 @Composable
 fun TopScreen(
-    viewModel: MainViewModel,
+    viewModel: TopScreenViewModel,
     navigateToCraftableCocktail: () -> Unit = {},
-    navigateToAddIngredient: () -> Unit = {}
+    navigateToAddIngredient: () -> Unit = {},
+    onDeleteOwnedIngredient: (CocktailIngredient_UI) -> Unit = {},
+    onEditOwnedIngredient: (CocktailIngredient_UI) -> Unit = {}
 ) {
-    val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
-    val networkConnected = viewModel.isNetworkConnected.collectAsState().value
-    viewModel.setCurrentScreen(Screen.TopScreen)
+    val viewState = viewModel.viewState.collectAsState().value
+//    val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
+//    val networkConnected = viewModel.isNetworkConnected.collectAsState().value
+//    val isOwnedIngredientListLoading = viewModel.isOwnedIngredientListLoading.collectAsState().value
     Box {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -54,7 +57,7 @@ fun TopScreen(
                 MenuButton(
                     text = stringResource(R.string.cocktail_list_str),
                     modifier = Modifier.weight(1f),
-                    enabled = networkConnected,
+                    enabled = viewState.isNetworkConnected,
                     icon = Icons.Default.List
                 ) {
                     navigateToCraftableCocktail()
@@ -63,7 +66,7 @@ fun TopScreen(
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
                     modifier = Modifier.weight(1f),
-                    enabled = networkConnected,
+                    enabled = viewState.isNetworkConnected,
                     icon = Icons.Default.Add
                 ) {
                     navigateToAddIngredient()
@@ -75,22 +78,23 @@ fun TopScreen(
                 modifier = Modifier.padding(16.dp)
             )
             LazyColumn {
-                items(ownedIngredients) { ingredient_UI ->
+                items(viewState.ownedIngredientList) { ingredient_UI ->
                     IngredientListItem(
                         ingredient_UI = ingredient_UI,
                         tailIcon = null,
                         onIconTapAction = {},
                         onDeleteAction = { ingredient ->
-                            println(ingredient)
-                            viewModel.deleteOwnedIngredient(ingredient)
+                            onDeleteOwnedIngredient(ingredient)
                         },
                         onEditAction = { ingredient_ui ->
-                            viewModel.editOwnedIngredient(ingredient_ui)
+                            onEditOwnedIngredient(ingredient_ui)
                         }
                     )
                 }
             }
-            if (ownedIngredients.isEmpty()) {
+            if(viewState.isLoading) {
+                LoadingMessage()
+            } else if (viewState.ownedIngredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
         }

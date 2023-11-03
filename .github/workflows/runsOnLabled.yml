@@ -8,7 +8,7 @@ on:
 jobs:
   process-labeled-pr:
     runs-on: ubuntu-latest
-    if: ${{ github.event.pull_request.labels == 'Roborazzi' }}
+    # if: ${{ github.event.pull_request.labels == 'Roborazzi' }}
 
     steps:
       - name: Check PR Labels

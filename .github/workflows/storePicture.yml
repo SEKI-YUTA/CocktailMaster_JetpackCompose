@@ -1,7 +1,7 @@
 name: store screenshots
 
 on:
-  push
+#  push
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx6g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"

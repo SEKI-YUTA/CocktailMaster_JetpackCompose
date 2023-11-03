@@ -1,0 +1,12 @@
+name: robo test
+
+on:
+  push:
+
+jobs:
+  printText:
+    name: print text
+    runs-on: ubuntu-latest
+    steps:
+      - name: print text
+        run: echo "hello world"

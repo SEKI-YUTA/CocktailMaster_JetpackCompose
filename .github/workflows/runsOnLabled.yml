@@ -12,4 +12,5 @@ jobs:
 
     steps:
       - name: Check PR Labels
-        run: echo "PR has Roborazzi label"
+        run: echo ${{github.event}}
+      

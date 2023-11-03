@@ -1,21 +1,23 @@
 package com.example.cocktailmaster
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.printToLog
 import androidx.test.core.app.ActivityScenario
-import com.example.cocktailmaster.ui.component.MenuButton
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(qualifiers = RobolectricDeviceQualifiers.Pixel6Pro)
 class FirstRoborazzi {
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -28,16 +30,26 @@ class FirstRoborazzi {
 
     @Test
     fun captureTest() {
-        ActivityScenario.launch(MainActivity::class.java)
-        composeTestRule.setContent {
-            MenuButton(
-                text = "テスト用のボタン",
-                icon = Icons.Default.Add,
-                onTapAction = {}
-            )
-        }
+        val launch = ActivityScenario.launch(MainActivity::class.java)
+//        どうやらActivityScenario.launch()の時点でcomposeTestRuleにコンテンツがセットされているみたい
+//        なのでsetContentを呼んでからテストするとNodeが2つ以上あるって怒られる
+//        composeTestRule.setContent {
+//            CocktailMasterTheme {
+//                Surface {
+////                    MenuButton(
+////                        text = "テスト用のボタン",
+////                        icon = Icons.Default.Add,
+////                        onTapAction = {}
+////                    )
+//                    Column {
+//                        Text("テスト用のテキスト")
+//                    }
+//                }
+//            }
+//        }
+        composeTestRule.onAllNodes(isRoot()).printToLog("onRoot")
         composeTestRule.onRoot().captureRoboImage(
-            filePath = "C:\\Users\\yuta\\Pictures\\RoboImage\\robo.png",
+//        composeTestRule.onAllNodes(isRoot()).onFirst().captureRoboImage(
             roborazziOptions = roborazziOptions
         )
     }

@@ -27,7 +27,7 @@ jobs:
         with:
           name: screenshots
           path: app/build/outputs/roborazzi
-          workflow: test.yaml
+          workflow: runsOnLabeled.yaml
           branch: main
 
       - name: verify test

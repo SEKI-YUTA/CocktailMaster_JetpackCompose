@@ -17,7 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
-import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_Impl
+import com.example.cocktailmaster.data.repository.OwnedIngredientRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
@@ -56,8 +56,8 @@ fun MainHost() {
             composable(Screen.TopScreen.name) {
                 val topScreenViewModel = viewModel<TopScreenViewModel>(
                     factory =TopScreenViewModel.provideFactory(
-                        ownedLiqueurRepository = OwnedLiqueurRepository_Impl(context = context),
-                        onUpdateOwnedLiqueur = {
+                        ownedIngredientRepository = OwnedIngredientRepository_Impl(context = context),
+                        onUpdateOwnedIngredient = {
                             mainViewModel.updateOwnedIngredientList(it)
                         }
                     )

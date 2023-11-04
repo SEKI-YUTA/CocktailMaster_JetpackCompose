@@ -173,7 +173,7 @@ fun CountBadge(modifier: Modifier = Modifier,text: String) {
 @Preview(showBackground = true)
 @Composable
 fun IngredientListItemPreview_Light() {
-    val data = DemoData.liqueurList[0].toUIModel()
+    val data = DemoData.ingredientList[0].toUIModel()
     CocktailMasterTheme {
         Surface {
             IngredientListItem(
@@ -189,7 +189,7 @@ fun IngredientListItemPreview_Light() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun IngredientListItemPreview_Night() {
-    val data = DemoData.liqueurList[0].toUIModel()
+    val data = DemoData.ingredientList[0].toUIModel()
     CocktailMasterTheme {
         Surface {
             IngredientListItem(

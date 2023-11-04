@@ -3,7 +3,7 @@ package com.example.cocktailmaster.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
+import com.example.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -13,8 +13,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class TopScreenViewModel(
-    val ownedLiqueurRepository: OwnedLiqueurRepository,
-    val onUpdateOwnedLiqueur: (List<CocktailIngredient_UI>) -> Unit
+    val ownedIngredientRepository: OwnedIngredientRepository,
+    val onUpdateOwnedIngredient: (List<CocktailIngredient_UI>) -> Unit
 ) : ViewModel() {
     val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
@@ -28,15 +28,15 @@ class TopScreenViewModel(
 
     companion object {
         fun provideFactory(
-            ownedLiqueurRepository: OwnedLiqueurRepository,
-            onUpdateOwnedLiqueur: (List<CocktailIngredient_UI>) -> Unit
+            ownedIngredientRepository: OwnedIngredientRepository,
+            onUpdateOwnedIngredient: (List<CocktailIngredient_UI>) -> Unit
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return TopScreenViewModel(
-                        ownedLiqueurRepository = ownedLiqueurRepository,
-                        onUpdateOwnedLiqueur = onUpdateOwnedLiqueur
+                        ownedIngredientRepository = ownedIngredientRepository,
+                        onUpdateOwnedIngredient = onUpdateOwnedIngredient
                     ) as T
                 }
             }
@@ -47,24 +47,24 @@ class TopScreenViewModel(
         withContext(Dispatchers.IO) {
             _viewState.value = _viewState.value.copy(isLoading = true)
             val tmp = async {
-                ownedLiqueurRepository.getAllIngredient().map { it.toUIModel() }
+                ownedIngredientRepository.getAllIngredient().map { it.toUIModel() }
             }.await()
             _viewState.value = _viewState.value.copy(
                 ownedIngredientList = tmp,
                 isLoading = false,
             )
-            onUpdateOwnedLiqueur(tmp)
+            onUpdateOwnedIngredient(tmp)
         }
     }
 
     suspend fun collectOwnedIngredient() {
         withContext(Dispatchers.IO) {
-            ownedLiqueurRepository.provideAllIngredientFlow().collect { list ->
+            ownedIngredientRepository.provideAllIngredientFlow().collect { list ->
                 val tmp = list.map { it.toUIModel() }
                 _viewState.value = _viewState.value.copy(
                     ownedIngredientList = tmp
                 )
-                onUpdateOwnedLiqueur(tmp)
+                onUpdateOwnedIngredient(tmp)
             }
         }
     }

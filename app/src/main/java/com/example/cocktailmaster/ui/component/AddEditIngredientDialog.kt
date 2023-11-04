@@ -108,7 +108,7 @@ fun AddEditIngredientDialog(
 @Composable
 fun AddEditIngredientDialogPreview_Light() {
     val isShowingDialog = remember { mutableStateOf(true) }
-    val currentIngredient = DemoData.liqueurList.first().toUIModel()
+    val currentIngredient = DemoData.ingredientList.first().toUIModel()
     CocktailMasterTheme {
         Surface {
             AddEditIngredientDialog(
@@ -124,7 +124,7 @@ fun AddEditIngredientDialogPreview_Light() {
 @Composable
 fun AddEditIngredientDialogPreview_Night() {
     val isShowingDialog = remember { mutableStateOf(true) }
-    val currentIngredient = DemoData.liqueurList.first().toUIModel()
+    val currentIngredient = DemoData.ingredientList.first().toUIModel()
     CocktailMasterTheme {
         Surface {
             AddEditIngredientDialog(

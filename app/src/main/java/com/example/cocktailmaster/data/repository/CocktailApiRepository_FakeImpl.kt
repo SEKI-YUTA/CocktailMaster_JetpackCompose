@@ -9,7 +9,7 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 // 全ての材料と作れるカクテルの情報を返す
 class CocktailApiRepository_FakeImpl: CocktailApiRepository {
     override suspend fun getAllIngredients(): List<CocktailIngredient_Data> {
-        return DemoData.liqueurList
+        return DemoData.ingredientList
     }
 
     override suspend fun craftableCocktails(query: List<String>): List<Cocktail_Data> {

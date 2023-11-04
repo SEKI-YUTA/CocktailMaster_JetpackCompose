@@ -4,7 +4,6 @@ import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 
 /*
 リキュールではないジンなどもこのクラスに分類するのでAlcoholというクラス名にした方がいいかも
-抽象的すぎる気がするので今はLiqueurという名前にしている
 */
 // 例：ジン、ウォッカ、ラム、テキーラ、ウイスキー、ブランデーなどのカクテルの原料になるもの
 data class CocktailIngredient_UI(

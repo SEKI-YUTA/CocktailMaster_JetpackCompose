@@ -12,7 +12,7 @@ class DemoData {
             )),
         )
 
-        val liqueurList = listOf(
+        val ingredientList = listOf(
             CocktailIngredient_Data(shortName = "ジン", longName ="ドライ・ジン", description = "スピリッツ", vol = 40),
             CocktailIngredient_Data(shortName = "ウォッカ", longName ="ウォッカ", description = "スピリッツ", vol = 40),
             CocktailIngredient_Data(shortName = "ラム", longName ="ホワイトラム", description = "スピリッツ", vol = 40),

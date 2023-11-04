@@ -29,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cocktailmaster.FakeRepositoryProvider
+import com.example.cocktailmaster.LocalApiRepository
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
 import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
@@ -146,15 +148,18 @@ fun checkContainsCount(list: List<String>, target: String): Int {
 @CocktailMasterPreviewAnnotation
 @Composable
 fun AddCocktailIngredientScreenPreview() {
-    val viewModel = AddCocktailIngredientScreenViewModel(
-        apiRepository = CocktailApiRepository_FakeImpl(),
-    )
-    CocktailMasterTheme {
-        Surface {
-            AddCocktailIngredientScreen(
-                viewModel = viewModel,
-                ownedIngredientList = emptyList()
-            )
+    FakeRepositoryProvider {
+        val fakeApiRepository = LocalApiRepository.current
+        val viewModel = AddCocktailIngredientScreenViewModel(
+            apiRepository = fakeApiRepository,
+        )
+        CocktailMasterTheme {
+            Surface {
+                AddCocktailIngredientScreen(
+                    viewModel = viewModel,
+                    ownedIngredientList = emptyList()
+                )
+            }
         }
     }
 }

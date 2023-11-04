@@ -23,8 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cocktailmaster.FakeRepositoryProvider
+import com.example.cocktailmaster.LocalOwnedIngredientRepository
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.data.repository.OwnedIngredientRepository_FakeImpl
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
@@ -109,19 +110,22 @@ fun TopScreen(
 @CocktailMasterPreviewAnnotation
 @Composable
 fun TopScreenPreview() {
-    val viewModel = TopScreenViewModel(
-        OwnedIngredientRepository_FakeImpl(),
-        {}
-    )
-    CocktailMasterTheme {
-        Surface {
-            TopScreen(
-                viewModel = viewModel,
-                navigateToCraftableCocktail = {},
-                navigateToAddIngredient = {},
-                onDeleteOwnedIngredient = {},
-                onEditOwnedIngredient = {}
-            )
+    FakeRepositoryProvider {
+        val fakeOwnedIngredientRepository = LocalOwnedIngredientRepository.current
+        val viewModel = TopScreenViewModel(
+            fakeOwnedIngredientRepository,
+            {}
+        )
+        CocktailMasterTheme {
+            Surface {
+                TopScreen(
+                    viewModel = viewModel,
+                    navigateToCraftableCocktail = {},
+                    navigateToAddIngredient = {},
+                    onDeleteOwnedIngredient = {},
+                    onEditOwnedIngredient = {}
+                )
+            }
         }
     }
 }

@@ -23,8 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cocktailmaster.FakeRepositoryProvider
+import com.example.cocktailmaster.LocalApiRepository
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.CocktailListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
@@ -102,15 +103,18 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
 @CocktailMasterPreviewAnnotation
 @Composable
 fun CraftableCocktailListScreenPreview() {
-    val viewModel = CraftableCocktailListScreenViewModel(
-        apiRepository = CocktailApiRepository_FakeImpl(),
-        ingredientList = emptyList()
-    )
-    CocktailMasterTheme {
-        Surface {
-            CraftableCocktailListScreen(
-                viewModel = viewModel,
-            )
+    FakeRepositoryProvider {
+        val fakeApiRepository = LocalApiRepository.current
+        val viewModel = CraftableCocktailListScreenViewModel(
+            apiRepository = fakeApiRepository,
+            ingredientList = emptyList()
+        )
+        CocktailMasterTheme {
+            Surface {
+                CraftableCocktailListScreen(
+                    viewModel = viewModel,
+                )
+            }
         }
     }
 }

@@ -24,12 +24,13 @@ class AddCocktailIngredientScreenViewModel(
     }
     companion object {
         fun provideFactory(
+            apiRepository: CocktailApiRepository
         ): ViewModelProvider.Factory {
             return object: ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return AddCocktailIngredientScreenViewModel(
-                        apiRepository = CocktailApiRepository_Impl()
+                        apiRepository = apiRepository
                     ) as T
                 }
             }

@@ -16,8 +16,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
-import com.example.cocktailmaster.data.repository.OwnedIngredientRepository_Impl
 import com.example.cocktailmaster.ui.Screen
 import com.example.cocktailmaster.ui.component.MyTopAppBar
 import com.example.cocktailmaster.ui.screen.AddCocktailIngredientScreen
@@ -32,8 +30,11 @@ import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
 @Composable
 fun MainHost() {
     val context = LocalContext.current
+    val apiRepository = LocalApiRepository.current
+    val ownedIngredientRepository = LocalOwnedIngredientRepository.current
     val navController = rememberNavController()
-    val mainViewModel = viewModel<MainViewModel>(factory = MainViewModel.provideFactory(context = context))
+    val mainViewModel =
+        viewModel<MainViewModel>(factory = MainViewModel.provideFactory(context = context))
     val ownedIngredientList = mainViewModel.ownedCocktailIngredients.collectAsState().value
 
     Scaffold(
@@ -44,8 +45,8 @@ fun MainHost() {
                 )
             }
         },
-        
-    ) {padding ->
+
+        ) { padding ->
         NavHost(
             navController = navController,
             startDestination = Screen.TopScreen.name,
@@ -55,8 +56,8 @@ fun MainHost() {
         ) {
             composable(Screen.TopScreen.name) {
                 val topScreenViewModel = viewModel<TopScreenViewModel>(
-                    factory =TopScreenViewModel.provideFactory(
-                        ownedIngredientRepository = OwnedIngredientRepository_Impl(context = context),
+                    factory = TopScreenViewModel.provideFactory(
+                        ownedIngredientRepository = ownedIngredientRepository,
                         onUpdateOwnedIngredient = {
                             mainViewModel.updateOwnedIngredientList(it)
                         }
@@ -83,9 +84,12 @@ fun MainHost() {
                 )
             }
             composable(Screen.AddCocktailIngredientScreen.name) {
-                val addCocktailIngredientScreenViewModel = viewModel<AddCocktailIngredientScreenViewModel>(
-                    factory = AddCocktailIngredientScreenViewModel.provideFactory()
-                )
+                val addCocktailIngredientScreenViewModel =
+                    viewModel<AddCocktailIngredientScreenViewModel>(
+                        factory = AddCocktailIngredientScreenViewModel.provideFactory(
+                            apiRepository = apiRepository
+                        )
+                    )
                 AddCocktailIngredientScreen(
                     viewModel = addCocktailIngredientScreenViewModel,
                     ownedIngredientList = ownedIngredientList,
@@ -95,12 +99,13 @@ fun MainHost() {
                 )
             }
             composable(Screen.CraftableCocktailListScreen.name) {
-                val craftableCocktailListScreenViewModel = viewModel<CraftableCocktailListScreenViewModel>(
-                    factory = CraftableCocktailListScreenViewModel.provideFactory(
-                        apiRepository = CocktailApiRepository_Impl(),
-                        ingredientList = ownedIngredientList
+                val craftableCocktailListScreenViewModel =
+                    viewModel<CraftableCocktailListScreenViewModel>(
+                        factory = CraftableCocktailListScreenViewModel.provideFactory(
+                            apiRepository = apiRepository,
+                            ingredientList = ownedIngredientList
+                        )
                     )
-                )
                 CraftableCocktailListScreen(viewModel = craftableCocktailListScreenViewModel)
             }
         }

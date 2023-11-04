@@ -4,14 +4,12 @@ import androidx.compose.runtime.snapshotFlow
 import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
 
 class OwnedIngredientRepository_FakeImpl: OwnedIngredientRepository {
     override suspend fun provideAllIngredientFlow(): Flow<List<CocktailIngredient_Data>> {
         // 本番はここでデータベースからデータを引っ張ってくる処理をする
-        delay(500)
         return snapshotFlow {
             DemoData.ingredientList
         }
@@ -19,7 +17,6 @@ class OwnedIngredientRepository_FakeImpl: OwnedIngredientRepository {
 
     override suspend fun getAllIngredient(): List<CocktailIngredient_Data> {
         // 本番はここでデータベースからデータを引っ張ってくる処理をする
-        delay(500)
         return DemoData.ingredientList
     }
 

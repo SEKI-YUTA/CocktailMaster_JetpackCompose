@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,12 +24,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.repository.OwnedLiqueurRepository_FakeImpl
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MenuButton
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
+import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 
 /*
 所有中の酒をリスト表示して
@@ -92,11 +96,32 @@ fun TopScreen(
                     )
                 }
             }
-            if(viewState.isLoading) {
+            if (viewState.isLoading) {
                 LoadingMessage()
             } else if (viewState.ownedIngredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
+        }
+    }
+}
+
+
+@CocktailMasterPreviewAnnotation
+@Composable
+fun TopScreenPreview() {
+    val viewModel = TopScreenViewModel(
+        OwnedLiqueurRepository_FakeImpl(),
+        {}
+    )
+    CocktailMasterTheme {
+        Surface {
+            TopScreen(
+                viewModel = viewModel,
+                navigateToCraftableCocktail = {},
+                navigateToAddIngredient = {},
+                onDeleteOwnedIngredient = {},
+                onEditOwnedIngredient = {}
+            )
         }
     }
 }

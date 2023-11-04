@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,11 +24,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.CocktailListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MyDropDownMenu
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
+import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 
 @Composable
 fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel) {
@@ -90,6 +94,23 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
             } else if (!viewState.isLoading && craftableList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
             }
+        }
+    }
+}
+
+
+@CocktailMasterPreviewAnnotation
+@Composable
+fun CraftableCocktailListScreenPreview() {
+    val viewModel = CraftableCocktailListScreenViewModel(
+        apiRepository = CocktailApiRepository_FakeImpl(),
+        ingredientList = emptyList()
+    )
+    CocktailMasterTheme {
+        Surface {
+            CraftableCocktailListScreen(
+                viewModel = viewModel,
+            )
         }
     }
 }

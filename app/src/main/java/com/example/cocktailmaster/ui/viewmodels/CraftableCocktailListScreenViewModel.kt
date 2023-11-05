@@ -20,7 +20,7 @@ class CraftableCocktailListScreenViewModel(
     val apiRepository: CocktailApiRepository,
     val ingredientList: List<CocktailIngredient_UI>
 ): ViewModel() {
-    val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
+    private val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
     init {
@@ -36,7 +36,6 @@ class CraftableCocktailListScreenViewModel(
                         isLoading = true,
                     )
                     async {fetchCraftableCocktail(
-                        apiRepository = apiRepository,
                         ingredientList = ingredientList.map { it.longName }
                     )}.await()
                     _viewState.value = _viewState.value.copy(
@@ -48,7 +47,6 @@ class CraftableCocktailListScreenViewModel(
     }
 
     private suspend fun fetchCraftableCocktail(
-        apiRepository: CocktailApiRepository,
         ingredientList: List<String>
     ) {
         val tmp = apiRepository.craftableCocktails(ingredientList).map { it.toUIModel() }

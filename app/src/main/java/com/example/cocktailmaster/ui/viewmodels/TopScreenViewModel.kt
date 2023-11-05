@@ -16,7 +16,7 @@ class TopScreenViewModel(
     val ownedIngredientRepository: OwnedIngredientRepository,
     val onUpdateOwnedIngredient: (List<CocktailIngredient_UI>) -> Unit
 ) : ViewModel() {
-    val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
+    private val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
     init {

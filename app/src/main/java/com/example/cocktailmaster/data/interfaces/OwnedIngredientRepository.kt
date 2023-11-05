@@ -9,4 +9,9 @@ interface OwnedIngredientRepository {
     suspend fun getAllIngredient(): List<CocktailIngredient_Data>
 
     suspend fun deleteIngredient(ingredient: CocktailIngredient_Data)
+
+    suspend fun addOwnedIngredient(ingredient: CocktailIngredient_Data)
+
+    suspend fun editOwnedIngredient(ingredient: CocktailIngredient_Data)
+
 }

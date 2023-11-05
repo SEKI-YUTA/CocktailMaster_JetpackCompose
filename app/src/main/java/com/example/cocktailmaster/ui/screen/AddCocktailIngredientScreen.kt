@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cocktailmaster.FakeRepositoryProvider
 import com.example.cocktailmaster.LocalApiRepository
 import com.example.cocktailmaster.R
-import com.example.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
+import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
@@ -47,7 +47,7 @@ import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 fun AddCocktailIngredientScreen(
     viewModel: AddCocktailIngredientScreenViewModel,
     ownedIngredientList: List<CocktailIngredient_UI>,
-    onAddOwnedIngredient: (CocktailIngredient_UI) -> Unit = {},
+    onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
 ) {
     val isShowingDialog = remember { mutableStateOf(false) }
     val currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
@@ -123,9 +123,10 @@ fun AddCocktailIngredientScreen(
             AddEditIngredientDialog(
                 isShowingDialog = isShowingDialog,
                 currentIngredient = currentIngredient.value!!,
-            ) { ingredient_ui ->
+            ) {
 //                viewModel.addOwnedIngredient(ingredient_ui)
-                onAddOwnedIngredient(ingredient_ui)
+                it.id = 0
+                onAddOwnedIngredient(it.toDataModel())
                 isShowingDialog.value = false
                 userInputName.value = ""
                 Toast.makeText(

@@ -21,6 +21,11 @@ class OwnedIngredientRepository_FakeImpl: OwnedIngredientRepository {
     }
 
     override suspend fun deleteIngredient(ingredient: CocktailIngredient_Data) {
-        TODO("Not yet implemented")
+    }
+
+    override suspend fun addOwnedIngredient(ingredient: CocktailIngredient_Data) {
+    }
+
+    override suspend fun editOwnedIngredient(ingredient: CocktailIngredient_Data) {
     }
 }

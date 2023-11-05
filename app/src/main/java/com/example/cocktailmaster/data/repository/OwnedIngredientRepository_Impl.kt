@@ -20,4 +20,14 @@ class OwnedIngredientRepository_Impl(
     override suspend fun deleteIngredient(ingredient: CocktailIngredient_Data) {
         AppDatabase.getDatabase(context).ownedIngredientDao().deleteIngredient(ingredient)
     }
+
+    override suspend fun addOwnedIngredient(ingredient: CocktailIngredient_Data) {
+        AppDatabase.getDatabase(context).ownedIngredientDao().insertIngredient(ingredient)
+    }
+
+    override suspend fun editOwnedIngredient(ingredient: CocktailIngredient_Data) {
+        AppDatabase.getDatabase(context).ownedIngredientDao().updateIngredient(ingredient)
+    }
+
+
 }

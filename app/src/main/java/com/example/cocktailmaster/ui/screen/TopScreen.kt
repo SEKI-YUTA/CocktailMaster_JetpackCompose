@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import com.example.cocktailmaster.FakeRepositoryProvider
 import com.example.cocktailmaster.LocalOwnedIngredientRepository
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.DemoData
+import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
@@ -42,10 +44,11 @@ import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 @Composable
 fun TopScreen(
     viewModel: TopScreenViewModel,
+    ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
     navigateToAddIngredient: () -> Unit = {},
-    onDeleteOwnedIngredient: (CocktailIngredient_UI) -> Unit = {},
-    onEditOwnedIngredient: (CocktailIngredient_UI) -> Unit = {}
+    onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
+    onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {}
 ) {
     val viewState = viewModel.viewState.collectAsState().value
 //    val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
@@ -83,23 +86,23 @@ fun TopScreen(
                 modifier = Modifier.padding(16.dp)
             )
             LazyColumn {
-                items(viewState.ownedIngredientList) { ingredient_UI ->
+                items(ownedIngredientList) { ingredient_UI ->
                     IngredientListItem(
                         ingredient_UI = ingredient_UI,
                         tailIcon = null,
                         onIconTapAction = {},
                         onDeleteAction = { ingredient ->
-                            onDeleteOwnedIngredient(ingredient)
+                            onDeleteOwnedIngredient(ingredient.toDataModel())
                         },
-                        onEditAction = { ingredient_ui ->
-                            onEditOwnedIngredient(ingredient_ui)
+                        onEditAction = { ingredient ->
+                            onEditOwnedIngredient(ingredient.toDataModel())
                         }
                     )
                 }
             }
             if (viewState.isLoading) {
                 LoadingMessage()
-            } else if (viewState.ownedIngredientList.isEmpty()) {
+            } else if (ownedIngredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
         }
@@ -114,12 +117,12 @@ fun TopScreenPreview() {
         val fakeOwnedIngredientRepository = LocalOwnedIngredientRepository.current
         val viewModel = TopScreenViewModel(
             fakeOwnedIngredientRepository,
-            {}
         )
         CocktailMasterTheme {
             Surface {
                 TopScreen(
                     viewModel = viewModel,
+                    ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
                     navigateToCraftableCocktail = {},
                     navigateToAddIngredient = {},
                     onDeleteOwnedIngredient = {},

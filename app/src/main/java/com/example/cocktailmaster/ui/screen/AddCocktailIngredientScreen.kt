@@ -84,7 +84,10 @@ fun AddCocktailIngredientScreen(
                 }
             }
             LazyColumn {
-                items(viewState.ingredientList) { ingredient_ui ->
+                items(
+                    viewState.ingredientList,
+                    key = { it.longName + it.id }
+                ) { ingredient_ui ->
                     if (ingredient_ui.category == userSelectCategory || userSelectCategory == "すべて") {
                         IngredientListItem(
                             ingredient_UI = ingredient_ui,

@@ -79,7 +79,10 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                 style = TextStyle(fontSize = 22.sp)
             )
             LazyColumn {
-                items(craftableList) { cocktail_UI ->
+                items(
+                    craftableList,
+                    key = { it.name + it.cocktailId }
+                ) { cocktail_UI ->
                     if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
                         CocktailListItem(cocktail_UI = cocktail_UI)
                     }

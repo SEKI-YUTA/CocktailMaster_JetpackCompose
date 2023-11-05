@@ -102,7 +102,10 @@ fun AddEditIngredientDialog(
                             onDoneEvent(tmp)
                         }
                     ) {
-                        Text(stringResource(R.string.add_str))
+                        Text(
+                            if(isAddMode) stringResource(R.string.add_str)
+                            else stringResource(R.string.edit_str)
+                        )
                     }
                 }
             }

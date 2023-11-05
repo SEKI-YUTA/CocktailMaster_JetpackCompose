@@ -3,6 +3,7 @@ package com.example.cocktailmaster.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -52,7 +53,10 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
 //    LaunchedEffect(key1 = true) {
 //        viewModel.findCraftableCocktail()
 //    }
-    Box {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

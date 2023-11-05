@@ -27,6 +27,7 @@ import com.example.cocktailmaster.FakeRepositoryProvider
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
+import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
@@ -87,11 +88,11 @@ fun TopScreen(
                         ingredient_UI = ingredient_UI,
                         tailIcon = null,
                         onIconTapAction = {},
+                        onEditAction = {
+                            viewModel.onIngredientSelected(it)
+                        },
                         onDeleteAction = { ingredient ->
                             onDeleteOwnedIngredient(ingredient.toDataModel())
-                        },
-                        onEditAction = { ingredient ->
-                            onEditOwnedIngredient(ingredient.toDataModel())
                         }
                     )
                 }
@@ -101,6 +102,23 @@ fun TopScreen(
             } else if (ownedIngredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
+        }
+        if(viewState.isShowingEditDialog && viewState.selectedIngredient != null) {
+            AddEditIngredientDialog(
+                isAddMode = false,
+                currentIngredient = viewState.selectedIngredient,
+                onDoneEvent = { ingredient_ui ->
+                    onEditOwnedIngredient(ingredient_ui.toDataModel())
+                    viewModel.onCloseAddDialog()
+                },
+                onCancelEvent = {
+                    viewModel.onCloseAddDialog()
+                },
+                userInputState = viewState.userInputState,
+                onUpdateUserInput = {
+                    viewModel.onUpdateUserInput(it)
+                },
+            )
         }
     }
 }

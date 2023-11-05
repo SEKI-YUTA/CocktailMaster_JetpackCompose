@@ -49,9 +49,6 @@ fun AddCocktailIngredientScreen(
     ownedIngredientList: List<CocktailIngredient_UI>,
     onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
 ) {
-    val isShowingDialog = remember { mutableStateOf(false) }
-    val currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
-    val userInputName = remember { mutableStateOf("") }
     val context = LocalContext.current
     val viewState = viewModel.viewState.collectAsState().value
     val ownedIngredientList_LogName by remember(ownedIngredientList) {
@@ -99,9 +96,7 @@ fun AddCocktailIngredientScreen(
                                 ingredient_ui.longName
                             ),
                             onIconTapAction = {
-                                currentIngredient.value = it
-                                isShowingDialog.value = true
-                                println(ownedIngredientList)
+                              viewModel.onIngredientTapped(it)
                             },
                         )
                     }
@@ -121,21 +116,29 @@ fun AddCocktailIngredientScreen(
             }
         }
 
-        if (isShowingDialog.value) {
+        if (viewState.isShowingAddDialog && viewState.selectedIngredient != null) {
             AddEditIngredientDialog(
-                isShowingDialog = isShowingDialog,
-                currentIngredient = currentIngredient.value!!,
-            ) {
-                it.id = 0
-                onAddOwnedIngredient(it.toDataModel())
-                isShowingDialog.value = false
-                userInputName.value = ""
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.added_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                currentIngredient = viewState.selectedIngredient,
+                userInputState = viewState.userInputState,
+                onUpdateUserInput = viewModel::onUpdateUserInput,
+                onDoneEvent = {
+                    it.id = 0
+                    onAddOwnedIngredient(it.toDataModel())
+                    viewModel.onCloseAddDialog()
+                    viewModel.onUpdateUserInput(
+                        viewState.userInputState.copy(description = "")
+                    )
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.added_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onCancelEvent = {
+                    viewModel.onCloseAddDialog()
+                    viewModel.onResetUserInput()
+                }
+            )
         }
     }
 }

@@ -2,7 +2,7 @@ package com.example.cocktailmaster.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.cocktailmaster.data.interfaces.OwnedIngredientRepository
+import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -21,10 +21,40 @@ class TopScreenViewModel() : ViewModel() {
         }
     }
 
+    fun onIngredientSelected(ingredient: CocktailIngredient_UI) {
+        _viewState.value = _viewState.value.copy(
+            isShowingEditDialog = true,
+            selectedIngredient = ingredient,
+        )
+    }
+
+    fun onCloseAddDialog() {
+        _viewState.value = _viewState.value.copy(
+            isShowingEditDialog = false,
+        )
+    }
+
+    fun onUpdateUserInput(userInputState: AddCocktailIngredientScreenViewModel.UserInputState) {
+        println("onUpdateUserInput")
+        _viewState.value = _viewState.value.copy(
+            userInputState = userInputState,
+        )
+    }
+
+    fun onResetUserInput() {
+        _viewState.value = _viewState.value.copy(
+            userInputState = AddCocktailIngredientScreenViewModel.UserInputState(),
+        )
+    }
+
 
     data class TopScreenViewState(
         val isLoading: Boolean = false,
         val isNetworkConnected: Boolean = true,
+        val isShowingEditDialog: Boolean = false,
+        val selectedIngredient: CocktailIngredient_UI? = null,
+        val userInputState: AddCocktailIngredientScreenViewModel.UserInputState =
+            AddCocktailIngredientScreenViewModel.UserInputState(),
     ) {
         companion object {
             val INITIAL = TopScreenViewState(

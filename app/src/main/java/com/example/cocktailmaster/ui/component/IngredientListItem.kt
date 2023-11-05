@@ -54,7 +54,6 @@ fun IngredientListItem(
     onEditAction: (CocktailIngredient_UI) -> Unit = {}
 ) {
     val menuShowing = remember { mutableStateOf(false) }
-    val isShowingDialog = remember { mutableStateOf(false) }
     ConstraintLayout {
         val (cardRef, badgeRef) = createRefs()
         Card(
@@ -116,7 +115,7 @@ fun IngredientListItem(
                             Text(stringResource(R.string.edit_str))
                         },
                         onClick = {
-                            isShowingDialog.value = true
+                            onEditAction(ingredient_UI)
                             menuShowing.value = false
                         }
                     )
@@ -131,16 +130,7 @@ fun IngredientListItem(
                     )
                 }
             }
-            if(isShowingDialog.value) {
-                AddEditIngredientDialog(
-                    isShowingDialog = isShowingDialog,
-                    currentIngredient = ingredient_UI,
-                    onDoneEvent = { ingredient_ui ->
-                        onEditAction(ingredient_ui)
-                        isShowingDialog.value = false
-                    }
-                )
-            }
+//
         }
         if(showOwnedCountBadge && ownedCount > 0) {
             CountBadge(

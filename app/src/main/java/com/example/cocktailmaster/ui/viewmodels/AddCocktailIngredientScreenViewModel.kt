@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
-import com.example.cocktailmaster.data.repository.CocktailApiRepository_Impl
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,11 +17,18 @@ class AddCocktailIngredientScreenViewModel(
     val viewState = _viewState.asStateFlow()
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
-            fetchAllIngredientsFromAPI()
+        if(lastViewState != null) {
+            _viewState.value = lastViewState!!
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                fetchAllIngredientsFromAPI()
+                lastViewState = _viewState.value
+            }
         }
     }
     companion object {
+        var lastViewState: AddCocktailIngredientScreenViewState? = null
+
         fun provideFactory(
             apiRepository: CocktailApiRepository
         ): ViewModelProvider.Factory {

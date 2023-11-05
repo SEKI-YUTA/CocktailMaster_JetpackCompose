@@ -2,77 +2,59 @@ package com.example.cocktailmaster.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class TopScreenViewModel(
-    val ownedLiqueurRepository: OwnedLiqueurRepository,
-    val onUpdateOwnedLiqueur: (List<CocktailIngredient_UI>) -> Unit
-) : ViewModel() {
-    val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
+class TopScreenViewModel() : ViewModel() {
+    private val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            readOwnedIngredient()
-            collectOwnedIngredient()
-        }
-    }
-
     companion object {
-        fun provideFactory(
-            ownedLiqueurRepository: OwnedLiqueurRepository,
-            onUpdateOwnedLiqueur: (List<CocktailIngredient_UI>) -> Unit
-        ): ViewModelProvider.Factory {
+        fun provideFactory(): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return TopScreenViewModel(
-                        ownedLiqueurRepository = ownedLiqueurRepository,
-                        onUpdateOwnedLiqueur = onUpdateOwnedLiqueur
-                    ) as T
+                    return TopScreenViewModel() as T
                 }
             }
         }
     }
 
-    suspend fun readOwnedIngredient() {
-        withContext(Dispatchers.IO) {
-            _viewState.value = _viewState.value.copy(isLoading = true)
-            val tmp = async {
-                ownedLiqueurRepository.getAllIngredient().map { it.toUIModel() }
-            }.await()
-            _viewState.value = _viewState.value.copy(
-                ownedIngredientList = tmp,
-                isLoading = false,
-            )
-            onUpdateOwnedLiqueur(tmp)
-        }
+    fun onIngredientSelected(ingredient: CocktailIngredient_UI) {
+        _viewState.value = _viewState.value.copy(
+            isShowingEditDialog = true,
+            selectedIngredient = ingredient,
+        )
     }
 
-    suspend fun collectOwnedIngredient() {
-        withContext(Dispatchers.IO) {
-            ownedLiqueurRepository.provideAllIngredientFlow().collect { list ->
-                val tmp = list.map { it.toUIModel() }
-                _viewState.value = _viewState.value.copy(
-                    ownedIngredientList = tmp
-                )
-                onUpdateOwnedLiqueur(tmp)
-            }
-        }
+    fun onCloseAddDialog() {
+        _viewState.value = _viewState.value.copy(
+            isShowingEditDialog = false,
+        )
     }
+
+    fun onUpdateUserInput(userInputState: AddCocktailIngredientScreenViewModel.UserInputState) {
+        println("onUpdateUserInput")
+        _viewState.value = _viewState.value.copy(
+            userInputState = userInputState,
+        )
+    }
+
+    fun onResetUserInput() {
+        _viewState.value = _viewState.value.copy(
+            userInputState = AddCocktailIngredientScreenViewModel.UserInputState(),
+        )
+    }
+
 
     data class TopScreenViewState(
         val isLoading: Boolean = false,
-        val ownedIngredientList: List<CocktailIngredient_UI> = emptyList(),
         val isNetworkConnected: Boolean = true,
+        val isShowingEditDialog: Boolean = false,
+        val selectedIngredient: CocktailIngredient_UI? = null,
+        val userInputState: AddCocktailIngredientScreenViewModel.UserInputState =
+            AddCocktailIngredientScreenViewModel.UserInputState(),
     ) {
         companion object {
             val INITIAL = TopScreenViewState(

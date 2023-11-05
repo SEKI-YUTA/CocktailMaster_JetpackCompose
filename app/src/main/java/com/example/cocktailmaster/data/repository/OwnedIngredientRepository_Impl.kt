@@ -2,13 +2,13 @@ package com.example.cocktailmaster.data.repository
 
 import android.content.Context
 import com.example.cocktailmaster.data.db.AppDatabase
-import com.example.cocktailmaster.data.interfaces.OwnedLiqueurRepository
+import com.example.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import kotlinx.coroutines.flow.Flow
 
-class OwnedLiqueurRepository_Impl(
+class OwnedIngredientRepository_Impl(
     val context: Context
-): OwnedLiqueurRepository {
+): OwnedIngredientRepository {
     override suspend fun provideAllIngredientFlow(): Flow<List<CocktailIngredient_Data>> {
         return AppDatabase.getDatabase(context).ownedIngredientDao().getAllCocktailIngredientFlow()
     }
@@ -20,4 +20,14 @@ class OwnedLiqueurRepository_Impl(
     override suspend fun deleteIngredient(ingredient: CocktailIngredient_Data) {
         AppDatabase.getDatabase(context).ownedIngredientDao().deleteIngredient(ingredient)
     }
+
+    override suspend fun addOwnedIngredient(ingredient: CocktailIngredient_Data) {
+        AppDatabase.getDatabase(context).ownedIngredientDao().insertIngredient(ingredient)
+    }
+
+    override suspend fun editOwnedIngredient(ingredient: CocktailIngredient_Data) {
+        AppDatabase.getDatabase(context).ownedIngredientDao().updateIngredient(ingredient)
+    }
+
+
 }

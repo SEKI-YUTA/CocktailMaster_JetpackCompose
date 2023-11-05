@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,24 +29,26 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cocktailmaster.FakeRepositoryProvider
+import com.example.cocktailmaster.LocalApiRepository
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.model.CocktailIngredient_Data
 import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MyDropDownMenu
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.example.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewModel
+import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 
 @Composable
 fun AddCocktailIngredientScreen(
     viewModel: AddCocktailIngredientScreenViewModel,
     ownedIngredientList: List<CocktailIngredient_UI>,
-    onAddOwnedIngredient: (CocktailIngredient_UI) -> Unit = {},
+    onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
 ) {
-    val isShowingDialog = remember { mutableStateOf(false) }
-    val currentIngredient = remember { mutableStateOf<CocktailIngredient_UI?>(null) }
-    val userInputName = remember { mutableStateOf("") }
     val context = LocalContext.current
     val viewState = viewModel.viewState.collectAsState().value
     val ownedIngredientList_LogName by remember(ownedIngredientList) {
@@ -78,7 +81,10 @@ fun AddCocktailIngredientScreen(
                 }
             }
             LazyColumn {
-                items(viewState.ingredientList) { ingredient_ui ->
+                items(
+                    viewState.ingredientList,
+                    key = { it.longName + it.id }
+                ) { ingredient_ui ->
                     if (ingredient_ui.category == userSelectCategory || userSelectCategory == "すべて") {
                         IngredientListItem(
                             ingredient_UI = ingredient_ui,
@@ -90,9 +96,7 @@ fun AddCocktailIngredientScreen(
                                 ingredient_ui.longName
                             ),
                             onIconTapAction = {
-                                currentIngredient.value = it
-                                isShowingDialog.value = true
-                                println(ownedIngredientList)
+                              viewModel.onIngredientTapped(it)
                             },
                         )
                     }
@@ -105,7 +109,6 @@ fun AddCocktailIngredientScreen(
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-//                        viewModel.fetchAllIngredientsFromAPI()
                     }
                 )
             } else if (!viewState.isLoading && viewState.ingredientList.isEmpty()) {
@@ -113,21 +116,29 @@ fun AddCocktailIngredientScreen(
             }
         }
 
-        if (isShowingDialog.value) {
+        if (viewState.isShowingAddDialog && viewState.selectedIngredient != null) {
             AddEditIngredientDialog(
-                isShowingDialog = isShowingDialog,
-                currentIngredient = currentIngredient.value!!,
-            ) { ingredient_ui ->
-//                viewModel.addOwnedIngredient(ingredient_ui)
-                onAddOwnedIngredient(ingredient_ui)
-                isShowingDialog.value = false
-                userInputName.value = ""
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.added_message),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                currentIngredient = viewState.selectedIngredient,
+                userInputState = viewState.userInputState,
+                onUpdateUserInput = viewModel::onUpdateUserInput,
+                onDoneEvent = {
+                    it.id = 0
+                    onAddOwnedIngredient(it.toDataModel())
+                    viewModel.onCloseAddDialog()
+                    viewModel.onUpdateUserInput(
+                        viewState.userInputState.copy(description = "")
+                    )
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.added_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                },
+                onCancelEvent = {
+                    viewModel.onCloseAddDialog()
+                    viewModel.onResetUserInput()
+                }
+            )
         }
     }
 }
@@ -137,4 +148,23 @@ fun checkContainsCount(list: List<String>, target: String): Int {
         it == target
     }.count()
     return count.toInt()
+}
+
+@CocktailMasterPreviewAnnotation
+@Composable
+fun AddCocktailIngredientScreenPreview() {
+    FakeRepositoryProvider {
+        val fakeApiRepository = LocalApiRepository.current
+        val viewModel = AddCocktailIngredientScreenViewModel(
+            apiRepository = fakeApiRepository,
+        )
+        CocktailMasterTheme {
+            Surface {
+                AddCocktailIngredientScreen(
+                    viewModel = viewModel,
+                    ownedIngredientList = emptyList()
+                )
+            }
+        }
+    }
 }

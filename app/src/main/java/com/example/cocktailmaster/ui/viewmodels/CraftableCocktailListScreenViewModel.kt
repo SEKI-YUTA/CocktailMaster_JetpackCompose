@@ -7,6 +7,7 @@ import com.example.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +21,7 @@ class CraftableCocktailListScreenViewModel(
     val apiRepository: CocktailApiRepository,
     val ingredientList: List<CocktailIngredient_UI>
 ): ViewModel() {
-    val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
+    private val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
     init {
@@ -28,15 +29,14 @@ class CraftableCocktailListScreenViewModel(
         onEvent(CraftableCocktailListScreenEvent.FetchCraftableCocktailList)
     }
 
-    fun onEvent(event: CraftableCocktailListScreenEvent) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun onEvent(event: CraftableCocktailListScreenEvent): Job {
+        val job = viewModelScope.launch(Dispatchers.IO) {
             when (event) {
                 is CraftableCocktailListScreenEvent.FetchCraftableCocktailList -> {
                     _viewState.value = _viewState.value.copy(
                         isLoading = true,
                     )
                     async {fetchCraftableCocktail(
-                        apiRepository = apiRepository,
                         ingredientList = ingredientList.map { it.longName }
                     )}.await()
                     _viewState.value = _viewState.value.copy(
@@ -45,10 +45,10 @@ class CraftableCocktailListScreenViewModel(
                 }
             }
         }
+        return job
     }
 
     private suspend fun fetchCraftableCocktail(
-        apiRepository: CocktailApiRepository,
         ingredientList: List<String>
     ) {
         val tmp = apiRepository.craftableCocktails(ingredientList).map { it.toUIModel() }
@@ -62,6 +62,7 @@ class CraftableCocktailListScreenViewModel(
             apiRepository: CocktailApiRepository,
             ingredientList: List<CocktailIngredient_UI>
         ): ViewModelProvider.Factory {
+            println(ingredientList)
             return object: ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {

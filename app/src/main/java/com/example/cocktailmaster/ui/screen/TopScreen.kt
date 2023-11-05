@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,13 +23,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cocktailmaster.FakeRepositoryProvider
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.DemoData
+import com.example.cocktailmaster.data.model.CocktailIngredient_Data
+import com.example.cocktailmaster.ui.component.AddEditIngredientDialog
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.IngredientListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MenuButton
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
+import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 
 /*
 所有中の酒をリスト表示して
@@ -37,15 +44,13 @@ import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
 @Composable
 fun TopScreen(
     viewModel: TopScreenViewModel,
+    ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
     navigateToAddIngredient: () -> Unit = {},
-    onDeleteOwnedIngredient: (CocktailIngredient_UI) -> Unit = {},
-    onEditOwnedIngredient: (CocktailIngredient_UI) -> Unit = {}
+    onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
+    onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {}
 ) {
     val viewState = viewModel.viewState.collectAsState().value
-//    val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
-//    val networkConnected = viewModel.isNetworkConnected.collectAsState().value
-//    val isOwnedIngredientListLoading = viewModel.isOwnedIngredientListLoading.collectAsState().value
     Box {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -78,24 +83,62 @@ fun TopScreen(
                 modifier = Modifier.padding(16.dp)
             )
             LazyColumn {
-                items(viewState.ownedIngredientList) { ingredient_UI ->
+                items(ownedIngredientList) { ingredient_UI ->
                     IngredientListItem(
                         ingredient_UI = ingredient_UI,
                         tailIcon = null,
                         onIconTapAction = {},
-                        onDeleteAction = { ingredient ->
-                            onDeleteOwnedIngredient(ingredient)
+                        onEditAction = {
+                            viewModel.onIngredientSelected(it)
                         },
-                        onEditAction = { ingredient_ui ->
-                            onEditOwnedIngredient(ingredient_ui)
+                        onDeleteAction = { ingredient ->
+                            onDeleteOwnedIngredient(ingredient.toDataModel())
                         }
                     )
                 }
             }
-            if(viewState.isLoading) {
+            if (viewState.isLoading) {
                 LoadingMessage()
-            } else if (viewState.ownedIngredientList.isEmpty()) {
+            } else if (ownedIngredientList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
+            }
+        }
+        if(viewState.isShowingEditDialog && viewState.selectedIngredient != null) {
+            AddEditIngredientDialog(
+                isAddMode = false,
+                currentIngredient = viewState.selectedIngredient,
+                onDoneEvent = { ingredient_ui ->
+                    onEditOwnedIngredient(ingredient_ui.toDataModel())
+                    viewModel.onCloseAddDialog()
+                },
+                onCancelEvent = {
+                    viewModel.onCloseAddDialog()
+                },
+                userInputState = viewState.userInputState,
+                onUpdateUserInput = {
+                    viewModel.onUpdateUserInput(it)
+                },
+            )
+        }
+    }
+}
+
+
+@CocktailMasterPreviewAnnotation
+@Composable
+fun TopScreenPreview() {
+    FakeRepositoryProvider {
+        val viewModel = TopScreenViewModel()
+        CocktailMasterTheme {
+            Surface {
+                TopScreen(
+                    viewModel = viewModel,
+                    ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
+                    navigateToCraftableCocktail = {},
+                    navigateToAddIngredient = {},
+                    onDeleteOwnedIngredient = {},
+                    onEditOwnedIngredient = {}
+                )
             }
         }
     }

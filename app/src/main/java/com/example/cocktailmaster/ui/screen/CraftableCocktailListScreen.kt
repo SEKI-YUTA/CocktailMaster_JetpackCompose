@@ -3,11 +3,13 @@ package com.example.cocktailmaster.ui.screen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,12 +24,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.cocktailmaster.FakeRepositoryProvider
+import com.example.cocktailmaster.LocalApiRepository
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.CocktailListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
 import com.example.cocktailmaster.ui.component.MyDropDownMenu
+import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
+import com.example.cocktailmaster.util.CocktailMasterPreviewAnnotation
 
 @Composable
 fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel) {
@@ -44,10 +50,10 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
     }
     var userSelectCategory by remember { mutableStateOf(categories[0]) }
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.findCraftableCocktail()
-//    }
-    Box {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         Column {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -70,7 +76,10 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                 style = TextStyle(fontSize = 22.sp)
             )
             LazyColumn {
-                items(craftableList) { cocktail_UI ->
+                items(
+                    craftableList,
+                    key = { it.name + it.cocktailId }
+                ) { cocktail_UI ->
                     if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
                         CocktailListItem(cocktail_UI = cocktail_UI)
                     }
@@ -84,11 +93,30 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-//                        viewModel.findCraftableCocktail()
                     }
                 )
             } else if (!viewState.isLoading && craftableList.isEmpty()) {
                 CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
+            }
+        }
+    }
+}
+
+
+@CocktailMasterPreviewAnnotation
+@Composable
+fun CraftableCocktailListScreenPreview() {
+    FakeRepositoryProvider {
+        val fakeApiRepository = LocalApiRepository.current
+        val viewModel = CraftableCocktailListScreenViewModel(
+            apiRepository = fakeApiRepository,
+            ingredientList = emptyList()
+        )
+        CocktailMasterTheme {
+            Surface {
+                CraftableCocktailListScreen(
+                    viewModel = viewModel,
+                )
             }
         }
     }

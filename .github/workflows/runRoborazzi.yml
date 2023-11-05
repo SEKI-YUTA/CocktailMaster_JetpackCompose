@@ -1,7 +1,9 @@
-name: store screenshots
+name: Roborazzi Label Trigger
 
 on:
-#  push
+  pull_request:
+    types:
+      - labeled
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx6g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
@@ -9,6 +11,7 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'Roborazzi' }}
 
     steps:
       - uses: actions/checkout@v3
@@ -23,7 +26,7 @@ jobs:
       - name: test
         run: |
           # Create screenshots
-          ./gradlew app:recordRoborazziPhysicalDebug --stacktrace
+          ./gradlew app:recordRoborazziEmulatorDebug --stacktrace
 
       # Upload screenshots to GitHub Actions Artifacts
       - uses: actions/upload-artifact@v3

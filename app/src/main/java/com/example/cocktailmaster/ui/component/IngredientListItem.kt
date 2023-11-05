@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,7 +41,6 @@ import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun IngredientListItem(
     modifier: Modifier = Modifier,
@@ -56,9 +54,7 @@ fun IngredientListItem(
     onEditAction: (CocktailIngredient_UI) -> Unit = {}
 ) {
     val menuShowing = remember { mutableStateOf(false) }
-    val isShowingDialog = remember { mutableStateOf(false) }
-    ConstraintLayout(
-    ) {
+    ConstraintLayout {
         val (cardRef, badgeRef) = createRefs()
         Card(
             modifier = modifier
@@ -119,7 +115,7 @@ fun IngredientListItem(
                             Text(stringResource(R.string.edit_str))
                         },
                         onClick = {
-                            isShowingDialog.value = true
+                            onEditAction(ingredient_UI)
                             menuShowing.value = false
                         }
                     )
@@ -134,16 +130,7 @@ fun IngredientListItem(
                     )
                 }
             }
-            if(isShowingDialog.value) {
-                AddEditIngredientDialog(
-                    isShowingDialog = isShowingDialog,
-                    currentIngredient = ingredient_UI,
-                    onDoneEvent = { ingredient_ui ->
-                        onEditAction(ingredient_ui)
-                        isShowingDialog.value = false
-                    }
-                )
-            }
+//
         }
         if(showOwnedCountBadge && ownedCount > 0) {
             CountBadge(
@@ -173,7 +160,7 @@ fun CountBadge(modifier: Modifier = Modifier,text: String) {
 @Preview(showBackground = true)
 @Composable
 fun IngredientListItemPreview_Light() {
-    val data = DemoData.liqueurList[0].toUIModel()
+    val data = DemoData.ingredientList[0].toUIModel()
     CocktailMasterTheme {
         Surface {
             IngredientListItem(
@@ -189,7 +176,7 @@ fun IngredientListItemPreview_Light() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun IngredientListItemPreview_Night() {
-    val data = DemoData.liqueurList[0].toUIModel()
+    val data = DemoData.ingredientList[0].toUIModel()
     CocktailMasterTheme {
         Surface {
             IngredientListItem(

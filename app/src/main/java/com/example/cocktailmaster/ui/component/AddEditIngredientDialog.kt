@@ -15,9 +15,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,22 +27,23 @@ import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
+import com.example.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewModel
 
 @Composable
 fun AddEditIngredientDialog(
     isAddMode: Boolean = true,
-    isShowingDialog: MutableState<Boolean>,
     currentIngredient: CocktailIngredient_UI,
-    onDoneEvent: (CocktailIngredient_UI) -> Unit,
+    userInputState: AddCocktailIngredientScreenViewModel.UserInputState,
+    onUpdateUserInput: (AddCocktailIngredientScreenViewModel.UserInputState) -> Unit,
+    onDoneEvent: (CocktailIngredient_UI) -> Unit = {},
+    onCancelEvent: () -> Unit = {},
 ) {
-    val userInputName = remember { mutableStateOf("") }
     val dialogTitle =
-        if (isAddMode) stringResource(R.string.dialog_title_add_ingredient) else stringResource(
-            R.string.dialog_title_edit_ingredient
-        )
+        if (isAddMode) stringResource(R.string.dialog_title_add_ingredient)
+        else stringResource(R.string.dialog_title_edit_ingredient)
     Dialog(
         onDismissRequest = {
-            isShowingDialog.value = false
+            onCancelEvent()
         },
         content = {
             Column(
@@ -68,10 +66,14 @@ fun AddEditIngredientDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     CustomTextField(
-                        value = userInputName.value,
+                        value = userInputState.description,
                         clearAction = {},
                         onValueChange = {
-                            userInputName.value = it
+                            onUpdateUserInput(
+                                userInputState.copy(
+                                    description = it
+                                )
+                            )
                         },
                         placeholder = stringResource(R.string.supplement_information_str)
                     )
@@ -82,8 +84,12 @@ fun AddEditIngredientDialog(
                     TextButton(
                         onClick = {
                             // キャンセル
-                            isShowingDialog.value = false
-                            userInputName.value = ""
+                            onUpdateUserInput(
+                                userInputState.copy(
+                                    description = ""
+                                )
+                            )
+                            onCancelEvent()
                         }
                     ) {
                         Text(stringResource(R.string.cancel_str))
@@ -91,12 +97,15 @@ fun AddEditIngredientDialog(
                     TextButton(
                         onClick = {
                             val tmp = currentIngredient.copy(
-                                description = userInputName.value
+                                description = userInputState.description
                             )
                             onDoneEvent(tmp)
                         }
                     ) {
-                        Text(stringResource(R.string.add_str))
+                        Text(
+                            if(isAddMode) stringResource(R.string.add_str)
+                            else stringResource(R.string.edit_str)
+                        )
                     }
                 }
             }
@@ -107,14 +116,15 @@ fun AddEditIngredientDialog(
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun AddEditIngredientDialogPreview_Light() {
-    val isShowingDialog = remember { mutableStateOf(true) }
-    val currentIngredient = DemoData.liqueurList.first().toUIModel()
+    val currentIngredient = DemoData.ingredientList.first().toUIModel()
     CocktailMasterTheme {
         Surface {
             AddEditIngredientDialog(
-                isShowingDialog = isShowingDialog,
                 currentIngredient = currentIngredient,
-                onDoneEvent = {}
+                userInputState = AddCocktailIngredientScreenViewModel.UserInputState(),
+                onUpdateUserInput = {},
+                onDoneEvent = {},
+                onCancelEvent = {}
             )
         }
     }
@@ -123,14 +133,15 @@ fun AddEditIngredientDialogPreview_Light() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun AddEditIngredientDialogPreview_Night() {
-    val isShowingDialog = remember { mutableStateOf(true) }
-    val currentIngredient = DemoData.liqueurList.first().toUIModel()
+    val currentIngredient = DemoData.ingredientList.first().toUIModel()
     CocktailMasterTheme {
         Surface {
             AddEditIngredientDialog(
-                isShowingDialog = isShowingDialog,
                 currentIngredient = currentIngredient,
-                onDoneEvent = {}
+                userInputState = AddCocktailIngredientScreenViewModel.UserInputState(),
+                onUpdateUserInput = {},
+                onDoneEvent = {},
+                onCancelEvent = {}
             )
         }
     }

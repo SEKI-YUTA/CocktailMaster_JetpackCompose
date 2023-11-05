@@ -17,11 +17,6 @@ class MainViewModel(
     private val context: Context,
     private val ownedIngredientRepository: OwnedIngredientRepository,
 ) : ViewModel() {
-
-//    private val _ownedCocktailIngredients =
-//        MutableStateFlow<List<CocktailIngredient_UI>>(emptyList())
-//    val ownedCocktailIngredients = _ownedCocktailIngredients.asStateFlow()
-
     private val _viewState = MutableStateFlow(MainViewModelViewState())
     val viewState = _viewState.asStateFlow()
 

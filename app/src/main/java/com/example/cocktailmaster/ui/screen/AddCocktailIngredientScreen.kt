@@ -114,7 +114,6 @@ fun AddCocktailIngredientScreen(
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-//                        viewModel.fetchAllIngredientsFromAPI()
                     }
                 )
             } else if (!viewState.isLoading && viewState.ingredientList.isEmpty()) {
@@ -127,7 +126,6 @@ fun AddCocktailIngredientScreen(
                 isShowingDialog = isShowingDialog,
                 currentIngredient = currentIngredient.value!!,
             ) {
-//                viewModel.addOwnedIngredient(ingredient_ui)
                 it.id = 0
                 onAddOwnedIngredient(it.toDataModel())
                 isShowingDialog.value = false

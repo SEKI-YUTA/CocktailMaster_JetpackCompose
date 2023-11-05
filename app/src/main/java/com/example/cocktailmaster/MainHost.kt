@@ -26,7 +26,6 @@ import com.example.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewM
 import com.example.cocktailmaster.ui.viewmodels.MainViewModel
 import com.example.cocktailmaster.ui.viewmodels.TopScreenViewModel
 
-// ここでナビゲーションのルーティングとかをしている
 @Composable
 fun MainHost(
     mainViewState: MainViewModel.MainViewModelViewState,

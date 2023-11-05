@@ -12,13 +12,6 @@ class TopScreenViewModel(
     private val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
-//    init {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            readOwnedIngredient()
-//            collectOwnedIngredient()
-//        }
-//    }
-
     companion object {
         fun provideFactory(
             ownedIngredientRepository: OwnedIngredientRepository,

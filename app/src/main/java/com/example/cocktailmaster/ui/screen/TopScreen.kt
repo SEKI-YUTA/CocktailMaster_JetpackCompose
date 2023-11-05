@@ -51,9 +51,6 @@ fun TopScreen(
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {}
 ) {
     val viewState = viewModel.viewState.collectAsState().value
-//    val ownedIngredients = viewModel.ownedCocktailIngredients.collectAsState().value
-//    val networkConnected = viewModel.isNetworkConnected.collectAsState().value
-//    val isOwnedIngredientListLoading = viewModel.isOwnedIngredientListLoading.collectAsState().value
     Box {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(

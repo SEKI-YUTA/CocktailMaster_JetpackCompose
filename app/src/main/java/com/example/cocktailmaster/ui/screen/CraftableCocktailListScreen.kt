@@ -50,9 +50,6 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
     }
     var userSelectCategory by remember { mutableStateOf(categories[0]) }
 
-//    LaunchedEffect(key1 = true) {
-//        viewModel.findCraftableCocktail()
-//    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -96,7 +93,6 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                     message = stringResource(R.string.fetch_failed_message),
                     icon = Icons.Default.Refresh,
                     iconTapAction = {
-//                        viewModel.findCraftableCocktail()
                     }
                 )
             } else if (!viewState.isLoading && craftableList.isEmpty()) {

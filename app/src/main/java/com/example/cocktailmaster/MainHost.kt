@@ -9,7 +9,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -33,7 +32,6 @@ fun MainHost(
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
 ) {
-    val context = LocalContext.current
     val apiRepository = LocalApiRepository.current
     val ownedIngredientRepository = LocalOwnedIngredientRepository.current
     val navController = rememberNavController()
@@ -56,9 +54,7 @@ fun MainHost(
         ) {
             composable(Screen.TopScreen.name) {
                 val topScreenViewModel = viewModel<TopScreenViewModel>(
-                    factory = TopScreenViewModel.provideFactory(
-                        ownedIngredientRepository = ownedIngredientRepository
-                    )
+                    factory = TopScreenViewModel.provideFactory()
                 )
                 TopScreen(
                     viewModel = topScreenViewModel,

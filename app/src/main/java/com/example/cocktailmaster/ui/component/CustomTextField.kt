@@ -88,7 +88,7 @@ fun CustomTextField(
 @Composable
 fun CustomTextFieldPreview_Light() {
     CocktailMasterTheme {
-        Surface() {
+        Surface {
             CustomTextField(
                 value = "Hello",
                 placeholder = "Placeholder",

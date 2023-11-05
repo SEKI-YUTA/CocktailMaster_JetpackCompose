@@ -1,6 +1,5 @@
 package com.example.cocktailmaster.ui.viewmodels
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -14,7 +13,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel(
-    private val context: Context,
     private val ownedIngredientRepository: OwnedIngredientRepository,
 ) : ViewModel() {
     private val _viewState = MutableStateFlow(MainViewModelViewState())
@@ -57,14 +55,12 @@ class MainViewModel(
 
     companion object {
         fun provideFactory(
-            context: Context,
             ownedIngredientRepository: OwnedIngredientRepository
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return MainViewModel(
-                        context = context,
                         ownedIngredientRepository = ownedIngredientRepository
                     ) as T
                 }

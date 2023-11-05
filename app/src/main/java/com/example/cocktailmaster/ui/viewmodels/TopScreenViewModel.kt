@@ -6,22 +6,16 @@ import com.example.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class TopScreenViewModel(
-    val ownedIngredientRepository: OwnedIngredientRepository,
-) : ViewModel() {
+class TopScreenViewModel() : ViewModel() {
     private val _viewState = MutableStateFlow(TopScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
     companion object {
-        fun provideFactory(
-            ownedIngredientRepository: OwnedIngredientRepository,
-        ): ViewModelProvider.Factory {
+        fun provideFactory(): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return TopScreenViewModel(
-                        ownedIngredientRepository = ownedIngredientRepository,
-                    ) as T
+                    return TopScreenViewModel() as T
                 }
             }
         }

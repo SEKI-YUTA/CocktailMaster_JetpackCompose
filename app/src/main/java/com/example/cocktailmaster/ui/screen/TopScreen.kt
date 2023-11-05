@@ -24,7 +24,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cocktailmaster.FakeRepositoryProvider
-import com.example.cocktailmaster.LocalOwnedIngredientRepository
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.data.model.CocktailIngredient_Data
@@ -111,10 +110,7 @@ fun TopScreen(
 @Composable
 fun TopScreenPreview() {
     FakeRepositoryProvider {
-        val fakeOwnedIngredientRepository = LocalOwnedIngredientRepository.current
-        val viewModel = TopScreenViewModel(
-            fakeOwnedIngredientRepository,
-        )
+        val viewModel = TopScreenViewModel()
         CocktailMasterTheme {
             Surface {
                 TopScreen(

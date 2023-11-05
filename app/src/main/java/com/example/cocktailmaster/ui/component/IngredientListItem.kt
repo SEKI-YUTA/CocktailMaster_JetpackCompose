@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,7 +41,6 @@ import com.example.cocktailmaster.data.DemoData
 import com.example.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.example.cocktailmaster.ui.theme.CocktailMasterTheme
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun IngredientListItem(
     modifier: Modifier = Modifier,
@@ -57,8 +55,7 @@ fun IngredientListItem(
 ) {
     val menuShowing = remember { mutableStateOf(false) }
     val isShowingDialog = remember { mutableStateOf(false) }
-    ConstraintLayout(
-    ) {
+    ConstraintLayout {
         val (cardRef, badgeRef) = createRefs()
         Card(
             modifier = modifier

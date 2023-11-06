@@ -41,14 +41,12 @@ class FirstRoborazzi {
     fun captureTopScreen() {
         composeTestRule.setContent {
             FakeRepositoryProvider {
-                val viewModel = TopScreenViewModel(
-                    ownedIngredientRepository = LocalOwnedIngredientRepository.current,
-                    onUpdateOwnedIngredient = {}
-                )
+                val viewModel = TopScreenViewModel()
                 CocktailMasterTheme {
                     Surface {
                         TopScreen(
                             viewModel = viewModel,
+                            ownedIngredientList = emptyList(),
                             navigateToCraftableCocktail = {},
                             navigateToAddIngredient = {},
                             onDeleteOwnedIngredient = {},

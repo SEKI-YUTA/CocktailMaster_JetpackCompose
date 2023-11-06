@@ -23,7 +23,8 @@ class MainActivity : ComponentActivity() {
                 val ownedIngredientRepository = LocalOwnedIngredientRepository.current
                 val mainViewModel = viewModel<MainViewModel>(
                     factory = MainViewModel.provideFactory(
-                        ownedIngredientRepository = ownedIngredientRepository
+                        ownedIngredientRepository = ownedIngredientRepository,
+                        context = this
                     )
                 )
                 val mainViewState = mainViewModel.viewState.collectAsState().value

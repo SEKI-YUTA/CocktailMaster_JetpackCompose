@@ -13,7 +13,7 @@
     <string name="cancel_str">キャンセル</string>
     <string name="add_str">追加</string>
     <string name="edit_str">編集</string>
-    <string name="remove_str">削除</string>
+    <string name="delete_str">削除</string>
     <string name="added_message">追加しました。</string>
     <string name="loading_message">読み込み中...</string>
     <string name="craftable_cocktail_not_found">作れるカクテルはありません</string>

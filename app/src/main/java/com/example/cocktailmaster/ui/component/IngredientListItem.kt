@@ -121,7 +121,7 @@ fun IngredientListItem(
                     )
                     DropdownMenuItem(
                         text = {
-                            Text(stringResource(R.string.remove_str))
+                            Text(stringResource(R.string.delete_str))
                         },
                         onClick = {
                             onDeleteAction(ingredient_UI)

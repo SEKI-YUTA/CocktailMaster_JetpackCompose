@@ -64,7 +64,6 @@ class TopScreenViewModel() : ViewModel() {
 
     data class TopScreenViewState(
         val isLoading: Boolean = false,
-        val isNetworkConnected: Boolean = true,
         val isShowingEditDialog: Boolean = false,
         val isShowingDeleteConfirmDialog: Boolean = false,
         val selectedIngredient: CocktailIngredient_UI? = null,

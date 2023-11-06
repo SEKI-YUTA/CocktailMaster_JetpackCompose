@@ -1,5 +1,6 @@
 package com.example.cocktailmaster.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,8 +16,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -23,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.cocktailmaster.FakeRepositoryProvider
 import com.example.cocktailmaster.R
 import com.example.cocktailmaster.data.DemoData
@@ -89,10 +94,10 @@ fun TopScreen(
                         tailIcon = null,
                         onIconTapAction = {},
                         onEditAction = {
-                            viewModel.onIngredientSelected(it)
+                            viewModel.onIngredientEditRequest(it)
                         },
                         onDeleteAction = { ingredient ->
-                            onDeleteOwnedIngredient(ingredient.toDataModel())
+                            viewModel.onIngredientDeleteRequest(ingredient)
                         }
                     )
                 }
@@ -103,16 +108,16 @@ fun TopScreen(
                 CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
             }
         }
-        if(viewState.isShowingEditDialog && viewState.selectedIngredient != null) {
+        if (viewState.isShowingEditDialog && viewState.selectedIngredient != null) {
             AddEditIngredientDialog(
                 isAddMode = false,
                 currentIngredient = viewState.selectedIngredient,
                 onDoneEvent = { ingredient_ui ->
                     onEditOwnedIngredient(ingredient_ui.toDataModel())
-                    viewModel.onCloseAddDialog()
+                    viewModel.onCloseEditDialog()
                 },
                 onCancelEvent = {
-                    viewModel.onCloseAddDialog()
+                    viewModel.onCloseEditDialog()
                 },
                 userInputState = viewState.userInputState,
                 onUpdateUserInput = {
@@ -120,7 +125,85 @@ fun TopScreen(
                 },
             )
         }
+
+        if (viewState.isShowingDeleteConfirmDialog) {
+            DeleteConfirmDialog(
+                title = stringResource(R.string.delete_confirm_dialog_title),
+                onConfirm = {
+                    viewState.selectedIngredient?.let {
+                        onDeleteOwnedIngredient(viewState.selectedIngredient.toDataModel())
+                    }
+                    viewModel.onCloseDeleteConfirmDialog()
+                },
+                onDismiss = {
+                    viewModel.onCloseDeleteConfirmDialog()
+                },
+            )
+        }
     }
+}
+
+@Composable
+fun DeleteConfirmDialog(
+    title: String,
+    text: String = "",
+    onConfirm: () -> Unit = {},
+    onDismiss: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Dialog(
+        content = {
+            Box(
+                modifier = modifier
+                    .background(MaterialTheme.colorScheme.surface)
+                    .padding(16.dp),
+
+                ) {
+                Column(
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = title,
+                        style = TextStyle(fontSize = 20.sp)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = text,
+                        style = TextStyle(fontSize = 16.sp)
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        TextButton(
+                            onClick = {
+                                onDismiss()
+                            }
+                        ) {
+                            Text(
+                                text = stringResource(R.string.cancel_str),
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        TextButton(
+                            onClick = {
+                                onConfirm()
+                            }
+                        ) {
+                            Text(
+                                text = stringResource(R.string.delete_str),
+                            )
+                        }
+
+                    }
+                }
+            }
+
+        },
+        onDismissRequest = {
+            onDismiss()
+        },
+    )
 }
 
 

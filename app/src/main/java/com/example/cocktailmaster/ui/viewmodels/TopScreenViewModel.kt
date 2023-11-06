@@ -21,14 +21,28 @@ class TopScreenViewModel() : ViewModel() {
         }
     }
 
-    fun onIngredientSelected(ingredient: CocktailIngredient_UI) {
+    fun onIngredientDeleteRequest(ingredient: CocktailIngredient_UI) {
+        _viewState.value = _viewState.value.copy(
+            isShowingDeleteConfirmDialog = true,
+            selectedIngredient = ingredient,
+        )
+    }
+
+    fun onCloseDeleteConfirmDialog() {
+        _viewState.value = _viewState.value.copy(
+            selectedIngredient = null,
+            isShowingDeleteConfirmDialog = false,
+        )
+    }
+
+    fun onIngredientEditRequest(ingredient: CocktailIngredient_UI) {
         _viewState.value = _viewState.value.copy(
             isShowingEditDialog = true,
             selectedIngredient = ingredient,
         )
     }
 
-    fun onCloseAddDialog() {
+    fun onCloseEditDialog() {
         _viewState.value = _viewState.value.copy(
             isShowingEditDialog = false,
         )
@@ -52,6 +66,7 @@ class TopScreenViewModel() : ViewModel() {
         val isLoading: Boolean = false,
         val isNetworkConnected: Boolean = true,
         val isShowingEditDialog: Boolean = false,
+        val isShowingDeleteConfirmDialog: Boolean = false,
         val selectedIngredient: CocktailIngredient_UI? = null,
         val userInputState: AddCocktailIngredientScreenViewModel.UserInputState =
             AddCocktailIngredientScreenViewModel.UserInputState(),

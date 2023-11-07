@@ -9,12 +9,13 @@ import com.example.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 sealed class CraftableCocktailListScreenEvent {
-    object FetchCraftableCocktailList: CraftableCocktailListScreenEvent()
+    object FetchCocktailData: CraftableCocktailListScreenEvent()
 }
 
 class CraftableCocktailListScreenViewModel(
@@ -26,19 +27,24 @@ class CraftableCocktailListScreenViewModel(
 
     init {
         println("init")
-        onEvent(CraftableCocktailListScreenEvent.FetchCraftableCocktailList)
+        onEvent(CraftableCocktailListScreenEvent.FetchCocktailData)
     }
 
     fun onEvent(event: CraftableCocktailListScreenEvent): Job {
         val job = viewModelScope.launch(Dispatchers.IO) {
             when (event) {
-                is CraftableCocktailListScreenEvent.FetchCraftableCocktailList -> {
+                is CraftableCocktailListScreenEvent.FetchCocktailData -> {
                     _viewState.value = _viewState.value.copy(
                         isLoading = true,
                     )
-                    async {fetchCraftableCocktail(
-                        ingredientList = ingredientList.map { it.longName }
-                    )}.await()
+                    listOf(
+                        async {
+                            fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
+                        },
+                        async {
+                          fetchAllCocktail()
+                        }
+                    ).awaitAll()
                     _viewState.value = _viewState.value.copy(
                         isLoading = false,
                     )
@@ -46,6 +52,12 @@ class CraftableCocktailListScreenViewModel(
             }
         }
         return job
+    }
+
+    fun setSelectedTab(tab: TabItems) {
+        _viewState.value = _viewState.value.copy(
+            selectedTab = tab
+        )
     }
 
     private suspend fun fetchCraftableCocktail(
@@ -57,7 +69,18 @@ class CraftableCocktailListScreenViewModel(
         )
     }
 
+    private suspend fun fetchAllCocktail() {
+        val tmp = apiRepository.getAllCocktails().map { it.toUIModel() }
+        _viewState.value = _viewState.value.copy(
+            allCocktailList = tmp,
+        )
+    }
+
     companion object {
+        val allTabs = listOf(
+            TabItems.CRAFTABLE,
+            TabItems.ALL_COCKTAILS,
+        )
         fun provideFactory(
             apiRepository: CocktailApiRepository,
             ingredientList: List<CocktailIngredient_UI>
@@ -78,14 +101,24 @@ class CraftableCocktailListScreenViewModel(
     data class CraftableCocktailListScreenViewState(
         val isLoading: Boolean,
         val isFetchFailed: Boolean,
-        val craftableCocktailList: List<Cocktail_UI>
+        val selectedTab: TabItems,
+        val craftableCocktailList: List<Cocktail_UI>,
+        val allCocktailList: List<Cocktail_UI>
     ) {
         companion object {
             val INITIAL = CraftableCocktailListScreenViewState(
                 isLoading = false,
                 isFetchFailed = false,
-                craftableCocktailList = emptyList()
+                selectedTab = TabItems.CRAFTABLE,
+                craftableCocktailList = emptyList(),
+                allCocktailList = emptyList()
             )
         }
     }
+
+}
+
+sealed class TabItems(val idx: Int, val title: String) {
+    object CRAFTABLE: TabItems(0, "作れるカクテル")
+    object ALL_COCKTAILS: TabItems(1, "すべてのカクテル")
 }

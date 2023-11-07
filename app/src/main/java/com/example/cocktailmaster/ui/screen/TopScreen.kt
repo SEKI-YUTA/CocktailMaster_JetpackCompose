@@ -67,7 +67,6 @@ fun TopScreen(
                 MenuButton(
                     text = stringResource(R.string.cocktail_list_str),
                     modifier = Modifier.weight(1f),
-                    enabled = viewState.isNetworkConnected,
                     icon = Icons.Default.List
                 ) {
                     navigateToCraftableCocktail()
@@ -76,7 +75,6 @@ fun TopScreen(
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
                     modifier = Modifier.weight(1f),
-                    enabled = viewState.isNetworkConnected,
                     icon = Icons.Default.Add
                 ) {
                     navigateToAddIngredient()

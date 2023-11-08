@@ -106,6 +106,18 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                             }
                         }
                     }
+                    if (viewState.isCraftableCocktailFetching) {
+                        LoadingMessage()
+                    } else if (viewState.isFetchFailed) {
+                        CenterMessage(
+                            message = stringResource(R.string.fetch_failed_message),
+                            icon = Icons.Default.Refresh,
+                            iconTapAction = {
+                            }
+                        )
+                    } else if (!viewState.isCraftableCocktailFetching && craftableList.isEmpty()) {
+                        CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
+                    }
                 }
 
                 TabItems.ALL_COCKTAILS -> {
@@ -119,21 +131,20 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                             }
                         }
                     }
+
+                    if (viewState.isAllCocktailFetching) {
+                        LoadingMessage()
+                    } else if (viewState.isFetchFailed) {
+                        CenterMessage(
+                            message = stringResource(R.string.fetch_failed_message),
+                            icon = Icons.Default.Refresh,
+                            iconTapAction = {
+                            }
+                        )
+                    }
                 }
             }
 
-            if (viewState.isLoading) {
-                LoadingMessage()
-            } else if (viewState.isFetchFailed) {
-                CenterMessage(
-                    message = stringResource(R.string.fetch_failed_message),
-                    icon = Icons.Default.Refresh,
-                    iconTapAction = {
-                    }
-                )
-            } else if (!viewState.isLoading && craftableList.isEmpty()) {
-                CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
-            }
         }
     }
 }

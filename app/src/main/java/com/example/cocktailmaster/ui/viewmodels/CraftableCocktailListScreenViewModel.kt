@@ -34,9 +34,6 @@ class CraftableCocktailListScreenViewModel(
         val job = viewModelScope.launch(Dispatchers.IO) {
             when (event) {
                 is CraftableCocktailListScreenEvent.FetchCocktailData -> {
-                    _viewState.value = _viewState.value.copy(
-                        isLoading = true,
-                    )
                     listOf(
                         async {
                             fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
@@ -45,9 +42,6 @@ class CraftableCocktailListScreenViewModel(
                           fetchAllCocktail()
                         }
                     ).awaitAll()
-                    _viewState.value = _viewState.value.copy(
-                        isLoading = false,
-                    )
                 }
             }
         }
@@ -63,16 +57,28 @@ class CraftableCocktailListScreenViewModel(
     private suspend fun fetchCraftableCocktail(
         ingredientList: List<String>
     ) {
+        _viewState.value = _viewState.value.copy(
+            isCraftableCocktailFetching = true
+        )
         val tmp = apiRepository.craftableCocktails(ingredientList).map { it.toUIModel() }
         _viewState.value = _viewState.value.copy(
             craftableCocktailList = tmp,
         )
+        _viewState.value = _viewState.value.copy(
+            isCraftableCocktailFetching = false
+        )
     }
 
     private suspend fun fetchAllCocktail() {
+        _viewState.value = _viewState.value.copy(
+            isAllCocktailFetching = true
+        )
         val tmp = apiRepository.getAllCocktails().map { it.toUIModel() }
         _viewState.value = _viewState.value.copy(
             allCocktailList = tmp,
+        )
+        _viewState.value = _viewState.value.copy(
+            isAllCocktailFetching = false
         )
     }
 
@@ -99,7 +105,8 @@ class CraftableCocktailListScreenViewModel(
     }
 
     data class CraftableCocktailListScreenViewState(
-        val isLoading: Boolean,
+        val isCraftableCocktailFetching: Boolean,
+        val isAllCocktailFetching: Boolean,
         val isFetchFailed: Boolean,
         val selectedTab: TabItems,
         val craftableCocktailList: List<Cocktail_UI>,
@@ -107,7 +114,8 @@ class CraftableCocktailListScreenViewModel(
     ) {
         companion object {
             val INITIAL = CraftableCocktailListScreenViewState(
-                isLoading = false,
+                isCraftableCocktailFetching = false,
+                isAllCocktailFetching = false,
                 isFetchFailed = false,
                 selectedTab = TabItems.CRAFTABLE,
                 craftableCocktailList = emptyList(),

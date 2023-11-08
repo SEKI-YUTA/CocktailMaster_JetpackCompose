@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cocktailmaster.FakeRepositoryProvider
 import com.example.cocktailmaster.LocalApiRepository
 import com.example.cocktailmaster.R
+import com.example.cocktailmaster.data.ConstantValues
 import com.example.cocktailmaster.ui.component.CenterMessage
 import com.example.cocktailmaster.ui.component.CocktailListItem
 import com.example.cocktailmaster.ui.component.LoadingMessage
@@ -49,12 +50,8 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
             viewState.allCocktailList
         }
     }
-    val categories by remember(craftableList) {
-        derivedStateOf {
-            listOf("すべて") + LinkedHashSet(craftableList.map { it.category }).toMutableList()
-        }
-    }
-    var userSelectCategory by remember { mutableStateOf(categories[0]) }
+    val cocktailCategories = listOf("すべて") + ConstantValues.cocktailCategories
+    var userSelectCategory by remember { mutableStateOf(cocktailCategories[0]) }
 
     Box(
         modifier = Modifier
@@ -67,7 +64,7 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
             ) {
                 Text("絞り込み: ", modifier = Modifier.padding(end = 8.dp))
                 MyDropDownMenu(
-                    items = categories,
+                    items = cocktailCategories,
                     selectedVal = userSelectCategory,
                 ) {
                     userSelectCategory = it

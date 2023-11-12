@@ -1,9 +1,0 @@
-query IngredientList{
-    ingredients {
-        category
-        longname
-        shortname
-        ingredient_category_id
-        description
-    }
-}

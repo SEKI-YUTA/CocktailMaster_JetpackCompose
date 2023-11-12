@@ -13,11 +13,13 @@
     <string name="cancel_str">キャンセル</string>
     <string name="add_str">追加</string>
     <string name="edit_str">編集</string>
-    <string name="remove_str">削除</string>
+    <string name="delete_str">削除</string>
     <string name="added_message">追加しました。</string>
     <string name="loading_message">読み込み中...</string>
     <string name="craftable_cocktail_not_found">作れるカクテルはありません</string>
     <string name="owned_ingredient_not_found">持っている材料はありません</string>
     <string name="not_found_ingredient">材料がみつかりません</string>
     <string name="fetch_failed_message">データの取得に失敗しました。</string>
+
+    <string name="delete_confirm_dialog_title">本当に削除しますか？</string>
 </resources>

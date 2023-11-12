@@ -29,3 +29,4 @@
 ## GraphQL参考サイト
 - https://www.apollographql.com/docs/kotlin/v2/
   スキーマダウンロードののタスクを実行するときにオプションの値を'で囲って=の間をなくしたらいけた
+  ./gradlew :app:downloadApolloSchema --endpoint='http://localhost:4000/graphql' --schema='app/src/main/graphql/schema.graphqls'

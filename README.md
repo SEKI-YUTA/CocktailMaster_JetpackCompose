@@ -28,3 +28,4 @@
 
 ## GraphQL参考サイト
 - https://www.apollographql.com/docs/kotlin/v2/
+  スキーマダウンロードののタスクを実行するときにオプションの値を'で囲って=の間をなくしたらいけた

@@ -5,7 +5,7 @@ import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 import com.yuta.cocktailmaster.data.model.Cocktail_Data
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,7 +16,7 @@ private val json = Json { ignoreUnknownKeys = true }
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(
-        json.asConverterFactory(MediaType.get("application/json"))
+        json.asConverterFactory("application/json".toMediaType())
     )
     .baseUrl(BASE_URL)
     .build()

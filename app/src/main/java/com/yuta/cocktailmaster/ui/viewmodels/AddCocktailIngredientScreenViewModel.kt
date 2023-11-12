@@ -4,9 +4,10 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo3.ApolloClient
-import com.yuta.cocktailmaster.IngredientListQuery
+import com.yuta.cocktailmaster.CraftableCocktailQuery
+import com.yuta.cocktailmaster.data.api.CocktailApollo
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
+import com.yuta.cocktailmaster.type.OwnedIngredientInput
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,10 +60,11 @@ class AddCocktailIngredientScreenViewModel(
     }
 
     suspend fun testRunGQL() {
-        val appolloClient = ApolloClient.Builder()
-            .serverUrl("http://10.0.2.2:4000/graphql")
-            .build()
-        val response = appolloClient.query(IngredientListQuery()).execute()
+        val response = CocktailApollo.apolloClient.query(CraftableCocktailQuery(
+            ownedIngredientList = OwnedIngredientInput(
+                ingredients = listOf("ドライ・ジン", "ジンジャーエール")
+            )
+        )).execute()
         Log.d("GQL ingredientList", "${response.data}")
     }
 

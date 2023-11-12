@@ -34,7 +34,6 @@ data class Cocktail_Data(
     @SerialName("cocktail_category_id")
     val cocktailCategoryId: Int = 0,
 
-
     @SerialName("ingredients")
     val ingredients: List<CocktailIngredient_Data> = emptyList(),
 

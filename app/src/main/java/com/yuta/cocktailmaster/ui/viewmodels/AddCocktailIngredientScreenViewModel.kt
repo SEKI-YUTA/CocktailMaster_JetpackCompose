@@ -1,13 +1,9 @@
 package com.yuta.cocktailmaster.ui.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.yuta.cocktailmaster.CraftableCocktailQuery
-import com.yuta.cocktailmaster.data.api.CocktailApollo
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
-import com.yuta.cocktailmaster.type.OwnedIngredientInput
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,28 +12,28 @@ import kotlinx.coroutines.launch
 
 class AddCocktailIngredientScreenViewModel(
     val apiRepository: CocktailApiRepository,
-): ViewModel() {
+) : ViewModel() {
     private val _viewState = MutableStateFlow(AddCocktailIngredientScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
     init {
-        if(lastViewState != null) {
+        if (lastViewState != null) {
             _viewState.value = lastViewState!!
         } else {
             viewModelScope.launch(Dispatchers.IO) {
                 fetchAllIngredientsFromAPI()
-                testRunGQL()
                 lastViewState = _viewState.value
             }
         }
     }
+
     companion object {
         var lastViewState: AddCocktailIngredientScreenViewState? = null
 
         fun provideFactory(
             apiRepository: CocktailApiRepository
         ): ViewModelProvider.Factory {
-            return object: ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return AddCocktailIngredientScreenViewModel(
@@ -52,20 +48,11 @@ class AddCocktailIngredientScreenViewModel(
         _viewState.value = _viewState.value.copy(
             isLoading = true,
         )
-        val tmp = apiRepository.getAllIngredients().map { it.toUIModel() }
+        val tmp = apiRepository.getAllIngredients()
         _viewState.value = _viewState.value.copy(
             isLoading = false,
             ingredientList = tmp,
         )
-    }
-
-    suspend fun testRunGQL() {
-        val response = CocktailApollo.apolloClient.query(CraftableCocktailQuery(
-            ownedIngredientList = OwnedIngredientInput(
-                ingredients = listOf("ドライ・ジン", "ジンジャーエール")
-            )
-        )).execute()
-        Log.d("GQL ingredientList", "${response.data}")
     }
 
     fun onIngredientTapped(ingredient: CocktailIngredient_UI) {

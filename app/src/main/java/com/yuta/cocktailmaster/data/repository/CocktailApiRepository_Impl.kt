@@ -12,7 +12,6 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
         println("getAllIngredients")
         // 失敗したときのメッセージを入れたデータを一旦用意しておく
         var ingredientList = listOf<CocktailIngredient_Data>(
-            ConstantValues.failMessageIngredients
         )
         try {
             ingredientList = CocktailApi.retrofitService.getAllIngredients()
@@ -22,6 +21,11 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
         }
         println("fetched size: ${ingredientList.size}")
         return ingredientList
+    }
+
+    override suspend fun getAllCocktails(): List<Cocktail_Data> {
+        val cocktailList = CocktailApi.retrofitService.getAllCocktail()
+        return cocktailList
     }
 
     override suspend fun craftableCocktails(query: List<String>): List<Cocktail_Data> {

@@ -25,8 +25,11 @@ interface CocktailApiService {
     @GET("ingredients")
     suspend fun getAllIngredients(): List<CocktailIngredient_Data>
 
-    @GET("cocktails")
+    @GET("compute/cocktails")
     suspend fun craftableCocktails(@Query("ingredients[]") querys: List<String>): List<Cocktail_Data>
+
+    @GET("cocktails/all")
+    suspend fun getAllCocktail(): List<Cocktail_Data>
 }
 
 object CocktailApi {

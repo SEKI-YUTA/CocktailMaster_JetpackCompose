@@ -7,7 +7,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.yuta.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import com.yuta.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
-import com.yuta.cocktailmaster.data.repository.CocktailApiRepository_Impl
+import com.yuta.cocktailmaster.data.repository.CocktailApolloRepository_Impl
 import com.yuta.cocktailmaster.data.repository.OwnedIngredientRepository_FakeImpl
 import com.yuta.cocktailmaster.data.repository.OwnedIngredientRepository_Impl
 
@@ -24,7 +24,7 @@ fun RepositoryProvider(
 ) {
     val context = LocalContext.current
     CompositionLocalProvider(
-        LocalApiRepository provides CocktailApiRepository_Impl(),
+        LocalApiRepository provides CocktailApolloRepository_Impl(),
         LocalOwnedIngredientRepository provides OwnedIngredientRepository_Impl(context = context)
     ) {
         content()

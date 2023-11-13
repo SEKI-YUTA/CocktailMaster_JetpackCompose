@@ -51,7 +51,7 @@ class CraftableCocktailListScreenViewModel(
     private suspend fun fetchCraftableCocktail(
         ingredientList: List<String>
     ) {
-        val tmp = apiRepository.craftableCocktails(ingredientList)
+        val tmp = apiRepository.craftableCocktails(ingredientList).map { it.toUIModel() }
         _viewState.value = _viewState.value.copy(
             craftableCocktailList = tmp,
         )

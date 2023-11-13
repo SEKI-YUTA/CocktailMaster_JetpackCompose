@@ -12,12 +12,12 @@ import kotlinx.coroutines.launch
 
 class AddCocktailIngredientScreenViewModel(
     val apiRepository: CocktailApiRepository,
-) : ViewModel() {
+): ViewModel() {
     private val _viewState = MutableStateFlow(AddCocktailIngredientScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
     init {
-        if (lastViewState != null) {
+        if(lastViewState != null) {
             _viewState.value = lastViewState!!
         } else {
             viewModelScope.launch(Dispatchers.IO) {
@@ -26,14 +26,13 @@ class AddCocktailIngredientScreenViewModel(
             }
         }
     }
-
     companion object {
         var lastViewState: AddCocktailIngredientScreenViewState? = null
 
         fun provideFactory(
             apiRepository: CocktailApiRepository
         ): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
+            return object: ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return AddCocktailIngredientScreenViewModel(
@@ -48,7 +47,7 @@ class AddCocktailIngredientScreenViewModel(
         _viewState.value = _viewState.value.copy(
             isLoading = true,
         )
-        val tmp = apiRepository.getAllIngredients()
+        val tmp = apiRepository.getAllIngredients().map { it.toUIModel() }
         _viewState.value = _viewState.value.copy(
             isLoading = false,
             ingredientList = tmp,

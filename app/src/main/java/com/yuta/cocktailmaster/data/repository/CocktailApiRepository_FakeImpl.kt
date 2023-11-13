@@ -12,6 +12,10 @@ class CocktailApiRepository_FakeImpl : CocktailApiRepository {
         return DemoData.ingredientList.map { it.toUIModel() }
     }
 
+    override suspend fun getAllCocktails(): List<Cocktail_UI> {
+        return DemoData.cocktailList.map { it.toUIModel() }
+    }
+
     override suspend fun craftableCocktails(query: List<String>): List<Cocktail_UI> {
         return DemoData.cocktailList.map { it.toUIModel() }
     }

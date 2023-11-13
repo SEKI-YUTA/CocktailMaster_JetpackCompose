@@ -26,6 +26,11 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
         return ingredientList.map { it.toUIModel() }
     }
 
+    override suspend fun getAllCocktails(): List<Cocktail_UI> {
+        val cocktailList = CocktailApi.retrofitService.getAllCocktail()
+        return cocktailList.map { it.toUIModel() }
+    }
+
     override suspend fun craftableCocktails(query: List<String>): List<Cocktail_UI> {
         var cocktailList = listOf<Cocktail_Data>(
             ConstantValues.failMessageCocktail

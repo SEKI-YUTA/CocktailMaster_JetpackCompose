@@ -1,5 +1,6 @@
 package com.yuta.cocktailmaster.data.repository
 
+import com.yuta.cocktailmaster.AllCocktailListQuery
 import com.yuta.cocktailmaster.AllIngredientListQuery
 import com.yuta.cocktailmaster.CraftableCocktailQuery
 import com.yuta.cocktailmaster.data.api.CocktailApollo
@@ -17,6 +18,14 @@ class CocktailApolloRepository_Impl : CocktailApiRepository {
             return emptyList()
         }
         return response.data!!.ingredients.map { checkNotNull(it).toIngredientUIModel() }
+    }
+
+    override suspend fun getAllCocktails(): List<Cocktail_UI> {
+        val response = CocktailApollo.apolloClient.query(AllCocktailListQuery()).execute()
+        if (response.data == null) {
+            return emptyList()
+        }
+        return response.data!!.cocktails.map { checkNotNull(it).toCocktailUIModel() }
     }
 
     override suspend fun craftableCocktails(query: List<String>): List<Cocktail_UI> {

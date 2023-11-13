@@ -12,5 +12,6 @@ interface CocktailApiRepository {
 
     // こんな感じでパラメータを渡す（使える素材)
     // ingredients[]=ジン&ingredients[]=ジンジャーエール&ingredients[]=ラム
+    suspend fun getAllCocktails(): List<Cocktail_UI>
     suspend fun craftableCocktails(query: List<String>): List<Cocktail_UI>
 }

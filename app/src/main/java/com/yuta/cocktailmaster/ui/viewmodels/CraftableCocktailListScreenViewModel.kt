@@ -9,12 +9,13 @@ import com.yuta.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 sealed class CraftableCocktailListScreenEvent {
-    object FetchCraftableCocktailList: CraftableCocktailListScreenEvent()
+    object FetchCocktailData: CraftableCocktailListScreenEvent()
 }
 
 class CraftableCocktailListScreenViewModel(
@@ -26,38 +27,66 @@ class CraftableCocktailListScreenViewModel(
 
     init {
         println("init")
-        onEvent(CraftableCocktailListScreenEvent.FetchCraftableCocktailList)
+        onEvent(CraftableCocktailListScreenEvent.FetchCocktailData)
     }
 
     fun onEvent(event: CraftableCocktailListScreenEvent): Job {
         val job = viewModelScope.launch(Dispatchers.IO) {
             when (event) {
-                is CraftableCocktailListScreenEvent.FetchCraftableCocktailList -> {
-                    _viewState.value = _viewState.value.copy(
-                        isLoading = true,
-                    )
-                    async {fetchCraftableCocktail(
-                        ingredientList = ingredientList.map { it.longName }
-                    )}.await()
-                    _viewState.value = _viewState.value.copy(
-                        isLoading = false,
-                    )
+                is CraftableCocktailListScreenEvent.FetchCocktailData -> {
+                    listOf(
+                        async {
+                            fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
+                        },
+                        async {
+                          fetchAllCocktail()
+                        }
+                    ).awaitAll()
                 }
             }
         }
         return job
     }
 
+    fun setSelectedTab(tab: TabItems) {
+        _viewState.value = _viewState.value.copy(
+            selectedTab = tab
+        )
+    }
+
     private suspend fun fetchCraftableCocktail(
         ingredientList: List<String>
     ) {
+        _viewState.value = _viewState.value.copy(
+            isCraftableCocktailFetching = true
+        )
         val tmp = apiRepository.craftableCocktails(ingredientList)
         _viewState.value = _viewState.value.copy(
             craftableCocktailList = tmp,
         )
+        _viewState.value = _viewState.value.copy(
+            isCraftableCocktailFetching = false
+        )
+    }
+
+    private suspend fun fetchAllCocktail() {
+        _viewState.value = _viewState.value.copy(
+            isAllCocktailFetching = true
+        )
+        val tmp = apiRepository.getAllCocktails()
+        _viewState.value = _viewState.value.copy(
+            allCocktailList = tmp,
+        )
+        _viewState.value = _viewState.value.copy(
+            isAllCocktailFetching = false
+        )
     }
 
     companion object {
+        val allTabs = listOf(
+            TabItems.CRAFTABLE,
+            TabItems.ALL_COCKTAILS,
+        )
         fun provideFactory(
             apiRepository: CocktailApiRepository,
             ingredientList: List<CocktailIngredient_UI>
@@ -76,16 +105,28 @@ class CraftableCocktailListScreenViewModel(
     }
 
     data class CraftableCocktailListScreenViewState(
-        val isLoading: Boolean,
+        val isCraftableCocktailFetching: Boolean,
+        val isAllCocktailFetching: Boolean,
         val isFetchFailed: Boolean,
-        val craftableCocktailList: List<Cocktail_UI>
+        val selectedTab: TabItems,
+        val craftableCocktailList: List<Cocktail_UI>,
+        val allCocktailList: List<Cocktail_UI>
     ) {
         companion object {
             val INITIAL = CraftableCocktailListScreenViewState(
-                isLoading = false,
+                isCraftableCocktailFetching = false,
+                isAllCocktailFetching = false,
                 isFetchFailed = false,
-                craftableCocktailList = emptyList()
+                selectedTab = TabItems.CRAFTABLE,
+                craftableCocktailList = emptyList(),
+                allCocktailList = emptyList()
             )
         }
     }
+
+}
+
+sealed class TabItems(val idx: Int, val title: String) {
+    object CRAFTABLE: TabItems(0, "作れるカクテル")
+    object ALL_COCKTAILS: TabItems(1, "すべてのカクテル")
 }

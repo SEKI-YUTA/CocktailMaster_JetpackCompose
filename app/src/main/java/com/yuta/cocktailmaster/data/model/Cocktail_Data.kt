@@ -19,12 +19,6 @@ data class Cocktail_Data(
     @SerialName("vol")
     val vol: Int = 0,
 
-    @SerialName("parent_cocktail_id")
-    val parentCocktailId: Int = 0,
-
-    @SerialName("parent_name")
-    val parentName: String = "",
-
     @SerialName("ingredient_count")
     val ingredientCount: Int = 0,
 
@@ -33,7 +27,6 @@ data class Cocktail_Data(
 
     @SerialName("cocktail_category_id")
     val cocktailCategoryId: Int = 0,
-
 
     @SerialName("ingredients")
     val ingredients: List<CocktailIngredient_Data> = emptyList(),
@@ -46,8 +39,6 @@ data class Cocktail_Data(
             name = name,
             description = description,
             vol = vol,
-            parentCocktailId = parentCocktailId,
-            parentName = parentName,
             ingredientCount = ingredientCount,
             category = category,
             cocktailCategoryId = cocktailCategoryId,

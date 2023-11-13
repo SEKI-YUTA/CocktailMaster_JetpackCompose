@@ -4,9 +4,17 @@ plugins {
     id 'kotlinx-serialization'
     id 'com.google.devtools.ksp'
     id 'io.github.takahirom.roborazzi'
+    id 'com.apollographql.apollo3'
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.yuta.cocktailmaster")
+    }
 }
 
 android {
+
     namespace 'com.yuta.cocktailmaster'
     compileSdk 33
 
@@ -122,4 +130,7 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
 
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+
+    implementation "com.apollographql.apollo3:apollo-runtime:3.8.2"
+//    implementation "com.apollographql.apollo:apollo-coroutines-support:3.8.2"
 }

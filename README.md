@@ -25,3 +25,8 @@
 - カクテルの情報の追加
 - カクテルから材料を検索する機能の追加
 - 作れるカクテルを選択した際に、作り方を表示する
+
+## GraphQL参考サイト
+- https://www.apollographql.com/docs/kotlin/v2/
+  スキーマダウンロードののタスクを実行するときにオプションの値を'で囲って=の間をなくしたらいけた
+  ./gradlew :app:downloadApolloSchema --endpoint='http://localhost:4000/graphql' --schema='app/src/main/graphql/schema.graphqls'

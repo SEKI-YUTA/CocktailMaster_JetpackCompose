@@ -60,7 +60,7 @@ class CraftableCocktailListScreenViewModel(
         _viewState.value = _viewState.value.copy(
             isCraftableCocktailFetching = true
         )
-        val tmp = apiRepository.craftableCocktails(ingredientList).map { it.toUIModel() }
+        val tmp = apiRepository.craftableCocktails(ingredientList)
         _viewState.value = _viewState.value.copy(
             craftableCocktailList = tmp,
         )
@@ -73,7 +73,7 @@ class CraftableCocktailListScreenViewModel(
         _viewState.value = _viewState.value.copy(
             isAllCocktailFetching = true
         )
-        val tmp = apiRepository.getAllCocktails().map { it.toUIModel() }
+        val tmp = apiRepository.getAllCocktails()
         _viewState.value = _viewState.value.copy(
             allCocktailList = tmp,
         )

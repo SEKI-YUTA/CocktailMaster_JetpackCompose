@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.cocktailmaster'
+    namespace 'com.yuta.cocktailmaster'
     compileSdk 33
 
     testOptions {
@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.cocktailmaster"
+        applicationId "com.yuta.cocktailmaster"
         minSdk 26
         targetSdk 33
         versionCode 1

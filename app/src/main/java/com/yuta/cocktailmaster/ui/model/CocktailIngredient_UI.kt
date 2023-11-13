@@ -8,8 +8,8 @@ import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 // 例：ジン、ウォッカ、ラム、テキーラ、ウイスキー、ブランデーなどのカクテルの原料になるもの
 data class CocktailIngredient_UI(
     var id: Int = 0,
-    val shortName: String,
-    val longName: String,
+    val shortName: String = "",
+    val longName: String = "",
     val description: String = "",
     val vol: Int = 0,
     val ingredientCategoryId: Int = 0,

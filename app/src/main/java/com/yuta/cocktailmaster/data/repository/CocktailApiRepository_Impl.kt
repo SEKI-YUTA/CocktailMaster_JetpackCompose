@@ -5,10 +5,12 @@ import com.yuta.cocktailmaster.data.api.CocktailApi
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 import com.yuta.cocktailmaster.data.model.Cocktail_Data
+import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.yuta.cocktailmaster.ui.model.Cocktail_UI
 import java.net.SocketTimeoutException
 
 class CocktailApiRepository_Impl: CocktailApiRepository {
-    override suspend fun getAllIngredients(): List<CocktailIngredient_Data> {
+    override suspend fun getAllIngredients(): List<CocktailIngredient_UI> {
         println("getAllIngredients")
         // 失敗したときのメッセージを入れたデータを一旦用意しておく
         var ingredientList = listOf<CocktailIngredient_Data>(
@@ -21,10 +23,10 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
             println(e)
         }
         println("fetched size: ${ingredientList.size}")
-        return ingredientList
+        return ingredientList.map { it.toUIModel() }
     }
 
-    override suspend fun craftableCocktails(query: List<String>): List<Cocktail_Data> {
+    override suspend fun craftableCocktails(query: List<String>): List<Cocktail_UI> {
         var cocktailList = listOf<Cocktail_Data>(
             ConstantValues.failMessageCocktail
         )
@@ -34,6 +36,6 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
             println("failed xxxxxx")
             println(e)
         }
-        return cocktailList
+        return cocktailList.map { it.toUIModel() }
     }
 }

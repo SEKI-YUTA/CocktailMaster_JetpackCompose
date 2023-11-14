@@ -17,18 +17,13 @@ class AddCocktailIngredientScreenViewModel(
     val viewState = _viewState.asStateFlow()
 
     init {
-        if (lastViewState != null) {
-            _viewState.value = lastViewState!!
-        } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                fetchAllIngredientsFromAPI()
-                lastViewState = _viewState.value
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            fetchAllIngredientsFromAPI()
         }
     }
 
     companion object {
-        var lastViewState: AddCocktailIngredientScreenViewState? = null
+        var fetchedAllIngredientList = emptyList<CocktailIngredient_UI>()
 
         fun provideFactory(
             apiRepository: CocktailApiRepository
@@ -45,6 +40,12 @@ class AddCocktailIngredientScreenViewModel(
     }
 
     suspend fun fetchAllIngredientsFromAPI() {
+        if(fetchedAllIngredientList.isNotEmpty()) {
+            _viewState.value = _viewState.value.copy(
+                ingredientList = fetchedAllIngredientList,
+            )
+            return
+        }
         _viewState.value = _viewState.value.copy(
             isLoading = true,
         )

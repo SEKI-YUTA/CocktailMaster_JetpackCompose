@@ -55,6 +55,12 @@ android {
             applicationIdSuffix ".emulator"
             buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:9090/\"")
         }
+        gql {
+            dimension "versions"
+            applicationIdSuffix ".gql"
+            // このフレーバーではBASE_URLは使わないが、定義しないとエラーになるのでダミーの値を入れる
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:9090/\"")
+        }
     }
 
     variantFilter { variant ->

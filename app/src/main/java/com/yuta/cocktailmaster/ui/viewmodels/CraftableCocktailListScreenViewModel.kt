@@ -70,10 +70,17 @@ class CraftableCocktailListScreenViewModel(
     }
 
     private suspend fun fetchAllCocktail() {
+        if(fetchedAllCocktailList.isNotEmpty()) {
+            _viewState.value = _viewState.value.copy(
+                allCocktailList = fetchedAllCocktailList
+            )
+            return
+        }
         _viewState.value = _viewState.value.copy(
             isAllCocktailFetching = true
         )
         val tmp = apiRepository.getAllCocktails()
+        fetchedAllCocktailList = tmp
         _viewState.value = _viewState.value.copy(
             allCocktailList = tmp,
         )
@@ -87,6 +94,7 @@ class CraftableCocktailListScreenViewModel(
             TabItems.CRAFTABLE,
             TabItems.ALL_COCKTAILS,
         )
+        var fetchedAllCocktailList = emptyList<Cocktail_UI>()
         fun provideFactory(
             apiRepository: CocktailApiRepository,
             ingredientList: List<CocktailIngredient_UI>

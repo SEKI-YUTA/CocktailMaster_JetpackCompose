@@ -5,6 +5,7 @@ on:
 
 jobs:
   comment_screenshot_comparison:
+    runs-on: ubuntu-latest
     permissions:
       actions: read # for downloading artifacts
       contents: write # for pushing screenshot-diff to companion branch

@@ -30,6 +30,12 @@ jobs:
       - name: Run compare screenshot
         run: |
           ./gradlew compareRoborazziPhysicalDebug
+      # Upload screenshots to GitHub Actions Artifacts
+      - uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: app/build/outputs/roborazzi
+          retention-days: 30
 #      ## 差分がある画像があったかチェックする
 #      - id: check-if-there-are-valid-files
 #        name: Check if there are valid files

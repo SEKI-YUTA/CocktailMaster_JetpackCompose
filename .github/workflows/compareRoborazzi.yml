@@ -1,0 +1,63 @@
+on:
+  pull_request:
+
+jobs:
+  comment_screenshot_comparison:
+    permissions:
+      actions: read # for downloading artifacts
+      contents: write # for pushing screenshot-diff to companion branch
+      pull-requests: write # for creating a comment on pull requests
+    steps:
+      ## ここでユニットテストのワークフローのアーティファクトから比較元画像をダウンロードしている
+      - uses: dawidd6/action-download-artifact@v2
+        continue-on-error: true
+        with:
+          name: golden-screenshot
+          workflow: unit-test-android.yml
+          branch: ${{ github.event.pull_request.base.ref }}
+      - name: Run compare screenshot
+        run: |
+          ./gradlew compareRoborazziPhysicalDebug
+      ## 差分がある画像があったかチェックする
+      - id: check-if-there-are-valid-files
+        name: Check if there are valid files
+      ## 差分があった場合は companionブランチを作成し、**_compare.png の画像をpushする準備をする
+      - id: switch-companion-branch
+        if: steps.check-if-there-are-valid-files.outputs.exist_valid_files == 'true'
+        env:
+          BRANCH_NAME: companion_${{ github.head_ref }}
+        run: |
+          ...
+      ## companion ブランチに **_compare.png の画像をpushする
+      - id: push-screenshot-diff
+        if: steps.check-if-there-are-valid-files.outputs.exist_valid_files == 'true'
+        run: |
+          ...
+
+      ## 差分があった画像について、プルリクエストのコメントにレポートを表示
+      - id: generate-diff-reports
+        name: Generate diff reports
+        if: steps.check-if-there-are-valid-files.outputs.exist_valid_files == 'true'
+        env:
+          BRANCH_NAME: companion_${{ github.head_ref }}
+        run: |
+          ...
+      - name: Find Comment
+        uses: peter-evans/find-comment@v2
+        id: fc
+        if: steps.generate-diff-reports.outputs.reports != ''
+        with:
+          issue-number: ${{ github.event.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'data-meta="snapshot-diff-report"'
+
+      - name: Add or update comment on PR
+        uses: peter-evans/create-or-update-comment@v3
+        if: steps.generate-diff-reports.outputs.reports != ''
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.number }}
+          body: ${{ steps.generate-diff-reports.outputs.reports }}
+          edit-mode: replace
+
+      - name: Cleanup outdated companion branches

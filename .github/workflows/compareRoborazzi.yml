@@ -11,6 +11,7 @@ jobs:
       contents: write # for pushing screenshot-diff to companion branch
       pull-requests: write # for creating a comment on pull requests
     steps:
+      - uses: actions/checkout@v3
       ## ここでユニットテストのワークフローのアーティファクトから比較元画像をダウンロードしている
       - uses: dawidd6/action-download-artifact@v2
         continue-on-error: true

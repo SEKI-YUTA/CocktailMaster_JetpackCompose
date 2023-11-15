@@ -1,3 +1,5 @@
+name: compare ui change
+
 on:
   pull_request:
 

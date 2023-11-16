@@ -5,6 +5,8 @@ on:
     types:
       - opened
       - synchronize
+permissions:
+  pull-requests: write
 
 jobs:
   ktlint-check:
@@ -31,20 +33,32 @@ jobs:
       - name: Run Ktlint
         id: ktlint
         run: |
-          KTLINT_RESULT=$(ktlint --reporter=checkstyle --output=ktlint-checkstyle.xml || true)
-          echo "::set-output name=ktlint-result::$KTLINT_RESULT"
-          if [ -n "$KTLINT_RESULT" ]; then
-            echo "Ktlint found issues. Commenting on the PR."
-          else
-            echo "Ktlint passed. No issues found."
-          fi
+          ktlint --reporter=checkstyle --reporter=checkstyle,output=build/report/ktlint-report.xml,format=sarif
 
-      - name: Comment on PR if issues found
-        if: steps.ktlint.outputs.ktlint-result != 'null'
-        run: |
-          COMMENT="#### Ktlint Issues\n\`\`\`xml\n$(cat ktlint-checkstyle.xml)\n\`\`\`"
-          echo "$COMMENT" > comment.md
-          echo "Commenting on the PR..."
-          curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" -H "Content-Type: application/json" \
-            -X POST -d "{\"body\":\"$COMMENT\"}" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: report
+          path: build/report/
+          retention-days: 30
+
+#コメントするテスト
+#      - name: create text file
+#        run: |
+#          echo "GithubActions" > message.txt
+#      - name: Comment PR
+
+#        if: steps.ktlint.outputs.ktlint-result != 'null'
+#        uses: thollander/actions-comment-pull-request@v2
+#        with:
+#          filePath: message.txt
+#コメントするテスト
+
+#      - name: Comment on PR if issues found
+#        if: steps.ktlint.outputs.ktlint-result != 'null'
+#        run: |
+#          COMMENT="#### Ktlint Issues\n\`\`\`xml\n$(cat ktlint-checkstyle.xml)\n\`\`\`"
+#          echo "$COMMENT" > comment.md
+#          echo "Commenting on the PR..."
+#          curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" -H "Content-Type: application/json" \
+#            -X POST -d "{\"body\":\"$COMMENT\"}" \
+#            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"

@@ -1,0 +1,49 @@
+name: Ktlint Check
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  ktlint-check:
+    name: Run Ktlint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: 11
+
+      - name: Install Ktlint
+        run: |
+          curl -sSLO https://github.com/pinterest/ktlint/releases/latest/download/ktlint
+          chmod +x ktlint
+          sudo mv ktlint /usr/local/bin/
+        shell: bash
+
+      - name: Run Ktlint
+        id: ktlint
+        run: |
+          KTLINT_RESULT=$(ktlint --reporter=checkstyle --output=ktlint-checkstyle.xml || true)
+          echo "::set-output name=ktlint-result::$KTLINT_RESULT"
+          if [ -n "$KTLINT_RESULT" ]; then
+            echo "Ktlint found issues. Commenting on the PR."
+          else
+            echo "Ktlint passed. No issues found."
+          fi
+
+      - name: Comment on PR if issues found
+        if: steps.ktlint.outputs.ktlint-result != 'null'
+        run: |
+          COMMENT="#### Ktlint Issues\n\`\`\`xml\n$(cat ktlint-checkstyle.xml)\n\`\`\`"
+          echo "$COMMENT" > comment.md
+          echo "Commenting on the PR..."
+          curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" -H "Content-Type: application/json" \
+            -X POST -d "{\"body\":\"$COMMENT\"}" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments"

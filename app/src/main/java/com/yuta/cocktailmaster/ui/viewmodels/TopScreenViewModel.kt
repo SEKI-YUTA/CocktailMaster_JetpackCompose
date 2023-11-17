@@ -44,6 +44,7 @@ class TopScreenViewModel() : ViewModel() {
 
     fun onCloseEditDialog() {
         _viewState.value = _viewState.value.copy(
+            selectedIngredient = null,
             isShowingEditDialog = false,
         )
     }

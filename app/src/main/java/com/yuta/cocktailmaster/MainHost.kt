@@ -21,6 +21,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.yuta.cocktailmaster.data.AppContainer
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 import com.yuta.cocktailmaster.ui.Screen
 import com.yuta.cocktailmaster.ui.component.MyTopAppBar
@@ -31,10 +32,13 @@ import com.yuta.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewMode
 import com.yuta.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.yuta.cocktailmaster.ui.viewmodels.MainViewModel
 import com.yuta.cocktailmaster.ui.viewmodels.TopScreenViewModel
+import com.yuta.cocktailmaster.util.AppUtil
 
 @Composable
 fun MainHost(
+    appContainer: AppContainer,
     mainViewState: MainViewModel.MainViewModelViewState,
+    networkConnectionStateChanged: (Boolean) -> Unit,
     onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
@@ -42,7 +46,9 @@ fun MainHost(
     val apiRepository = LocalApiRepository.current
     val ownedIngredientRepository = LocalOwnedIngredientRepository.current
     val navController = rememberNavController()
-
+    AppUtil.checkNetworkConnection(appContainer.context) {
+        networkConnectionStateChanged(it)
+    }
     Scaffold(
         topBar = {
             Surface(shadowElevation = 4.dp) {

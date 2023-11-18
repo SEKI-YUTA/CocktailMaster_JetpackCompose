@@ -20,6 +20,11 @@ jobs:
       - name: Show current datetime
         run: echo ${{ env.CURRENT_DATETIME }}
 
+      - name: print Debug Info
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo $GITHUB_CONTEXT
+
       - name: comment on closed pr
         uses: thollander/actions-comment-pull-request@v2
         with:

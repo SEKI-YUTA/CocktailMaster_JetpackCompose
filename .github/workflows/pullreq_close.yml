@@ -29,5 +29,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            PR Closed by ${{github.event.pull_request.base.user.login}}
+            PR Closed by ${{github.actor}}
             at ${{env.CURRENT_DATETIME}}

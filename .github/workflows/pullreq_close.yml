@@ -12,6 +12,11 @@ jobs:
     name: comment on closed pr
     runs-on: ubuntu-latest
     steps:
+      - name: print object info for debug
+        env:
+          DEBUG_INFO: ${{toJson(github)}}
+        run: |
+          echo "$DEBUG_INFO"
       - name: comment on closed pr
         uses: thollander/actions-comment-pull-request@v2
         with:

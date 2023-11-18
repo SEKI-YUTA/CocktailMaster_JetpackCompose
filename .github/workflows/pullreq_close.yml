@@ -1,6 +1,7 @@
 name: Actions Close Comment
 
-permissions: write
+permissions:
+  pull-requests: write
 
 on:
   pull_request:

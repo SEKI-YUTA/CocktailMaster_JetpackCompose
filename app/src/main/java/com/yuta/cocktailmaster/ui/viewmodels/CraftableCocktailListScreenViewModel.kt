@@ -7,9 +7,6 @@ import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.yuta.cocktailmaster.ui.model.Cocktail_UI
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -27,25 +24,18 @@ class CraftableCocktailListScreenViewModel(
 
     init {
         println("init")
-        onEvent(CraftableCocktailListScreenEvent.FetchCocktailData)
+        viewModelScope.launch(Dispatchers.IO) {
+            onEvent(CraftableCocktailListScreenEvent.FetchCocktailData)
+        }
     }
 
-    fun onEvent(event: CraftableCocktailListScreenEvent): Job {
-        val job = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun onEvent(event: CraftableCocktailListScreenEvent) {
             when (event) {
                 is CraftableCocktailListScreenEvent.FetchCocktailData -> {
-                    listOf(
-                        async {
-                            fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
-                        },
-                        async {
-                          fetchAllCocktail()
-                        }
-                    ).awaitAll()
+                    fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
+                    fetchAllCocktail()
                 }
             }
-        }
-        return job
     }
 
     fun setSelectedTab(tab: TabItems) {
@@ -63,9 +53,8 @@ class CraftableCocktailListScreenViewModel(
         val tmp = apiRepository.craftableCocktails(ingredientList)
         _viewState.value = _viewState.value.copy(
             craftableCocktailList = tmp,
-        )
-        _viewState.value = _viewState.value.copy(
             isCraftableCocktailFetching = false
+
         )
     }
 

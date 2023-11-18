@@ -65,6 +65,7 @@ class AddCocktailIngredientScreenViewModel(
 
     fun onCloseAddDialog() {
         _viewState.value = _viewState.value.copy(
+            selectedIngredient = null,
             isShowingAddDialog = false,
         )
     }

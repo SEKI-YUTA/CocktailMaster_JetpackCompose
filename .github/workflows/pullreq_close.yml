@@ -1,0 +1,18 @@
+name: Actions Close Comment
+
+permissions: write
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  comment:
+    steps:
+      - name: comment on closed pr
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            PR Closed ${{github.event.pull_request.actor}}
+            Hello World
+            PR Closed ${{github.event.pull_request}}

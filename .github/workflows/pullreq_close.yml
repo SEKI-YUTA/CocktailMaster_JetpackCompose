@@ -12,13 +12,17 @@ jobs:
     name: comment on closed pr
     runs-on: ubuntu-latest
     steps:
-      - name: print object info for debug
+      - name: Set current datetime as env variable
         env:
-          DEBUG_INFO: ${{toJson(github)}}
-        run: |
-          echo "$DEBUG_INFO"
+          TZ: 'Asia/Tokyo' # タイムゾーン指定
+        run: echo "CURRENT_DATETIME=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+
+      - name: Show current datetime
+        run: echo ${{ env.CURRENT_DATETIME }}
+
       - name: comment on closed pr
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             PR Closed by ${{github.event.pull_request.base.user.login}}
+            at ${{env.CURRENT_DATETIME}}

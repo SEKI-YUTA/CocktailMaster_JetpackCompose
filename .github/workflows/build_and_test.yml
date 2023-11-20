@@ -2,8 +2,8 @@ name: Android CI
 
 on:
   pull_request:
-    types:
-      - labeled
+#    types:
+#      - labeled
 
 jobs:
   build:
@@ -26,3 +26,10 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build -x test
+  capture:
+    name: Capture with Roborazzi
+    runs-on: ubuntu-latest
+    steps:
+      - name: capture image
+        uses: ./.github/workflows/capture_test.yml
+

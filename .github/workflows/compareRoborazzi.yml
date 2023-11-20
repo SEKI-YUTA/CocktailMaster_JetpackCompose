@@ -28,17 +28,17 @@ jobs:
       - uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
         with:
-          name: screenshots
+          name: golden_screenshots
           skip_unpack: true
-          workflow: compareRoborazzi.yml
+          workflow: capture_test.yml
           branch: ${{ github.event.pull_request.head.ref }}
       - name: Move to build directory And unpack
         run: |
           ls -la
           mkdir -p app/build/outputs/roborazzi
-          mv screenshots.zip app/build/outputs/roborazzi
+          mv golden_screenshots.zip app/build/outputs/roborazzi
           cd app/build/outputs/roborazzi
-          unzip screenshots.zip
+          unzip -o golden_screenshots.zip
       - name: Run compare screenshot
         run: |
           ls -la

@@ -2,10 +2,12 @@ name: compare ui change
 
 on:
   pull_request:
+    types: [labeled]
 
 jobs:
   comment_screenshot_comparison:
     runs-on: ubuntu-latest
+    if: ${{ github.event.label.name == 'Roborazzi' }}
     permissions:
       actions: read # for downloading artifacts
       contents: write # for pushing screenshot-diff to companion branch
@@ -29,16 +31,9 @@ jobs:
         continue-on-error: true
         with:
           name: golden_screenshots
-          skip_unpack: true
+#          skip_unpack: true
           workflow: build_and_test.yml
           branch: ${{ github.event.pull_request.head.ref }}
-      - name: Move to build directory And unpack
-        run: |
-          ls -la
-          mkdir -p app/build/outputs/roborazzi
-          mv golden_screenshots.zip app/build/outputs/roborazzi
-          cd app/build/outputs/roborazzi
-          unzip -o golden_screenshots.zip
       - name: Run compare screenshot
         run: |
           ls -la

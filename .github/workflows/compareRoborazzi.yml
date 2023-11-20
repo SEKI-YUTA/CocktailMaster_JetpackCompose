@@ -30,7 +30,7 @@ jobs:
         with:
           name: golden_screenshots
           skip_unpack: true
-          workflow: capture_test.yml
+          workflow: build_and_test.yml
           branch: ${{ github.event.pull_request.head.ref }}
       - name: Move to build directory And unpack
         run: |

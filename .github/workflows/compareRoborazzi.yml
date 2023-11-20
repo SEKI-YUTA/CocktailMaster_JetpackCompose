@@ -29,8 +29,15 @@ jobs:
         continue-on-error: true
         with:
           name: screenshots
+          skip_unpack: true
           workflow: compareRoborazzi.yml
           branch: ${{ github.event.pull_request.head.ref }}
+      - name: Move to build directory And unpack
+        run: |
+          ls -la
+          mv screenshots app/build/outputs/roborazzi
+          cd app/build/outputs/roborazzi
+          unzip screenshots.zip
       - name: Run compare screenshot
         run: |
           ls -la

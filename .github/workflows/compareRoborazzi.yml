@@ -35,7 +35,8 @@ jobs:
       - name: Move to build directory And unpack
         run: |
           ls -la
-          mv screenshots app/build/outputs/roborazzi
+          mkdir -p app/build/outputs/roborazzi
+          mv screenshots.zip app/build/outputs/roborazzi
           cd app/build/outputs/roborazzi
           unzip screenshots.zip
       - name: Run compare screenshot

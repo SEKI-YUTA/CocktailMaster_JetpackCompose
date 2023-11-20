@@ -11,6 +11,10 @@ jobs:
       contents: write # for pushing screenshot-diff to companion branch
       pull-requests: write # for creating a comment on pull requests
     steps:
+      - name: print Debug Info
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo $GITHUB_CONTEXT
       - uses: actions/checkout@v3
       - name: set up JDK 17
         uses: actions/setup-java@v3
@@ -24,11 +28,12 @@ jobs:
       - uses: dawidd6/action-download-artifact@v2
         continue-on-error: true
         with:
-          name: golden-screenshot
-          workflow: unit-test-android.yml
-          branch: ${{ github.event.pull_request.base.ref }}
+          name: screenshots
+          workflow: compareRoborazzi.yml
+          branch: ${{ github.event.pull_request.head.ref }}
       - name: Run compare screenshot
         run: |
+          ls -la
           ./gradlew compareRoborazziPhysicalDebug
       # Upload screenshots to GitHub Actions Artifacts
       - uses: actions/upload-artifact@v3

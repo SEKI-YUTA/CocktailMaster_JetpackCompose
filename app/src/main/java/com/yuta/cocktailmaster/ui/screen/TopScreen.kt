@@ -57,7 +57,7 @@ fun TopScreen(
 ) {
     val viewState = viewModel.viewState.collectAsState().value
     Box {
-        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -284,7 +284,7 @@ fun SpotLight(
                 textMeasure,
                 text = text,
                 topLeft = Offset(
-                    x = actual.left,
+                    x = 40f,
                     y = yPos
                 ),
                 style = TextStyle(

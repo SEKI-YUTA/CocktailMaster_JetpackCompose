@@ -1,9 +1,11 @@
 package com.yuta.cocktailmaster.ui.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yuta.cocktailmaster.data.interfaces.OwnedIngredientRepository
+import com.yuta.cocktailmaster.data.repository.AppStatusRepository_Impl
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -25,6 +27,21 @@ class MainViewModel(
     fun setIsNetworkConnected(connected: Boolean) {
         _viewState.value = _viewState.value.copy(
             isNetworkConnected = connected
+        )
+    }
+
+    fun readIsOnboardingFinished(context: Context) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isFinished = AppStatusRepository_Impl().readIsOnboardingFinished(context)
+            setIsOnboardingFinished(context, isFinished)
+            println("isFinished: $isFinished")
+        }
+    }
+
+    fun setIsOnboardingFinished(context: Context, finished: Boolean) {
+        _viewState.value = _viewState.value.copy(
+            isOnboardingFinished = finished,
+            isAppStatusRead = true,
         )
     }
 
@@ -78,5 +95,7 @@ class MainViewModel(
         val isOwnedIngredientReading: Boolean = false,
         val isNetworkConnected: Boolean = false,
         val ownedIngredientList: List<CocktailIngredient_UI> = emptyList(),
+        val isAppStatusRead: Boolean = false,
+        val isOnboardingFinished: Boolean = false
     )
 }

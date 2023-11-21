@@ -48,6 +48,7 @@ fun MainHost(
     onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
+    onUpdateOnboardingFinished: (Boolean) -> Unit
 ) {
     val apiRepository = LocalApiRepository.current
     val ownedIngredientRepository = LocalOwnedIngredientRepository.current
@@ -84,6 +85,8 @@ fun MainHost(
                 )
                 TopScreen(
                     topAppBarSize = topAppBarSize,
+                    isOnboardingFinished = mainViewState.isOnboardingFinished,
+                    isAppStatusRead = mainViewState.isAppStatusRead,
                     viewModel = topScreenViewModel,
                     ownedIngredientList = mainViewState.ownedIngredientList,
                     navigateToAddIngredient = {
@@ -97,7 +100,8 @@ fun MainHost(
                         }
                     },
                     onEditOwnedIngredient = onEditOwnedIngredient,
-                    onDeleteOwnedIngredient = onDeleteOwnedIngredient
+                    onDeleteOwnedIngredient = onDeleteOwnedIngredient,
+                    onUpdateOnboardingFinished = onUpdateOnboardingFinished
                 )
             }
             composable(Screen.AddCocktailIngredientScreen.name) {

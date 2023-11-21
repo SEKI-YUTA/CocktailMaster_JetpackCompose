@@ -68,12 +68,15 @@ import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 @Composable
 fun TopScreen(
     topAppBarSize: IntSize,
+    isOnboardingFinished: Boolean = false,
+    isAppStatusRead: Boolean = false,
     viewModel: TopScreenViewModel,
     ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
     navigateToAddIngredient: () -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
-    onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {}
+    onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
+    onUpdateOnboardingFinished: (Boolean) -> Unit,
 ) {
     val viewState = viewModel.viewState.collectAsState().value
     Box {
@@ -125,7 +128,11 @@ fun TopScreen(
                     .onGloballyPositioned {
                         println(it.boundsInRoot())
                         viewModel.setOnboardingItem(
-                            OnboardingItem(it.boundsInRoot(), "所有中の材料が表示されます。", textAreaPosition = TextAreaPosition.ABOVE),
+                            OnboardingItem(
+                                it.boundsInRoot(),
+                                "所有中の材料が表示されます。",
+                                textAreaPosition = TextAreaPosition.ABOVE
+                            ),
                             2
                         )
                     }
@@ -183,13 +190,25 @@ fun TopScreen(
             )
         }
         val onboardingState = viewState.onboardingState
-        if (onboardingState.currentOnboardingStep < onboardingState.items.size) {
+        if (!isOnboardingFinished && isAppStatusRead && onboardingState.currentOnboardingStep < onboardingState.items.size) {
             println("currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
-            onboardingState.items[onboardingState.currentOnboardingStep].let { item ->
-                SpotLight(rect = item.pos, topAppBarSize = topAppBarSize, text = item.text, textAreaPosition = item.textAreaPosition) {
-                    viewModel.incrementOnboardingStep()
-                    println(viewState.onboardingState.currentOnboardingStep)
-                }
+            println("items.size: ${onboardingState.items.size}")
+            val item = onboardingState.items[onboardingState.currentOnboardingStep]
+            if (item.pos != Rect.Zero) {
+                println("isLast: ${onboardingState.currentOnboardingStep == onboardingState.items.size - 1}")
+                SpotLight(
+                    rect = item.pos,
+                    topAppBarSize = topAppBarSize,
+                    text = item.text,
+                    textAreaPosition = item.textAreaPosition,
+                    isLast = onboardingState.currentOnboardingStep == onboardingState.items.size - 1,
+                    onMarkOnboardingFinish = {
+                        onUpdateOnboardingFinished(true)
+                    },
+                    onAreaTapped = {
+                        viewModel.incrementOnboardingStep()
+                    }
+                )
             }
         }
     }
@@ -197,7 +216,15 @@ fun TopScreen(
 
 @OptIn(ExperimentalTextApi::class, ExperimentalUnitApi::class)
 @Composable
-fun SpotLight(rect: Rect, topAppBarSize: IntSize, text: String = "", textAreaPosition: TextAreaPosition, onAreaTapped: () -> Unit) {
+fun SpotLight(
+    rect: Rect,
+    topAppBarSize: IntSize,
+    text: String = "",
+    textAreaPosition: TextAreaPosition,
+    isLast: Boolean = false,
+    onMarkOnboardingFinish: () -> Unit = {},
+    onAreaTapped: () -> Unit,
+) {
     val actual = rect.translate(
         translateX = 0f,
         translateY = -topAppBarSize.height.toFloat()
@@ -210,6 +237,9 @@ fun SpotLight(rect: Rect, topAppBarSize: IntSize, text: String = "", textAreaPos
             .pointerInput(Unit) {
                 detectTapGestures {
                     onAreaTapped()
+                    if(isLast) {
+                        onMarkOnboardingFinish()
+                    }
                 }
             }
     ) {
@@ -222,7 +252,7 @@ fun SpotLight(rect: Rect, topAppBarSize: IntSize, text: String = "", textAreaPos
         ) {
             drawRect(color = Color.Black.copy(alpha = 0.8f))
         }
-        val yPos = when(textAreaPosition) {
+        val yPos = when (textAreaPosition) {
             TextAreaPosition.ABOVE -> actual.top - 100
             TextAreaPosition.BELOW -> actual.bottom + 30
         }
@@ -325,7 +355,8 @@ fun TopScreenPreview() {
                     navigateToCraftableCocktail = {},
                     navigateToAddIngredient = {},
                     onDeleteOwnedIngredient = {},
-                    onEditOwnedIngredient = {}
+                    onEditOwnedIngredient = {},
+                    onUpdateOnboardingFinished = {}
                 )
             }
         }

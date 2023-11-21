@@ -9,7 +9,7 @@ data class OnboardingState(
 ) {
     companion object {
         val INITIAL = OnboardingState(
-            items = List(4) { OnboardingItem.INITIAL },
+            items = List(3) { OnboardingItem.INITIAL },
             currentOnboardingStep = 0
         )
     }

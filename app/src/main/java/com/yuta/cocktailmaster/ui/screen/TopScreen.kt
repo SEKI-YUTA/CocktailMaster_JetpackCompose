@@ -190,9 +190,10 @@ fun TopScreen(
             )
         }
         val onboardingState = viewState.onboardingState
-        if (!isOnboardingFinished && isAppStatusRead && onboardingState.currentOnboardingStep < onboardingState.items.size) {
-            println("currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
-            println("items.size: ${onboardingState.items.size}")
+        println("currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
+        println("items.size: ${onboardingState.items.size}")
+        if (!isOnboardingFinished && onboardingState.currentOnboardingStep < onboardingState.items.size) {
+            println("XXX")
             val item = onboardingState.items[onboardingState.currentOnboardingStep]
             if (item.pos != Rect.Zero) {
                 println("isLast: ${onboardingState.currentOnboardingStep == onboardingState.items.size - 1}")
@@ -201,15 +202,14 @@ fun TopScreen(
                     topAppBarSize = topAppBarSize,
                     text = item.text,
                     textAreaPosition = item.textAreaPosition,
-                    isLast = onboardingState.currentOnboardingStep == onboardingState.items.size - 1,
-                    onMarkOnboardingFinish = {
-                        onUpdateOnboardingFinished(true)
-                    },
                     onAreaTapped = {
                         viewModel.incrementOnboardingStep()
                     }
                 )
             }
+        } else {
+            println("YYY")
+            onUpdateOnboardingFinished(true)
         }
     }
 }
@@ -221,8 +221,6 @@ fun SpotLight(
     topAppBarSize: IntSize,
     text: String = "",
     textAreaPosition: TextAreaPosition,
-    isLast: Boolean = false,
-    onMarkOnboardingFinish: () -> Unit = {},
     onAreaTapped: () -> Unit,
 ) {
     val actual = rect.translate(
@@ -237,9 +235,6 @@ fun SpotLight(
             .pointerInput(Unit) {
                 detectTapGestures {
                     onAreaTapped()
-                    if(isLast) {
-                        onMarkOnboardingFinish()
-                    }
                 }
             }
     ) {

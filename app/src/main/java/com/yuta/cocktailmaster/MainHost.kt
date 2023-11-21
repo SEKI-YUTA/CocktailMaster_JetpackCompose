@@ -12,9 +12,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,6 +52,9 @@ fun MainHost(
     val apiRepository = LocalApiRepository.current
     val ownedIngredientRepository = LocalOwnedIngredientRepository.current
     val navController = rememberNavController()
+    var topAppBarSize by remember {
+        mutableStateOf(IntSize.Zero)
+    }
     AppUtil.checkNetworkConnection(appContainer.context) {
         networkConnectionStateChanged(it)
     }
@@ -53,6 +62,10 @@ fun MainHost(
         topBar = {
             Surface(shadowElevation = 4.dp) {
                 MyTopAppBar(
+                    modifier = Modifier
+                        .onGloballyPositioned {
+                          topAppBarSize = it.size
+                        },
                     navController = navController
                 )
             }
@@ -70,6 +83,7 @@ fun MainHost(
                     factory = TopScreenViewModel.provideFactory()
                 )
                 TopScreen(
+                    topAppBarSize = topAppBarSize,
                     viewModel = topScreenViewModel,
                     ownedIngredientList = mainViewState.ownedIngredientList,
                     navigateToAddIngredient = {

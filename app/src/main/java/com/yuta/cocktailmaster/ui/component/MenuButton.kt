@@ -51,7 +51,7 @@ fun MenuButton(
             )
             Text(
                 text = text,
-                modifier.weight(1f),
+                Modifier.weight(1f),
                 style = TextStyle(fontSize = 16.sp, textAlign = TextAlign.Center)
             )
         }

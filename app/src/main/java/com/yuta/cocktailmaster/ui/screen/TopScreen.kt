@@ -1,6 +1,8 @@
 package com.yuta.cocktailmaster.ui.screen
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,8 +25,24 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.ClipOp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -38,6 +56,7 @@ import com.yuta.cocktailmaster.ui.component.IngredientListItem
 import com.yuta.cocktailmaster.ui.component.LoadingMessage
 import com.yuta.cocktailmaster.ui.component.MenuButton
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.yuta.cocktailmaster.ui.model.OnboardingItem
 import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.yuta.cocktailmaster.ui.viewmodels.TopScreenViewModel
 import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
@@ -48,6 +67,7 @@ import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 */
 @Composable
 fun TopScreen(
+    topAppBarSize: IntSize,
     viewModel: TopScreenViewModel,
     ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
@@ -66,7 +86,14 @@ fun TopScreen(
             ) {
                 MenuButton(
                     text = stringResource(R.string.cocktail_list_str),
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .onGloballyPositioned {
+                            viewModel.setOnboardingItem(
+                                OnboardingItem(it.boundsInRoot(), "ここから作れるカクテルの一覧を見ることができます。"),
+                                0
+                            )
+                        },
                     icon = Icons.Default.List
                 ) {
                     navigateToCraftableCocktail()
@@ -74,7 +101,14 @@ fun TopScreen(
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .onGloballyPositioned {
+                            viewModel.setOnboardingItem(
+                                OnboardingItem(it.boundsInRoot(), "ここから材料を追加します。"),
+                                1
+                            )
+                        },
                     icon = Icons.Default.Add
                 ) {
                     navigateToAddIngredient()
@@ -85,7 +119,17 @@ fun TopScreen(
                 style = TextStyle(fontSize = 22.sp),
                 modifier = Modifier.padding(16.dp)
             )
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .onGloballyPositioned {
+                        println(it.boundsInRoot())
+                        viewModel.setOnboardingItem(
+                            OnboardingItem(it.boundsInRoot(), "所有中の材料が表示されます。", textAreaPosition = TextAreaPosition.ABOVE),
+                            2
+                        )
+                    }
+            ) {
                 items(ownedIngredientList) { ingredient_UI ->
                     IngredientListItem(
                         ingredient_UI = ingredient_UI,
@@ -138,7 +182,69 @@ fun TopScreen(
                 },
             )
         }
+        val onboardingState = viewState.onboardingState
+        if (onboardingState.currentOnboardingStep < onboardingState.items.size) {
+            println("currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
+            onboardingState.items[onboardingState.currentOnboardingStep].let { item ->
+                SpotLight(rect = item.pos, topAppBarSize = topAppBarSize, text = item.text, textAreaPosition = item.textAreaPosition) {
+                    viewModel.incrementOnboardingStep()
+                    println(viewState.onboardingState.currentOnboardingStep)
+                }
+            }
+        }
     }
+}
+
+@OptIn(ExperimentalTextApi::class, ExperimentalUnitApi::class)
+@Composable
+fun SpotLight(rect: Rect, topAppBarSize: IntSize, text: String = "", textAreaPosition: TextAreaPosition, onAreaTapped: () -> Unit) {
+    val actual = rect.translate(
+        translateX = 0f,
+        translateY = -topAppBarSize.height.toFloat()
+    ).inflate(8f)
+    val textMeasure = rememberTextMeasurer()
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectTapGestures {
+                    onAreaTapped()
+                }
+            }
+    ) {
+        val spotlightPath = Path().apply {
+            addRect(actual)
+        }
+        clipPath(
+            path = spotlightPath,
+            clipOp = ClipOp.Difference
+        ) {
+            drawRect(color = Color.Black.copy(alpha = 0.8f))
+        }
+        val yPos = when(textAreaPosition) {
+            TextAreaPosition.ABOVE -> actual.top - 100
+            TextAreaPosition.BELOW -> actual.bottom + 30
+        }
+        drawText(
+            textMeasure,
+            text = text,
+            topLeft = Offset(
+                x = actual.left,
+                y = yPos
+            ),
+            style = TextStyle(
+                fontSize = 26.sp,
+                color = Color.White,
+                lineHeight = TextUnit(30f, TextUnitType.Sp)
+            )
+        )
+    }
+}
+
+enum class TextAreaPosition {
+    ABOVE,
+    BELOW,
 }
 
 @Composable
@@ -213,6 +319,7 @@ fun TopScreenPreview() {
         CocktailMasterTheme {
             Surface {
                 TopScreen(
+                    topAppBarSize = IntSize.Zero,
                     viewModel = viewModel,
                     ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
                     navigateToCraftableCocktail = {},

@@ -35,6 +35,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -193,22 +194,19 @@ fun TopScreen(
         println("currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
         println("items.size: ${onboardingState.items.size}")
         if (!isOnboardingFinished && onboardingState.currentOnboardingStep < onboardingState.items.size) {
-            println("XXX")
             val item = onboardingState.items[onboardingState.currentOnboardingStep]
-            if (item.pos != Rect.Zero) {
                 println("isLast: ${onboardingState.currentOnboardingStep == onboardingState.items.size - 1}")
                 SpotLight(
                     rect = item.pos,
                     topAppBarSize = topAppBarSize,
                     text = item.text,
                     textAreaPosition = item.textAreaPosition,
+                    isLast = onboardingState.currentOnboardingStep == onboardingState.items.size - 1,
                     onAreaTapped = {
                         viewModel.incrementOnboardingStep()
                     }
                 )
-            }
         } else {
-            println("YYY")
             onUpdateOnboardingFinished(true)
         }
     }
@@ -221,8 +219,10 @@ fun SpotLight(
     topAppBarSize: IntSize,
     text: String = "",
     textAreaPosition: TextAreaPosition,
+    isLast: Boolean,
     onAreaTapped: () -> Unit,
 ) {
+    println("spotLight isLast: $isLast")
     val actual = rect.translate(
         translateX = 0f,
         translateY = -topAppBarSize.height.toFloat()
@@ -247,23 +247,54 @@ fun SpotLight(
         ) {
             drawRect(color = Color.Black.copy(alpha = 0.8f))
         }
-        val yPos = when (textAreaPosition) {
-            TextAreaPosition.ABOVE -> actual.top - 100
-            TextAreaPosition.BELOW -> actual.bottom + 30
-        }
-        drawText(
-            textMeasure,
-            text = text,
-            topLeft = Offset(
-                x = actual.left,
-                y = yPos
-            ),
-            style = TextStyle(
-                fontSize = 26.sp,
-                color = Color.White,
-                lineHeight = TextUnit(30f, TextUnitType.Sp)
+        if(isLast) {
+            val width = size.width
+            val height = size.height
+            val textLayoutResult = textMeasure.measure(
+                text = AnnotatedString("さぁ使ってみましょう!"),
+                style = TextStyle(
+                    fontSize = 26.sp,
+                    color = Color.White,
+                    lineHeight = TextUnit(30f, TextUnitType.Sp)
+                )
             )
-        )
+            val textSize = textLayoutResult.size
+            println("width: $width height: $height")
+            println("textWidth: ${textSize.width} textHeight: ${textSize.height}")
+            drawText(
+                textMeasure,
+                text = "さぁ使ってみましょう!",
+                topLeft = Offset(
+                    x = (width - textSize.width) / 2,
+                    y = (height - textSize.height) / 2
+                ),
+                style = TextStyle(
+                    fontSize = 26.sp,
+                    color = Color.White,
+                    lineHeight = TextUnit(30f, TextUnitType.Sp)
+                )
+            )
+        } else {
+
+            val yPos = when (textAreaPosition) {
+                TextAreaPosition.ABOVE -> actual.top - 100
+                TextAreaPosition.BELOW -> actual.bottom + 30
+            }
+            drawText(
+                textMeasure,
+                text = text,
+                topLeft = Offset(
+                    x = actual.left,
+                    y = yPos
+                ),
+                style = TextStyle(
+                    fontSize = 26.sp,
+                    color = Color.White,
+                    lineHeight = TextUnit(30f, TextUnitType.Sp)
+                )
+            )
+        }
+
     }
 }
 

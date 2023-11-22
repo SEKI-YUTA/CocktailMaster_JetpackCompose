@@ -125,8 +125,8 @@ dependencies {
     testImplementation "io.github.takahirom.roborazzi:roborazzi:1.8.0-alpha-3"
     testImplementation "io.github.takahirom.roborazzi:roborazzi-compose:1.8.0-alpha-3"
     testImplementation "io.github.takahirom.roborazzi:roborazzi-junit-rule:1.8.0-alpha-3"
-    testImplementation "io.mockk:mockk-android:${mockkVersion}"
-    testImplementation "io.mockk:mockk-agent:${mockkVersion}"
+    testImplementation "io.mockk:mockk-android:$mockkVersion"
+    testImplementation "io.mockk:mockk-agent:$mockkVersion"
     testImplementation 'androidx.compose.ui:ui-test-junit4'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

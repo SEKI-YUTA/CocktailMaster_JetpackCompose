@@ -1,7 +1,7 @@
 package com.yuta.cocktailmaster.ui.model
 
 import androidx.compose.ui.geometry.Rect
-import com.yuta.cocktailmaster.ui.screen.TextAreaPosition
+import com.yuta.cocktailmaster.ui.component.TextAreaPosition
 
 data class OnboardingState(
     val items: List<OnboardingItem> = listOf(),

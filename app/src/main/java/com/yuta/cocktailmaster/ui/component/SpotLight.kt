@@ -3,14 +3,9 @@ package com.yuta.cocktailmaster.ui.component
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowForward
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +20,6 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
@@ -89,10 +83,12 @@ fun SpotLight(
             }
         }
         if (isLast) {
-            Button(onClick = { onMarkOnboardingFinished(true) }) {
-                Text(text = "さぁ使ってみましょう!")
-                Spacer(modifier = Modifier.width(8.dp))
-                Icon(Icons.Rounded.ArrowForward, contentDescription = null)
+            ButtonWithText(
+                text = "さぁ使ってみよう",
+                icon = Icons.Rounded.ArrowForward,
+                contentDescription = null
+            ) {
+                onMarkOnboardingFinished(true)
             }
         }
     }

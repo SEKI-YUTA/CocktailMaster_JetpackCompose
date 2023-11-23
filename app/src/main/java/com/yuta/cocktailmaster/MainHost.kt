@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -90,6 +91,9 @@ fun MainHost(
                     val topScreenViewModel = viewModel<TopScreenViewModel>(
                         factory = TopScreenViewModel.provideFactory()
                     )
+                    val cocktailListButtonText = stringResource(R.string.onboarding_cocktail_list_button)
+                    val addIngredientButtonText = stringResource(R.string.onboarding_add_ingredient_button)
+                    val ownedIngredientListText = stringResource(R.string.onboarding_owned_ingredient_list)
                     TopScreen(
                         topAppBarSize = topAppBarSize,
                         isOnboardingFinished = mainViewState.isOnboardingFinished,
@@ -111,13 +115,13 @@ fun MainHost(
                         onUpdateOnboardingFinished = onMarkOnboardingFinished,
                         cocktailListButtonModifier = Modifier.onGloballyPositioned {
                             setOnboardingItem(
-                                OnboardingItem(it.boundsInRoot(), "ここから作れるカクテルの一覧を見ることができます。"),
+                                OnboardingItem(it.boundsInRoot(), cocktailListButtonText),
                                 0
                             )
                         },
                         addIngredientButtonModifier = Modifier.onGloballyPositioned {
                             setOnboardingItem(
-                                OnboardingItem(it.boundsInRoot(), "ここから材料を追加できます。。"),
+                                OnboardingItem(it.boundsInRoot(), addIngredientButtonText),
                                 1
                             )
                         },
@@ -125,7 +129,7 @@ fun MainHost(
                             setOnboardingItem(
                                 OnboardingItem(
                                     it.boundsInRoot(),
-                                    "ここに持っている材料が表示されます。",
+                                    ownedIngredientListText,
                                     TextAreaPosition.ABOVE
                                 ),
                                 2

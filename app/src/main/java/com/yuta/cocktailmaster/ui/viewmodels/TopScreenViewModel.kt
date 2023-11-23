@@ -3,8 +3,6 @@ package com.yuta.cocktailmaster.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
-import com.yuta.cocktailmaster.ui.model.OnboardingItem
-import com.yuta.cocktailmaster.ui.model.OnboardingState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -64,26 +62,6 @@ class TopScreenViewModel() : ViewModel() {
         )
     }
 
-    fun setOnboardingItem(item: OnboardingItem, index: Int) {
-        val onboardingState = viewState.value.onboardingState
-        val items = onboardingState.items.toMutableList()
-        items[index] = item
-        _viewState.value = _viewState.value.copy(
-            onboardingState = onboardingState.copy(
-                items = items
-            )
-        )
-    }
-
-    fun incrementOnboardingStep() {
-        _viewState.value = _viewState.value.copy(
-            onboardingState = _viewState.value.onboardingState.copy(
-                currentOnboardingStep = _viewState.value.onboardingState.currentOnboardingStep + 1
-            )
-        )
-    }
-
-
     data class TopScreenViewState(
         val isLoading: Boolean = false,
         val isShowingEditDialog: Boolean = false,
@@ -91,7 +69,6 @@ class TopScreenViewModel() : ViewModel() {
         val selectedIngredient: CocktailIngredient_UI? = null,
         val userInputState: AddCocktailIngredientScreenViewModel.UserInputState =
             AddCocktailIngredientScreenViewModel.UserInputState(),
-        val onboardingState: OnboardingState = OnboardingState.INITIAL,
     ) {
         companion object {
             val INITIAL = TopScreenViewState(

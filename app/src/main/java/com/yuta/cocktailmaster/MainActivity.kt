@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity() {
                                     ownedIngredientRepository.deleteIngredient(it)
                                 }
                             },
-                            onUpdateOnboardingFinished = {
+                            onMarkOnboardingFinished = {
                                 println("onUpdateOnboardingFinished: $it")
                                 lifecycleScope.launch(Dispatchers.IO) {
                                     AppStatusRepository_Impl().writeIsOnboardingFinished(
@@ -76,7 +76,11 @@ class MainActivity : ComponentActivity() {
                                     )
                                 }
                                 mainViewModel.setIsOnboardingFinished(this@MainActivity, it)
-                            }
+                            },
+                            setOnboardingItem = { item, idx ->
+                                mainViewModel.setOnboardingItem(item = item, index = idx)
+                            },
+                            incrementOnboardingStep = mainViewModel::incrementOnboardingStep
                         )
                     }
                 }

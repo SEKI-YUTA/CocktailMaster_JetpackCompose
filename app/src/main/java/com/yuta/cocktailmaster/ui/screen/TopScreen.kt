@@ -1,8 +1,6 @@
 package com.yuta.cocktailmaster.ui.screen
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,25 +23,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.ClipOp
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.clipPath
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -57,7 +39,6 @@ import com.yuta.cocktailmaster.ui.component.IngredientListItem
 import com.yuta.cocktailmaster.ui.component.LoadingMessage
 import com.yuta.cocktailmaster.ui.component.MenuButton
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
-import com.yuta.cocktailmaster.ui.model.OnboardingItem
 import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.yuta.cocktailmaster.ui.viewmodels.TopScreenViewModel
 import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
@@ -78,6 +59,9 @@ fun TopScreen(
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onUpdateOnboardingFinished: (Boolean) -> Unit,
+    cocktailListButtonModifier: Modifier = Modifier,
+    addIngredientButtonModifier: Modifier = Modifier,
+    ownedIngredientListModifier: Modifier = Modifier,
 ) {
     val viewState = viewModel.viewState.collectAsState().value
     Box {
@@ -90,14 +74,8 @@ fun TopScreen(
             ) {
                 MenuButton(
                     text = stringResource(R.string.cocktail_list_str),
-                    modifier = Modifier
-                        .weight(1f)
-                        .onGloballyPositioned {
-                            viewModel.setOnboardingItem(
-                                OnboardingItem(it.boundsInRoot(), "ここから作れるカクテルの一覧を見ることができます。"),
-                                0
-                            )
-                        },
+                    modifier = cocktailListButtonModifier
+                        .weight(1f),
                     icon = Icons.Default.List
                 ) {
                     navigateToCraftableCocktail()
@@ -105,14 +83,8 @@ fun TopScreen(
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
-                    modifier = Modifier
-                        .weight(1f)
-                        .onGloballyPositioned {
-                            viewModel.setOnboardingItem(
-                                OnboardingItem(it.boundsInRoot(), "ここから材料を追加します。"),
-                                1
-                            )
-                        },
+                    modifier = addIngredientButtonModifier
+                        .weight(1f),
                     icon = Icons.Default.Add
                 ) {
                     navigateToAddIngredient()
@@ -124,19 +96,8 @@ fun TopScreen(
                 modifier = Modifier.padding(16.dp)
             )
             LazyColumn(
-                modifier = Modifier
+                modifier = ownedIngredientListModifier
                     .fillMaxSize()
-                    .onGloballyPositioned {
-                        println(it.boundsInRoot())
-                        viewModel.setOnboardingItem(
-                            OnboardingItem(
-                                it.boundsInRoot(),
-                                "所有中の材料が表示されます。",
-                                textAreaPosition = TextAreaPosition.ABOVE
-                            ),
-                            2
-                        )
-                    }
             ) {
                 items(ownedIngredientList) { ingredient_UI ->
                     IngredientListItem(
@@ -189,25 +150,6 @@ fun TopScreen(
                     viewModel.onCloseDeleteConfirmDialog()
                 },
             )
-        }
-        val onboardingState = viewState.onboardingState
-        println("currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
-        println("items.size: ${onboardingState.items.size}")
-        if (!isOnboardingFinished && onboardingState.currentOnboardingStep < onboardingState.items.size) {
-            val item = onboardingState.items[onboardingState.currentOnboardingStep]
-                println("isLast: ${onboardingState.currentOnboardingStep == onboardingState.items.size - 1}")
-                SpotLight(
-                    rect = item.pos,
-                    topAppBarSize = topAppBarSize,
-                    text = item.text,
-                    textAreaPosition = item.textAreaPosition,
-                    isLast = onboardingState.currentOnboardingStep == onboardingState.items.size - 1,
-                    onAreaTapped = {
-                        viewModel.incrementOnboardingStep()
-                    }
-                )
-        } else {
-            onUpdateOnboardingFinished(true)
         }
     }
 }

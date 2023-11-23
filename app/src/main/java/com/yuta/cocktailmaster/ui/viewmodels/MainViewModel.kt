@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.yuta.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import com.yuta.cocktailmaster.data.repository.AppStatusRepository_Impl
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
+import com.yuta.cocktailmaster.ui.model.OnboardingItem
+import com.yuta.cocktailmaster.ui.model.OnboardingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,10 +32,11 @@ class MainViewModel(
         )
     }
 
-    fun readIsOnboardingFinished(context: Context) {
-        viewModelScope.launch(Dispatchers.IO) {
+    suspend fun readIsOnboardingFinished(context: Context) {
+        withContext(Dispatchers.IO) {
             val isFinished = AppStatusRepository_Impl().readIsOnboardingFinished(context)
             setIsOnboardingFinished(context, isFinished)
+            setIsAppStatusRead(true)
             println("isFinished: $isFinished")
         }
     }
@@ -42,6 +45,12 @@ class MainViewModel(
         _viewState.value = _viewState.value.copy(
             isOnboardingFinished = finished,
             isAppStatusRead = true,
+        )
+    }
+
+    fun setIsAppStatusRead(read: Boolean) {
+        _viewState.value = _viewState.value.copy(
+            isAppStatusRead = read
         )
     }
 
@@ -76,6 +85,25 @@ class MainViewModel(
         }
     }
 
+    fun setOnboardingItem(item: OnboardingItem, index: Int) {
+        val onboardingState = viewState.value.onboardingState
+        val items = onboardingState.items.toMutableList()
+        items[index] = item
+        _viewState.value = _viewState.value.copy(
+            onboardingState = onboardingState.copy(
+                items = items
+            )
+        )
+    }
+
+    fun incrementOnboardingStep() {
+        _viewState.value = _viewState.value.copy(
+            onboardingState = _viewState.value.onboardingState.copy(
+                currentOnboardingStep = _viewState.value.onboardingState.currentOnboardingStep + 1
+            )
+        )
+    }
+
     companion object {
         fun provideFactory(
             ownedIngredientRepository: OwnedIngredientRepository,
@@ -96,6 +124,7 @@ class MainViewModel(
         val isNetworkConnected: Boolean = false,
         val ownedIngredientList: List<CocktailIngredient_UI> = emptyList(),
         val isAppStatusRead: Boolean = false,
-        val isOnboardingFinished: Boolean = false
-    )
+        val isOnboardingFinished: Boolean = false,
+        val onboardingState: OnboardingState = OnboardingState.INITIAL,
+        )
 }

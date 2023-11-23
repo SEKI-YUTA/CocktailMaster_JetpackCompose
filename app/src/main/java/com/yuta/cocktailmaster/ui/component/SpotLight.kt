@@ -16,7 +16,6 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.sp
@@ -24,17 +23,14 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SpotLight(
     rect: Rect,
-    topAppBarSize: IntSize,
     text: String = "",
     textAreaPosition: TextAreaPosition,
     isLast: Boolean,
     onAreaTapped: () -> Unit,
+    onMarkOnboardingFinished: (Boolean) -> Unit
 ) {
     println("spotLight isLast: $isLast")
-    val actual = rect.translate(
-        translateX = 0f,
-        translateY = -topAppBarSize.height.toFloat()
-    ).inflate(8f)
+    val actual = rect.inflate(8f)
     val textMeasure = rememberTextMeasurer()
     val textStyle = TextStyle(
         fontSize = 26.sp,
@@ -47,7 +43,13 @@ fun SpotLight(
             .fillMaxSize()
             .pointerInput(Unit) {
                 detectTapGestures {
-                    onAreaTapped()
+                    println("area tapped")
+                    if(isLast){
+                        print("mark finished")
+                        onMarkOnboardingFinished(true)
+                    } else {
+                        onAreaTapped()
+                    }
                 }
             }
     ) {

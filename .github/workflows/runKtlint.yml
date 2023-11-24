@@ -1,6 +1,7 @@
 name: Ktlint Check
 
 on:
+  push:
   pull_request:
     types:
       - opened

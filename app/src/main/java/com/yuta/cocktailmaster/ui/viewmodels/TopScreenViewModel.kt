@@ -44,6 +44,7 @@ class TopScreenViewModel() : ViewModel() {
 
     fun onCloseEditDialog() {
         _viewState.value = _viewState.value.copy(
+            selectedIngredient = null,
             isShowingEditDialog = false,
         )
     }
@@ -60,7 +61,6 @@ class TopScreenViewModel() : ViewModel() {
             userInputState = AddCocktailIngredientScreenViewModel.UserInputState(),
         )
     }
-
 
     data class TopScreenViewState(
         val isLoading: Boolean = false,

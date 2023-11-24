@@ -25,6 +25,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -48,12 +49,19 @@ import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 */
 @Composable
 fun TopScreen(
+    topAppBarSize: IntSize,
+    isOnboardingFinished: Boolean = false,
+    isAppStatusRead: Boolean = false,
     viewModel: TopScreenViewModel,
     ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
     navigateToAddIngredient: () -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
-    onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {}
+    onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
+    onUpdateOnboardingFinished: (Boolean) -> Unit,
+    cocktailListButtonModifier: Modifier = Modifier,
+    addIngredientButtonModifier: Modifier = Modifier,
+    ownedIngredientListModifier: Modifier = Modifier,
 ) {
     val viewState = viewModel.viewState.collectAsState().value
     Box {
@@ -66,7 +74,8 @@ fun TopScreen(
             ) {
                 MenuButton(
                     text = stringResource(R.string.cocktail_list_str),
-                    modifier = Modifier.weight(1f),
+                    modifier = cocktailListButtonModifier
+                        .weight(1f),
                     icon = Icons.Default.List
                 ) {
                     navigateToCraftableCocktail()
@@ -74,7 +83,8 @@ fun TopScreen(
                 Spacer(modifier = Modifier.width(16.dp))
                 MenuButton(
                     text = stringResource(R.string.add_ingredient_str),
-                    modifier = Modifier.weight(1f),
+                    modifier = addIngredientButtonModifier
+                        .weight(1f),
                     icon = Icons.Default.Add
                 ) {
                     navigateToAddIngredient()
@@ -85,7 +95,10 @@ fun TopScreen(
                 style = TextStyle(fontSize = 22.sp),
                 modifier = Modifier.padding(16.dp)
             )
-            LazyColumn {
+            LazyColumn(
+                modifier = ownedIngredientListModifier
+                    .fillMaxSize()
+            ) {
                 items(ownedIngredientList) { ingredient_UI ->
                     IngredientListItem(
                         ingredient_UI = ingredient_UI,
@@ -213,12 +226,14 @@ fun TopScreenPreview() {
         CocktailMasterTheme {
             Surface {
                 TopScreen(
+                    topAppBarSize = IntSize.Zero,
                     viewModel = viewModel,
                     ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
                     navigateToCraftableCocktail = {},
                     navigateToAddIngredient = {},
                     onDeleteOwnedIngredient = {},
-                    onEditOwnedIngredient = {}
+                    onEditOwnedIngredient = {},
+                    onUpdateOnboardingFinished = {}
                 )
             }
         }

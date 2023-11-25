@@ -30,12 +30,12 @@ class CraftableCocktailListScreenViewModel(
     }
 
     suspend fun onEvent(event: CraftableCocktailListScreenEvent) {
-            when (event) {
-                is CraftableCocktailListScreenEvent.FetchCocktailData -> {
-                    fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
-                    fetchAllCocktail()
-                }
+        when (event) {
+            is CraftableCocktailListScreenEvent.FetchCocktailData -> {
+                fetchCraftableCocktail(ingredientList = ingredientList.map { it.longName })
+                fetchAllCocktail()
             }
+        }
     }
 
     fun setSelectedTab(tab: TabItems) {

@@ -13,7 +13,7 @@ data class CocktailIngredient_UI(
     val description: String = "",
     val vol: Int = 0,
     val ingredientCategoryId: Int = 0,
-    val category: String = "",
+    val category: String = ""
 ) {
     fun toDataModel(): CocktailIngredient_Data {
         return CocktailIngredient_Data(
@@ -23,7 +23,7 @@ data class CocktailIngredient_UI(
             description = description,
             vol = vol,
             ingredientCategoryId = ingredientCategoryId,
-            category = category,
+            category = category
         )
     }
 }

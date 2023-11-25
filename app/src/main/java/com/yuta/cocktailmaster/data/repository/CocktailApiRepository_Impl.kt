@@ -9,7 +9,7 @@ import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import com.yuta.cocktailmaster.ui.model.Cocktail_UI
 import java.net.SocketTimeoutException
 
-class CocktailApiRepository_Impl: CocktailApiRepository {
+class CocktailApiRepository_Impl : CocktailApiRepository {
     override suspend fun getAllIngredients(): List<CocktailIngredient_UI> {
         println("getAllIngredients")
         // 失敗したときのメッセージを入れたデータを一旦用意しておく
@@ -18,7 +18,7 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
         )
         try {
             ingredientList = CocktailApi.retrofitService.getAllIngredients()
-        } catch(e: SocketTimeoutException) {
+        } catch (e: SocketTimeoutException) {
             println("failed xxxxxx")
             println(e)
         }
@@ -37,7 +37,7 @@ class CocktailApiRepository_Impl: CocktailApiRepository {
         )
         try {
             cocktailList = CocktailApi.retrofitService.craftableCocktails(query)
-        } catch(e: SocketTimeoutException) {
+        } catch (e: SocketTimeoutException) {
             println("failed xxxxxx")
             println(e)
         }

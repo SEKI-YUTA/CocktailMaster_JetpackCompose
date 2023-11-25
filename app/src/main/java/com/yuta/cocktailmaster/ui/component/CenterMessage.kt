@@ -25,11 +25,11 @@ import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 fun CenterMessage(
     message: String,
     icon: ImageVector? = null,
-    iconTapAction: () -> Unit = {},
+    iconTapAction: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
+        contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -38,7 +38,7 @@ fun CenterMessage(
                 text = message,
                 style = TextStyle(fontSize = 24.sp)
             )
-            if(icon != null) {
+            if (icon != null) {
                 IconButton(
                     modifier = Modifier.padding(top = 8.dp),
                     onClick = {

@@ -96,5 +96,5 @@ fun SpotLight(
 
 enum class TextAreaPosition {
     ABOVE,
-    BELOW,
+    BELOW
 }

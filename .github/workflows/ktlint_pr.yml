@@ -52,10 +52,13 @@ jobs:
 
       - uses: peter-evans/create-pull-request@v5
         with:
+          title: auto format ktlint
           commit-message: auto format ktlint
           draft: true
           delete-branch: true
-          title: auto format ktlint
+          base: ${{ github.event.repository.default_branch }}
+          branch: create-pull-request/ktlint-auto-run
+          branch-suffix: timestamp
 
 #コメントするテスト
 #      - name: create text file

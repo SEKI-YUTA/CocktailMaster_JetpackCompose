@@ -14,6 +14,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -52,7 +53,9 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
     }
     val cocktailCategories = listOf("すべて") + ConstantValues.cocktailCategories
     var userSelectCategory by remember { mutableStateOf(cocktailCategories[0]) }
-
+    LaunchedEffect(key1 = true) {
+        viewModel.getCocktails()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()

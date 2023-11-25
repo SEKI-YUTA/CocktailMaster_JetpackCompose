@@ -22,8 +22,7 @@ class CraftableCocktailListScreenViewModel(
     private val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
-    init {
-        println("init")
+    fun getCocktails() {
         viewModelScope.launch(Dispatchers.IO) {
             onEvent(CraftableCocktailListScreenEvent.FetchCocktailData)
         }

@@ -7,7 +7,8 @@ class DemoData {
     companion object {
         val cocktailList = listOf<Cocktail_Data>(
             Cocktail_Data(
-                name = "ジンバッグ", description = "ジンとジンジャーエールを混ぜたカクテル",
+                name = "ジンバッグ",
+                description = "ジンとジンジャーエールを混ぜたカクテル",
                 ingredients = listOf(
                     CocktailIngredient_Data(shortName = "ジン", longName = "ドライ・ジン", description = "スピリッツ", vol = 40),
                     CocktailIngredient_Data(shortName = "ジンジャーエール", longName = "ジンジャーエール", description = "ジンジャーエール", vol = 0)

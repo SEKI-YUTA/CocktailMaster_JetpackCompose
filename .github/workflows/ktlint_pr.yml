@@ -52,6 +52,7 @@ jobs:
 
       - uses: peter-evans/create-pull-request@v5
         with:
+          token: ${{secrets.MY_GITHUB_TOKEN}}
           title: auto format ktlint
           commit-message: auto format ktlint
           draft: true

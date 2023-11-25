@@ -25,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -49,9 +48,6 @@ import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 */
 @Composable
 fun TopScreen(
-    topAppBarSize: IntSize,
-    isOnboardingFinished: Boolean = false,
-    isAppStatusRead: Boolean = false,
     viewModel: TopScreenViewModel,
     isOwnedIngredientListLoading: Boolean,
     ownedIngredientList: List<CocktailIngredient_UI>,
@@ -59,7 +55,6 @@ fun TopScreen(
     navigateToAddIngredient: () -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
-    onUpdateOnboardingFinished: (Boolean) -> Unit,
     cocktailListButtonModifier: Modifier = Modifier,
     addIngredientButtonModifier: Modifier = Modifier,
     ownedIngredientListModifier: Modifier = Modifier,
@@ -227,7 +222,6 @@ fun TopScreenPreview() {
         CocktailMasterTheme {
             Surface {
                 TopScreen(
-                    topAppBarSize = IntSize.Zero,
                     viewModel = viewModel,
                     isOwnedIngredientListLoading = false,
                     ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
@@ -235,7 +229,6 @@ fun TopScreenPreview() {
                     navigateToAddIngredient = {},
                     onDeleteOwnedIngredient = {},
                     onEditOwnedIngredient = {},
-                    onUpdateOnboardingFinished = {}
                 )
             }
         }

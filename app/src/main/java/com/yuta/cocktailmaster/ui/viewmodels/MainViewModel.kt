@@ -32,14 +32,15 @@ class MainViewModel(
         )
     }
 
-    suspend fun readIsOnboardingFinished(context: Context) {
-        withContext(Dispatchers.IO) {
-            val isFinished = AppStatusRepository_Impl().readIsOnboardingFinished(context)
+    suspend
+    fun
+            readIsOnboardingFinished(context: Context) {
+withContext(Dispatchers.IO) {
+                         val isFinished = AppStatusRepository_Impl().readIsOnboardingFinished(context)
             setIsOnboardingFinished(context, isFinished)
             setIsAppStatusRead(true)
             println("isFinished: $isFinished")
-        }
-    }
+        } }
 
     fun setIsOnboardingFinished(context: Context, finished: Boolean) {
         _viewState.value = _viewState.value.copy(

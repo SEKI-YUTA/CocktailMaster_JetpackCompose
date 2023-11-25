@@ -91,6 +91,26 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+//    // ここ、タスク名をktlintにするとdependenciesと競合して動かなかった。
+//    task ktlintCheck(type: JavaExec, group: "verification") {
+//        description = "Check Kotlin code style."
+//        main = "com.pinterest.ktlint.Main"
+//        args "src/**/*.kt", "--android", "--color", "--reporter=plain",
+//                "--reporter=checkstyle,output=${buildDir}/reports/ktlint-results.xml"
+//        // lintエラーが起きた時に続行するか。続行しないと落ちる
+//        ignoreExitValue true
+//    }
+//
+//    task ktlintFormat(type: JavaExec, group: "formatting") {
+//        description = "Fix Kotlin code style deviations."
+//        main = "com.pinterest.ktlint.Main"
+//        args "-F", "src/**/*.kt", !"src/**/*Test.kt"
+//        ignoreExitValue true
+//    }
+}
+
+configurations {
+    ktlint
 }
 
 dependencies {
@@ -141,4 +161,23 @@ dependencies {
 
     implementation "com.apollographql.apollo3:apollo-runtime:3.8.2"
 //    implementation "com.apollographql.apollo:apollo-coroutines-support:3.8.2"
+}
+
+// ktlint settings
+task ktlintCk(type: JavaExec, group: "verification") {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+//    args "src/**/*.kt", "android", "--reporter=html"
+    args "src/**/*.kt", "android", "--reporter=plain", "--reporter=html,output=${buildDir}/reports/ktlint/ktlint-result.html"
+    ignoreExitValue true
+}
+check.dependsOn ktlint
+
+task ktlintFmt(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
+    classpath = configurations.ktlint
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt", "android", "--reporter=plain", "--reporter=html,output=${buildDir}/reports/ktlint/ktlint-format.html"
+    ignoreExitValue true
 }

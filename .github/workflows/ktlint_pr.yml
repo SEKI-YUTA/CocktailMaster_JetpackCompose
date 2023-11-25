@@ -34,16 +34,28 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Run Ktlint
-        id: ktlint
+      - name: Run KtlintCheck
         run: |
-          ./gradlew ktlintCheck --continue
+          ./gradlew ktlintCk --continue
+
+#          https://qiita.com/hohohoris/items/f934beb4ea0b432af488
 
       - uses: actions/upload-artifact@v3
         with:
           name: report
           path: build/report/*
           retention-days: 30
+
+      - name: Run KtlintFormat
+        run: |
+          ./gradlew ktlintFmt --continue
+
+      - uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: auto format ktlint
+          draft: true
+          delete-branch: true
+          title: auto format ktlint
 
 #コメントするテスト
 #      - name: create text file

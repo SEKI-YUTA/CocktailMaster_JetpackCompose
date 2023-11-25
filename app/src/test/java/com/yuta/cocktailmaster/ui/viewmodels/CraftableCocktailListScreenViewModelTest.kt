@@ -2,11 +2,13 @@ package com.yuta.cocktailmaster.ui.viewmodels
 
 import com.yuta.cocktailmaster.data.DemoData
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
-import com.yuta.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import io.kotest.matchers.shouldBe
+import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Test
 
 class CraftableCocktailListScreenViewModelTest {
@@ -22,8 +24,12 @@ class CraftableCocktailListScreenViewModelTest {
 
     @Test
     fun `カクテルを取得できる`() = runTest {
+        val apiRepository: CocktailApiRepository = mockk {
+            coEvery { craftableCocktails(DemoData.ingredientList.map { it.longName }) } returns DemoData.cocktailList.map { it.toUIModel() }
+            coEvery { getAllCocktails() } returns DemoData.cocktailList.map { it.toUIModel() }
+        }
         val viewModel = CraftableCocktailListScreenViewModelFactory(
-            apiRepository = CocktailApiRepository_FakeImpl(),
+            apiRepository = apiRepository,
             ingredientList = DemoData.ingredientList.map { it.toUIModel() }
         )
 

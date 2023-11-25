@@ -99,6 +99,7 @@ fun MainHost(
                         isOnboardingFinished = mainViewState.isOnboardingFinished,
                         isAppStatusRead = mainViewState.isAppStatusRead,
                         viewModel = topScreenViewModel,
+                        isOwnedIngredientListLoading = mainViewState.isOwnedIngredientLoading,
                         ownedIngredientList = mainViewState.ownedIngredientList,
                         navigateToAddIngredient = {
                             navController.navigate(Screen.AddCocktailIngredientScreen.name) {

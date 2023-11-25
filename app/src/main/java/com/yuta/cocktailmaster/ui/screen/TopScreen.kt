@@ -53,6 +53,7 @@ fun TopScreen(
     isOnboardingFinished: Boolean = false,
     isAppStatusRead: Boolean = false,
     viewModel: TopScreenViewModel,
+    isOwnedIngredientListLoading: Boolean,
     ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
     navigateToAddIngredient: () -> Unit = {},
@@ -113,11 +114,11 @@ fun TopScreen(
                     )
                 }
             }
-            if (viewState.isLoading) {
-                LoadingMessage()
-            } else if (ownedIngredientList.isEmpty()) {
-                CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
-            }
+        }
+        if (isOwnedIngredientListLoading) {
+            LoadingMessage()
+        } else if (ownedIngredientList.isEmpty()) {
+            CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
         }
         if (viewState.isShowingEditDialog && viewState.selectedIngredient != null) {
             AddEditIngredientDialog(
@@ -228,6 +229,7 @@ fun TopScreenPreview() {
                 TopScreen(
                     topAppBarSize = IntSize.Zero,
                     viewModel = viewModel,
+                    isOwnedIngredientListLoading = false,
                     ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
                     navigateToCraftableCocktail = {},
                     navigateToAddIngredient = {},

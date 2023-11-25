@@ -1,7 +1,6 @@
 name: Ktlint Format
 
 on:
-  pull_request:
 
 jobs:
   build:

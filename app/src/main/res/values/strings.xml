@@ -22,4 +22,9 @@
     <string name="fetch_failed_message">データの取得に失敗しました。</string>
 
     <string name="delete_confirm_dialog_title">本当に削除しますか？</string>
+
+    <string name="onboarding_cocktail_list_button">ここから作れるカクテルの一覧を見れます</string>
+    <string name="onboarding_add_ingredient_button">ここから材料を追加できます</string>
+    <string name="onboarding_owned_ingredient_list">ここに持っている材料をが表示されます</string>
+    <string name="onboarding_lets_start">さぁ始めよう</string>
 </resources>

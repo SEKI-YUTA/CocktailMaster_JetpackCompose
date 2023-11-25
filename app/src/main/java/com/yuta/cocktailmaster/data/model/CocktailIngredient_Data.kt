@@ -43,9 +43,9 @@ data class CocktailIngredient_Data(
     @ColumnInfo(name = "category")
     val category: String = "",
 
-    val fetchFailed: Boolean = false,
+    val fetchFailed: Boolean = false
 
-    ) {
+) {
     fun toUIModel(): CocktailIngredient_UI {
         return CocktailIngredient_UI(
             id = id,
@@ -54,7 +54,7 @@ data class CocktailIngredient_Data(
             description = description,
             vol = vol,
             ingredientCategoryId = ingredientCategoryId,
-            category = category,
+            category = category
         )
     }
 }

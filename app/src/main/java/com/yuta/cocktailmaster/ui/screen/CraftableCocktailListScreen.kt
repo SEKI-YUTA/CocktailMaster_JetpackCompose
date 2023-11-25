@@ -68,7 +68,7 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                 Text("絞り込み: ", modifier = Modifier.padding(end = 8.dp))
                 MyDropDownMenu(
                     items = cocktailCategories,
-                    selectedVal = userSelectCategory,
+                    selectedVal = userSelectCategory
                 ) {
                     userSelectCategory = it
                 }
@@ -144,11 +144,9 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                     }
                 }
             }
-
         }
     }
 }
-
 
 @CocktailMasterPreviewAnnotation
 @Composable
@@ -162,7 +160,7 @@ fun CraftableCocktailListScreenPreview() {
         CocktailMasterTheme {
             Surface {
                 CraftableCocktailListScreen(
-                    viewModel = viewModel,
+                    viewModel = viewModel
                 )
             }
         }

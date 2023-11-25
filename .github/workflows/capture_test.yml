@@ -1,4 +1,4 @@
-name: Roborazzi Label Trigger
+name: Capture with Roborazzi
 
 on:
   workflow_call:

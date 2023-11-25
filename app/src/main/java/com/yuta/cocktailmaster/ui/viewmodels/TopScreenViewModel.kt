@@ -62,7 +62,6 @@ class TopScreenViewModel() : ViewModel() {
         )
     }
 
-
     data class TopScreenViewState(
         val isLoading: Boolean = false,
         val isShowingEditDialog: Boolean = false,

@@ -14,18 +14,23 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
-fun MyTopAppBar(navController: NavHostController) {
+fun MyTopAppBar(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
     val showBackButton = remember { mutableStateOf(false) }
     navController.addOnDestinationChangedListener() { controller, destination, arguments ->
         showBackButton.value = controller.previousBackStackEntry != null
     }
     TopAppBar(
+        modifier = modifier,
         navigationIcon = {
             if(showBackButton.value) {
                 IconButton(

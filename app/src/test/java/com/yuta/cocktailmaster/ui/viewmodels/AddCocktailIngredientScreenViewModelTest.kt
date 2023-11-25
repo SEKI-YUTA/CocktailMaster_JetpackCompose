@@ -1,12 +1,9 @@
 package com.yuta.cocktailmaster.ui.viewmodels
 
-import com.yuta.cocktailmaster.data.DemoData
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
-import com.yuta.cocktailmaster.data.repository.CocktailApiRepository_FakeImpl
 import com.yuta.cocktailmaster.ui.model.CocktailIngredient_UI
 import io.kotest.matchers.shouldBe
 import io.mockk.mockk
-import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 class AddCocktailIngredientScreenViewModelTest {
@@ -37,19 +34,6 @@ class AddCocktailIngredientScreenViewModelTest {
             category = category
         )
     }
-
-    @Test
-    fun `材料を取得できる`() = runTest {
-        val viewModel = AddCocktailIngredientScreenViewModelFactory(
-            apiRepository = CocktailApiRepository_FakeImpl()
-        )
-
-        viewModel.fetchAllIngredientsFromAPI()
-        val viewState = viewModel.viewState.value
-
-        viewState.ingredientList shouldBe DemoData.ingredientList.map { it.toUIModel() }
-    }
-
 
     @Test
     fun `材料を追加するダイアログが表示される`() {

@@ -27,6 +27,8 @@ jobs:
         with:
           token: ${{secrets.MY_GITHUB_TOKEN}}
           commit-message: Ktlint auto format
+          branch: auto-formatted/
+          branch-prefix: timestamp
           delete-branch: true
           title: Ktlint auto format
           body: |

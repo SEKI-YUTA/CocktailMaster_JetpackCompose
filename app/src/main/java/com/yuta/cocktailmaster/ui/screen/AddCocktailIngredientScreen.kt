@@ -60,9 +60,11 @@ fun AddCocktailIngredientScreen(
     }
     val categories by remember(viewState) {
         derivedStateOf {
-            listOf("すべて") + LinkedHashSet(viewState.ingredientList.map {
-                it.category
-            }).toMutableList()
+            listOf("すべて") + LinkedHashSet(
+                viewState.ingredientList.map {
+                    it.category
+                }
+            ).toMutableList()
         }
     }
     var userSelectCategory by remember { mutableStateOf(categories[0]) }

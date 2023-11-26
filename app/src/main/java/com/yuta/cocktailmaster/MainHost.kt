@@ -57,6 +57,11 @@ fun MainHost(
     incrementOnboardingStep: () -> Unit,
     onMarkOnboardingFinished: (Boolean) -> Unit
 ) {
+    fun f(a: Int, b: Int, c: Int): Int {return 0}
+    val x = f(
+        1,
+        2,
+        3)
     val apiRepository = LocalApiRepository.current
     val ownedIngredientRepository = LocalOwnedIngredientRepository.current
     val navController = rememberNavController()

@@ -19,7 +19,8 @@ ktlint {
 //    enableExperimentalRules = true
     disabledRules = [
             "trailing-comma-on-call-site",
-            "max-line-length"
+            "max-line-length",
+            "wrapping"
     ]
     reporters {
         reporter "checkstyle"

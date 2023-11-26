@@ -3,7 +3,7 @@ name: Ktlint Format
 on:
   workflow_call:
   schedule:
-    - cron: '15 3 * * 0'
+    - cron: '0 4 * * 0'  #run at 13:00(JST)
 
 jobs:
   build:
@@ -23,8 +23,16 @@ jobs:
           cache: gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew ktlintFormat
+      - name: check with ktlint
+        run: ./gradlew ktlintCheck --continue
+      - name: upload ktlint report
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ktlint report
+          path: app/build/reports/ktlint
+          retention-days: 30
+      - name: format with ktlint
+        run: ./gradlew ktlintFormat --continue
       - uses: peter-evans/create-pull-request@v5
         with:
           token: ${{secrets.MY_GITHUB_TOKEN}}

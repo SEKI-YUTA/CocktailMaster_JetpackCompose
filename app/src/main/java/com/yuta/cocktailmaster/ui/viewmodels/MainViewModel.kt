@@ -63,13 +63,13 @@ class MainViewModel(
 
     private suspend fun readOwnedIngredient() {
         withContext(Dispatchers.IO) {
-            _viewState.value = _viewState.value.copy(isOwnedIngredientReading = true)
+            _viewState.value = _viewState.value.copy(isOwnedIngredientLoading = true)
             val tmp = async {
                 ownedIngredientRepository.getAllIngredient().map { it.toUIModel() }
             }.await()
             _viewState.value = _viewState.value.copy(
                 ownedIngredientList = tmp,
-                isOwnedIngredientReading = false,
+                isOwnedIngredientLoading = false,
             )
         }
     }
@@ -120,8 +120,8 @@ class MainViewModel(
     }
 
     data class MainViewModelViewState(
-        val isOwnedIngredientReading: Boolean = false,
         val isNetworkConnected: Boolean = false,
+        val isOwnedIngredientLoading: Boolean = true,
         val ownedIngredientList: List<CocktailIngredient_UI> = emptyList(),
         val isAppStatusRead: Boolean = false,
         val isOnboardingFinished: Boolean = false,

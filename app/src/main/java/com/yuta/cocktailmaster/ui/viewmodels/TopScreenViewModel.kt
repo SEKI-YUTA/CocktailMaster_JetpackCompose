@@ -63,7 +63,6 @@ class TopScreenViewModel() : ViewModel() {
     }
 
     data class TopScreenViewState(
-        val isLoading: Boolean = false,
         val isShowingEditDialog: Boolean = false,
         val isShowingDeleteConfirmDialog: Boolean = false,
         val selectedIngredient: CocktailIngredient_UI? = null,
@@ -71,9 +70,7 @@ class TopScreenViewModel() : ViewModel() {
             AddCocktailIngredientScreenViewModel.UserInputState(),
     ) {
         companion object {
-            val INITIAL = TopScreenViewState(
-                isLoading = false
-            )
+            val INITIAL = TopScreenViewState()
         }
     }
 }

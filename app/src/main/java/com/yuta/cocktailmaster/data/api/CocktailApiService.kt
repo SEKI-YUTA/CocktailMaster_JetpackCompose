@@ -1,9 +1,9 @@
 package com.yuta.cocktailmaster.data.api
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.yuta.cocktailmaster.BuildConfig
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 import com.yuta.cocktailmaster.data.model.Cocktail_Data
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit

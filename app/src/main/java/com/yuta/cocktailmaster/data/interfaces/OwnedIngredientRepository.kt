@@ -13,5 +13,4 @@ interface OwnedIngredientRepository {
     suspend fun addOwnedIngredient(ingredient: CocktailIngredient_Data)
 
     suspend fun editOwnedIngredient(ingredient: CocktailIngredient_Data)
-
 }

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel(
-    private val ownedIngredientRepository: OwnedIngredientRepository,
+    private val ownedIngredientRepository: OwnedIngredientRepository
 ) : ViewModel() {
     private val _viewState = MutableStateFlow(MainViewModelViewState())
     val viewState = _viewState.asStateFlow()
@@ -44,7 +44,7 @@ class MainViewModel(
     fun setIsOnboardingFinished(context: Context, finished: Boolean) {
         _viewState.value = _viewState.value.copy(
             isOnboardingFinished = finished,
-            isAppStatusRead = true,
+            isAppStatusRead = true
         )
     }
 
@@ -69,7 +69,7 @@ class MainViewModel(
             }.await()
             _viewState.value = _viewState.value.copy(
                 ownedIngredientList = tmp,
-                isOwnedIngredientReading = false,
+                isOwnedIngredientReading = false
             )
         }
     }
@@ -106,13 +106,13 @@ class MainViewModel(
 
     companion object {
         fun provideFactory(
-            ownedIngredientRepository: OwnedIngredientRepository,
+            ownedIngredientRepository: OwnedIngredientRepository
         ): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return MainViewModel(
-                        ownedIngredientRepository = ownedIngredientRepository,
+                        ownedIngredientRepository = ownedIngredientRepository
                     ) as T
                 }
             }
@@ -125,6 +125,6 @@ class MainViewModel(
         val ownedIngredientList: List<CocktailIngredient_UI> = emptyList(),
         val isAppStatusRead: Boolean = false,
         val isOnboardingFinished: Boolean = false,
-        val onboardingState: OnboardingState = OnboardingState.INITIAL,
-        )
+        val onboardingState: OnboardingState = OnboardingState.INITIAL
+    )
 }

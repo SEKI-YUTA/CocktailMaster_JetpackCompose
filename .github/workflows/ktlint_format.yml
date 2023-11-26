@@ -1,6 +1,7 @@
 name: Ktlint Format
 
 on:
+  push:
   workflow_call:
   schedule:
     - cron: '0 21 * * 6'  # run at 06:00(JST) on sunday

@@ -95,10 +95,8 @@ fun MainHost(
                     val addIngredientButtonText = stringResource(R.string.onboarding_add_ingredient_button)
                     val ownedIngredientListText = stringResource(R.string.onboarding_owned_ingredient_list)
                     TopScreen(
-                        topAppBarSize = topAppBarSize,
-                        isOnboardingFinished = mainViewState.isOnboardingFinished,
-                        isAppStatusRead = mainViewState.isAppStatusRead,
                         viewModel = topScreenViewModel,
+                        isOwnedIngredientListLoading = mainViewState.isOwnedIngredientLoading,
                         ownedIngredientList = mainViewState.ownedIngredientList,
                         navigateToAddIngredient = {
                             navController.navigate(Screen.AddCocktailIngredientScreen.name) {
@@ -112,7 +110,6 @@ fun MainHost(
                         },
                         onEditOwnedIngredient = onEditOwnedIngredient,
                         onDeleteOwnedIngredient = onDeleteOwnedIngredient,
-                        onUpdateOnboardingFinished = onMarkOnboardingFinished,
                         cocktailListButtonModifier = Modifier.onGloballyPositioned {
                             setOnboardingItem(
                                 OnboardingItem(it.boundsInRoot(), cocktailListButtonText),

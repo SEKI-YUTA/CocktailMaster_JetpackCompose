@@ -25,7 +25,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -49,16 +48,13 @@ import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 */
 @Composable
 fun TopScreen(
-    topAppBarSize: IntSize,
-    isOnboardingFinished: Boolean = false,
-    isAppStatusRead: Boolean = false,
     viewModel: TopScreenViewModel,
+    isOwnedIngredientListLoading: Boolean,
     ownedIngredientList: List<CocktailIngredient_UI>,
     navigateToCraftableCocktail: () -> Unit = {},
     navigateToAddIngredient: () -> Unit = {},
     onDeleteOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
-    onUpdateOnboardingFinished: (Boolean) -> Unit,
     cocktailListButtonModifier: Modifier = Modifier,
     addIngredientButtonModifier: Modifier = Modifier,
     ownedIngredientListModifier: Modifier = Modifier,
@@ -113,11 +109,11 @@ fun TopScreen(
                     )
                 }
             }
-            if (viewState.isLoading) {
-                LoadingMessage()
-            } else if (ownedIngredientList.isEmpty()) {
-                CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
-            }
+        }
+        if (isOwnedIngredientListLoading) {
+            LoadingMessage()
+        } else if (ownedIngredientList.isEmpty()) {
+            CenterMessage(message = stringResource(R.string.owned_ingredient_not_found))
         }
         if (viewState.isShowingEditDialog && viewState.selectedIngredient != null) {
             AddEditIngredientDialog(
@@ -226,14 +222,13 @@ fun TopScreenPreview() {
         CocktailMasterTheme {
             Surface {
                 TopScreen(
-                    topAppBarSize = IntSize.Zero,
                     viewModel = viewModel,
+                    isOwnedIngredientListLoading = false,
                     ownedIngredientList = DemoData.ingredientList.map { it.toUIModel() },
                     navigateToCraftableCocktail = {},
                     navigateToAddIngredient = {},
                     onDeleteOwnedIngredient = {},
                     onEditOwnedIngredient = {},
-                    onUpdateOnboardingFinished = {}
                 )
             }
         }

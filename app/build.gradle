@@ -16,16 +16,19 @@ ktlint {
     android = true
     outputColorName = "RED"
     ignoreFailures = true
-//    enableExperimentalRules = true
+    enableExperimentalRules = true
     disabledRules = [
             "trailing-comma-on-call-site",
             "max-line-length",
-            "wrapping"
+            "standard:wrapping"
     ]
     reporters {
         reporter "checkstyle"
         reporter "html"
     }
+//    additionalEditorconfig = [
+//            "standart:wrapping": "disabled"
+//    ]
 //    additionalEditorconfig = [
 ////            "trailing-comma-on-call-site": "false"
 //"max-line-length": "20"

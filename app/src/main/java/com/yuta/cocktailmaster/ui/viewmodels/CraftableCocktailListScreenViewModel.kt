@@ -12,13 +12,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 sealed class CraftableCocktailListScreenEvent {
-    object FetchCocktailData: CraftableCocktailListScreenEvent()
+    object FetchCocktailData : CraftableCocktailListScreenEvent()
 }
 
 class CraftableCocktailListScreenViewModel(
     val apiRepository: CocktailApiRepository,
     val ingredientList: List<CocktailIngredient_UI>
-): ViewModel() {
+) : ViewModel() {
     private val _viewState = MutableStateFlow(CraftableCocktailListScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
 
@@ -58,7 +58,7 @@ class CraftableCocktailListScreenViewModel(
     }
 
     private suspend fun fetchAllCocktail() {
-        if(fetchedAllCocktailList.isNotEmpty()) {
+        if (fetchedAllCocktailList.isNotEmpty()) {
             _viewState.value = _viewState.value.copy(
                 allCocktailList = fetchedAllCocktailList
             )
@@ -70,7 +70,7 @@ class CraftableCocktailListScreenViewModel(
         val tmp = apiRepository.getAllCocktails()
         fetchedAllCocktailList = tmp
         _viewState.value = _viewState.value.copy(
-            allCocktailList = tmp,
+            allCocktailList = tmp
         )
         _viewState.value = _viewState.value.copy(
             isAllCocktailFetching = false
@@ -80,7 +80,7 @@ class CraftableCocktailListScreenViewModel(
     companion object {
         val allTabs = listOf(
             TabItems.CRAFTABLE,
-            TabItems.ALL_COCKTAILS,
+            TabItems.ALL_COCKTAILS
         )
         var fetchedAllCocktailList = emptyList<Cocktail_UI>()
         fun provideFactory(
@@ -88,7 +88,7 @@ class CraftableCocktailListScreenViewModel(
             ingredientList: List<CocktailIngredient_UI>
         ): ViewModelProvider.Factory {
             println(ingredientList)
-            return object: ViewModelProvider.Factory {
+            return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return CraftableCocktailListScreenViewModel(
@@ -119,10 +119,9 @@ class CraftableCocktailListScreenViewModel(
             )
         }
     }
-
 }
 
 sealed class TabItems(val idx: Int, val title: String) {
-    object CRAFTABLE: TabItems(0, "作れるカクテル")
-    object ALL_COCKTAILS: TabItems(1, "すべてのカクテル")
+    object CRAFTABLE : TabItems(0, "作れるカクテル")
+    object ALL_COCKTAILS : TabItems(1, "すべてのカクテル")
 }

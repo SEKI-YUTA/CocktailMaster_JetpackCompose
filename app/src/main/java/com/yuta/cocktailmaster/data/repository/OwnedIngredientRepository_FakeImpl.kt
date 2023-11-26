@@ -6,8 +6,7 @@ import com.yuta.cocktailmaster.data.interfaces.OwnedIngredientRepository
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 import kotlinx.coroutines.flow.Flow
 
-
-class OwnedIngredientRepository_FakeImpl: OwnedIngredientRepository {
+class OwnedIngredientRepository_FakeImpl : OwnedIngredientRepository {
     override suspend fun provideAllIngredientFlow(): Flow<List<CocktailIngredient_Data>> {
         // 本番はここでデータベースからデータを引っ張ってくる処理をする
         return snapshotFlow {

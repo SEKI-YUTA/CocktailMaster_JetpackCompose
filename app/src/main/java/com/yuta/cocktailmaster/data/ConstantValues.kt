@@ -29,7 +29,7 @@ class ConstantValues {
                 longName = "failed",
                 vol = 0,
                 description = "",
-                fetchFailed = true,
+                fetchFailed = true
             )
 
         // カクテルの取得に失敗したときに１番目の要素に入れるためのデータ
@@ -38,7 +38,7 @@ class ConstantValues {
                 name = "failed",
                 description = "",
                 ingredients = emptyList(),
-                fetchFailed = true,
+                fetchFailed = true
             )
     }
 }

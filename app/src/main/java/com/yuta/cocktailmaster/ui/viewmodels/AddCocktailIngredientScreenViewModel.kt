@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AddCocktailIngredientScreenViewModel(
-    val apiRepository: CocktailApiRepository,
+    val apiRepository: CocktailApiRepository
 ) : ViewModel() {
     private val _viewState = MutableStateFlow(AddCocktailIngredientScreenViewState.INITIAL)
     val viewState = _viewState.asStateFlow()
@@ -40,48 +40,47 @@ class AddCocktailIngredientScreenViewModel(
     }
 
     suspend fun fetchAllIngredientsFromAPI() {
-        if(fetchedAllIngredientList.isNotEmpty()) {
+        if (fetchedAllIngredientList.isNotEmpty()) {
             _viewState.value = _viewState.value.copy(
-                ingredientList = fetchedAllIngredientList,
+                ingredientList = fetchedAllIngredientList
             )
             return
         }
         _viewState.value = _viewState.value.copy(
-            isLoading = true,
+            isLoading = true
         )
         val tmp = apiRepository.getAllIngredients()
         _viewState.value = _viewState.value.copy(
             isLoading = false,
-            ingredientList = tmp,
+            ingredientList = tmp
         )
     }
 
     fun onIngredientTapped(ingredient: CocktailIngredient_UI) {
         _viewState.value = _viewState.value.copy(
             selectedIngredient = ingredient,
-            isShowingAddDialog = true,
+            isShowingAddDialog = true
         )
     }
 
     fun onCloseAddDialog() {
         _viewState.value = _viewState.value.copy(
             selectedIngredient = null,
-            isShowingAddDialog = false,
+            isShowingAddDialog = false
         )
     }
 
     fun onUpdateUserInput(userInputState: UserInputState) {
         _viewState.value = _viewState.value.copy(
-            userInputState = userInputState,
+            userInputState = userInputState
         )
     }
 
     fun onResetUserInput() {
         _viewState.value = _viewState.value.copy(
-            userInputState = UserInputState(),
+            userInputState = UserInputState()
         )
     }
-
 
     data class AddCocktailIngredientScreenViewState(
         val isLoading: Boolean = false,
@@ -90,12 +89,12 @@ class AddCocktailIngredientScreenViewModel(
         val userInputState: UserInputState = UserInputState(),
         val ingredientList: List<CocktailIngredient_UI>,
         val selectedIngredient: CocktailIngredient_UI? = null,
-        val ownedIngredientList: List<CocktailIngredient_UI>,
+        val ownedIngredientList: List<CocktailIngredient_UI>
     ) {
         companion object {
             val INITIAL = AddCocktailIngredientScreenViewState(
                 ingredientList = emptyList(),
-                ownedIngredientList = emptyList(),
+                ownedIngredientList = emptyList()
             )
         }
     }

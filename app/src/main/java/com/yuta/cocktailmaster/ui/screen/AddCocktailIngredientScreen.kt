@@ -47,7 +47,7 @@ import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 fun AddCocktailIngredientScreen(
     viewModel: AddCocktailIngredientScreenViewModel,
     ownedIngredientList: List<CocktailIngredient_UI>,
-    onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
+    onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {}
 ) {
     val context = LocalContext.current
     val viewState = viewModel.viewState.collectAsState().value
@@ -74,7 +74,7 @@ fun AddCocktailIngredientScreen(
                 MyDropDownMenu(
                     modifier = Modifier.fillMaxWidth(),
                     items = categories,
-                    selectedVal = userSelectCategory,
+                    selectedVal = userSelectCategory
                 ) {
                     println(it)
                     userSelectCategory = it
@@ -96,8 +96,8 @@ fun AddCocktailIngredientScreen(
                                 ingredient_ui.longName
                             ),
                             onIconTapAction = {
-                              viewModel.onIngredientTapped(it)
-                            },
+                                viewModel.onIngredientTapped(it)
+                            }
                         )
                     }
                 }
@@ -156,7 +156,7 @@ fun AddCocktailIngredientScreenPreview() {
     FakeRepositoryProvider {
         val fakeApiRepository = LocalApiRepository.current
         val viewModel = AddCocktailIngredientScreenViewModel(
-            apiRepository = fakeApiRepository,
+            apiRepository = fakeApiRepository
         )
         CocktailMasterTheme {
             Surface {

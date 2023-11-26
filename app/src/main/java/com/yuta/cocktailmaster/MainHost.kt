@@ -78,7 +78,7 @@ fun MainHost(
                         navController = navController
                     )
                 }
-            },
+            }
         ) { padding ->
             NavHost(
                 navController = navController,
@@ -134,7 +134,7 @@ fun MainHost(
                                 ),
                                 2
                             )
-                        },
+                        }
                     )
                 }
                 composable(Screen.AddCocktailIngredientScreen.name) {
@@ -182,9 +182,9 @@ fun MainHost(
         }
 
         val onboardingState = mainViewState.onboardingState
-        if (!mainViewState.isOnboardingFinished
-            && onboardingState.currentOnboardingStep < onboardingState.items.size
-            && mainViewState.isAppStatusRead
+        if (!mainViewState.isOnboardingFinished &&
+            onboardingState.currentOnboardingStep < onboardingState.items.size &&
+            mainViewState.isAppStatusRead
         ) {
             val item = onboardingState.items[onboardingState.currentOnboardingStep]
             println("onboardingState.currentOnboardingStep: ${onboardingState.currentOnboardingStep}")

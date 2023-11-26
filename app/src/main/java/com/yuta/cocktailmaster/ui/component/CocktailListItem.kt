@@ -28,7 +28,7 @@ fun CocktailListItem(cocktail_UI: Cocktail_UI) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
         ) {
             Text(
                 cocktail_UI.name,

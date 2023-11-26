@@ -31,7 +31,7 @@ fun CustomTextField(
     clearAction: (() -> Unit)?,
     onValueChange: (String) -> Unit,
     maxLines: Int = 1,
-    fontSize: Int = 20,
+    fontSize: Int = 20
 ) {
     val visibleClearButton = value.isNotEmpty() && clearAction != null
     BasicTextField(
@@ -51,20 +51,20 @@ fun CustomTextField(
                 ),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-              Box(
-                  modifier = Modifier.weight(1f),
-              ) {
-                  if(value.isEmpty()) {
-                      Text(
-                          text = placeholder,
-                          style = TextStyle(
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (value.isEmpty()) {
+                        Text(
+                            text = placeholder,
+                            style = TextStyle(
                                 fontSize = 16.sp,
                                 color = Color.Gray
-                          )
-                      )
-                  }
-                  innerTextField()
-              }
+                            )
+                        )
+                    }
+                    innerTextField()
+                }
                 AnimatedVisibility(visible = visibleClearButton) {
                     IconButton(
                         onClick = {
@@ -77,7 +77,6 @@ fun CustomTextField(
                             tint = Color.Gray
                         )
                     }
-
                 }
             }
         }

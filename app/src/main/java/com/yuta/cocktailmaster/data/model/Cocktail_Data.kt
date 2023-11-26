@@ -31,7 +31,7 @@ data class Cocktail_Data(
     @SerialName("ingredients")
     val ingredients: List<CocktailIngredient_Data> = emptyList(),
 
-    val fetchFailed: Boolean = false,
+    val fetchFailed: Boolean = false
 ) {
     fun toUIModel(): Cocktail_UI {
         return Cocktail_UI(

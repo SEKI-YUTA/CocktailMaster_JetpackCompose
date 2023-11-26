@@ -36,13 +36,13 @@ fun MenuButton(
 ) {
     Box(
         modifier =
-            modifier.clickable(enabled = enabled, onClick = onTapAction)
+        modifier.clickable(enabled = enabled, onClick = onTapAction)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.surfaceVariant),
                 shape = RoundedCornerShape(99.dp)
             )
             .padding(8.dp)
-            .alpha(if(enabled) 1f else 0.4f)
+            .alpha(if (enabled) 1f else 0.4f)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
@@ -60,7 +60,7 @@ fun MenuButton(
 
 @Preview(
     showBackground = true,
-    widthDp = 220,
+    widthDp = 220
 )
 @Composable
 fun MenuButtonLightThemePreview_Light() {
@@ -78,7 +78,7 @@ fun MenuButtonLightThemePreview_Light() {
 @Preview(
     showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES,
-    widthDp = 220,
+    widthDp = 220
 )
 @Composable
 fun MenuButtonLightThemePreview_Night() {

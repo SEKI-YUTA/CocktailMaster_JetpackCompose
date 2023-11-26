@@ -57,7 +57,7 @@ fun TopScreen(
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     cocktailListButtonModifier: Modifier = Modifier,
     addIngredientButtonModifier: Modifier = Modifier,
-    ownedIngredientListModifier: Modifier = Modifier,
+    ownedIngredientListModifier: Modifier = Modifier
 ) {
     val viewState = viewModel.viewState.collectAsState().value
     Box {
@@ -129,7 +129,7 @@ fun TopScreen(
                 userInputState = viewState.userInputState,
                 onUpdateUserInput = {
                     viewModel.onUpdateUserInput(it)
-                },
+                }
             )
         }
 
@@ -144,7 +144,7 @@ fun TopScreen(
                 },
                 onDismiss = {
                     viewModel.onCloseDeleteConfirmDialog()
-                },
+                }
             )
         }
     }
@@ -163,9 +163,9 @@ fun DeleteConfirmDialog(
             Box(
                 modifier = modifier
                     .background(MaterialTheme.colorScheme.surface)
-                    .padding(16.dp),
+                    .padding(16.dp)
 
-                ) {
+            ) {
                 Column(
                     verticalArrangement = Arrangement.Center
                 ) {
@@ -180,7 +180,7 @@ fun DeleteConfirmDialog(
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
+                        horizontalArrangement = Arrangement.End
                     ) {
                         TextButton(
                             onClick = {
@@ -188,7 +188,7 @@ fun DeleteConfirmDialog(
                             }
                         ) {
                             Text(
-                                text = stringResource(R.string.cancel_str),
+                                text = stringResource(R.string.cancel_str)
                             )
                         }
                         Spacer(modifier = Modifier.width(8.dp))
@@ -198,21 +198,18 @@ fun DeleteConfirmDialog(
                             }
                         ) {
                             Text(
-                                text = stringResource(R.string.delete_str),
+                                text = stringResource(R.string.delete_str)
                             )
                         }
-
                     }
                 }
             }
-
         },
         onDismissRequest = {
             onDismiss()
-        },
+        }
     )
 }
-
 
 @CocktailMasterPreviewAnnotation
 @Composable
@@ -228,7 +225,7 @@ fun TopScreenPreview() {
                     navigateToCraftableCocktail = {},
                     navigateToAddIngredient = {},
                     onDeleteOwnedIngredient = {},
-                    onEditOwnedIngredient = {},
+                    onEditOwnedIngredient = {}
                 )
             }
         }

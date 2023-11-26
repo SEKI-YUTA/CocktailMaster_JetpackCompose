@@ -28,6 +28,7 @@ class TopScreenViewModelTest {
             category = category
         )
     }
+
     @Test
     fun `材料を削除しようとした際にダイアログが表示される`() {
         val viewModel = TopScreenViewModelFactory()

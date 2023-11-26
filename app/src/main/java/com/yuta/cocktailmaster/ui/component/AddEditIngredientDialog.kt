@@ -36,11 +36,14 @@ fun AddEditIngredientDialog(
     userInputState: AddCocktailIngredientScreenViewModel.UserInputState,
     onUpdateUserInput: (AddCocktailIngredientScreenViewModel.UserInputState) -> Unit,
     onDoneEvent: (CocktailIngredient_UI) -> Unit = {},
-    onCancelEvent: () -> Unit = {},
+    onCancelEvent: () -> Unit = {}
 ) {
     val dialogTitle =
-        if (isAddMode) stringResource(R.string.dialog_title_add_ingredient)
-        else stringResource(R.string.dialog_title_edit_ingredient)
+        if (isAddMode) {
+            stringResource(R.string.dialog_title_add_ingredient)
+        } else {
+            stringResource(R.string.dialog_title_edit_ingredient)
+        }
     Dialog(
         onDismissRequest = {
             onCancelEvent()
@@ -103,8 +106,11 @@ fun AddEditIngredientDialog(
                         }
                     ) {
                         Text(
-                            if(isAddMode) stringResource(R.string.add_str)
-                            else stringResource(R.string.edit_str)
+                            if (isAddMode) {
+                                stringResource(R.string.add_str)
+                            } else {
+                                stringResource(R.string.edit_str)
+                            }
                         )
                     }
                 }

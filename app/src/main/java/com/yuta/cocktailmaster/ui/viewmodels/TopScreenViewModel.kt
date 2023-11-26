@@ -24,41 +24,41 @@ class TopScreenViewModel() : ViewModel() {
     fun onIngredientDeleteRequest(ingredient: CocktailIngredient_UI) {
         _viewState.value = _viewState.value.copy(
             isShowingDeleteConfirmDialog = true,
-            selectedIngredient = ingredient,
+            selectedIngredient = ingredient
         )
     }
 
     fun onCloseDeleteConfirmDialog() {
         _viewState.value = _viewState.value.copy(
             selectedIngredient = null,
-            isShowingDeleteConfirmDialog = false,
+            isShowingDeleteConfirmDialog = false
         )
     }
 
     fun onIngredientEditRequest(ingredient: CocktailIngredient_UI) {
         _viewState.value = _viewState.value.copy(
             isShowingEditDialog = true,
-            selectedIngredient = ingredient,
+            selectedIngredient = ingredient
         )
     }
 
     fun onCloseEditDialog() {
         _viewState.value = _viewState.value.copy(
             selectedIngredient = null,
-            isShowingEditDialog = false,
+            isShowingEditDialog = false
         )
     }
 
     fun onUpdateUserInput(userInputState: AddCocktailIngredientScreenViewModel.UserInputState) {
         println("onUpdateUserInput")
         _viewState.value = _viewState.value.copy(
-            userInputState = userInputState,
+            userInputState = userInputState
         )
     }
 
     fun onResetUserInput() {
         _viewState.value = _viewState.value.copy(
-            userInputState = AddCocktailIngredientScreenViewModel.UserInputState(),
+            userInputState = AddCocktailIngredientScreenViewModel.UserInputState()
         )
     }
 
@@ -67,7 +67,7 @@ class TopScreenViewModel() : ViewModel() {
         val isShowingDeleteConfirmDialog: Boolean = false,
         val selectedIngredient: CocktailIngredient_UI? = null,
         val userInputState: AddCocktailIngredientScreenViewModel.UserInputState =
-            AddCocktailIngredientScreenViewModel.UserInputState(),
+            AddCocktailIngredientScreenViewModel.UserInputState()
     ) {
         companion object {
             val INITIAL = TopScreenViewState()

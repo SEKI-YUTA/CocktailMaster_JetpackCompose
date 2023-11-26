@@ -25,7 +25,7 @@ fun RepositoryProvider(
 ) {
     val context = LocalContext.current
     CompositionLocalProvider(
-        LocalApiRepository provides if(BuildConfig.FLAVOR == "gql") CocktailApolloRepository_Impl() else CocktailApiRepository_Impl(),
+        LocalApiRepository provides if (BuildConfig.FLAVOR == "gql") CocktailApolloRepository_Impl() else CocktailApiRepository_Impl(),
         LocalOwnedIngredientRepository provides OwnedIngredientRepository_Impl(context = context)
     ) {
         content()

@@ -7,9 +7,8 @@ import androidx.room.RoomDatabase
 import com.yuta.cocktailmaster.data.db.dao.OwnedIngredientDAO
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 
-
 @Database(entities = arrayOf(CocktailIngredient_Data::class), version = 1)
-abstract class AppDatabase: RoomDatabase(){
+abstract class AppDatabase : RoomDatabase() {
     abstract fun ownedIngredientDao(): OwnedIngredientDAO
     companion object {
         @Volatile
@@ -20,15 +19,13 @@ abstract class AppDatabase: RoomDatabase(){
                 val instance = Room.databaseBuilder(
                     context,
                     AppDatabase::class.java,
-                    "app_database")
+                    "app_database"
+                )
                     .build()
                 INSTANCE = instance
 
                 instance
             }
         }
-
     }
 }
-
-

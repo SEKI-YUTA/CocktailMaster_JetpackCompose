@@ -18,9 +18,7 @@ import com.yuta.cocktailmaster.R
 import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
-fun LoadingMessage(
-    message: String = stringResource(R.string.loading_message)
-) {
+fun LoadingMessage(message: String = stringResource(R.string.loading_message)) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

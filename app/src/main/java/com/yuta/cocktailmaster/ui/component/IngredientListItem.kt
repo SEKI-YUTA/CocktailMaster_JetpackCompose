@@ -72,7 +72,7 @@ fun IngredientListItem(
                 }
                 .constrainAs(cardRef) {
                     linkTo(start = parent.start, top = parent.top, end = parent.end, bottom = parent.bottom)
-                },
+                }
         ) {
             Row(
                 modifier = modifier.padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
@@ -104,12 +104,13 @@ fun IngredientListItem(
                     }
                 }
             }
-            if(menuShowing.value) {
+            if (menuShowing.value) {
                 DropdownMenu(
                     expanded = menuShowing.value,
                     onDismissRequest = {
                         menuShowing.value = false
-                    }) {
+                    }
+                ) {
                     DropdownMenuItem(
                         text = {
                             Text(stringResource(R.string.edit_str))
@@ -132,9 +133,9 @@ fun IngredientListItem(
             }
 //
         }
-        if(showOwnedCountBadge && ownedCount > 0) {
+        if (showOwnedCountBadge && ownedCount > 0) {
             CountBadge(
-                modifier = Modifier.constrainAs(badgeRef){
+                modifier = Modifier.constrainAs(badgeRef) {
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                 },
@@ -145,7 +146,7 @@ fun IngredientListItem(
 }
 
 @Composable
-fun CountBadge(modifier: Modifier = Modifier,text: String) {
+fun CountBadge(modifier: Modifier = Modifier, text: String) {
     Box(
         modifier = modifier
             .size(32.dp)
@@ -182,7 +183,7 @@ fun IngredientListItemPreview_Night() {
             IngredientListItem(
                 ownedCount = 1,
                 showOwnedCountBadge = true,
-                ingredient_UI = data,
+                ingredient_UI = data
             )
         }
     }

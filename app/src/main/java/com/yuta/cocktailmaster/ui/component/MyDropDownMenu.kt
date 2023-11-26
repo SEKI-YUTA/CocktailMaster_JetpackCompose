@@ -41,10 +41,11 @@ fun MyDropDownMenu(
 ) {
     var expanded by remember { mutableStateOf(false) }
     val rotateDegree by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f, label = ""
+        targetValue = if (expanded) 180f else 0f,
+        label = ""
     )
     Column(
-        modifier = modifier,
+        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

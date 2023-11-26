@@ -34,7 +34,7 @@ class CocktailApolloRepository_Impl : CocktailApiRepository {
                 OwnedIngredientInput(ingredients = query)
             )
         ).execute()
-        if(response.data == null) return emptyList()
+        if (response.data == null) return emptyList()
         return response.data!!.craftableCocktails.map { checkNotNull(it).toCocktailUIModel() }
     }
 }

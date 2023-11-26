@@ -6,6 +6,10 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.printToLog
 import androidx.compose.ui.unit.IntSize
+import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
+import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
+import com.github.takahirom.roborazzi.RoborazziOptions
+import com.github.takahirom.roborazzi.captureRoboImage
 import com.yuta.cocktailmaster.ui.screen.AddCocktailIngredientScreen
 import com.yuta.cocktailmaster.ui.screen.CraftableCocktailListScreen
 import com.yuta.cocktailmaster.ui.screen.TopScreen
@@ -13,10 +17,6 @@ import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.yuta.cocktailmaster.ui.viewmodels.AddCocktailIngredientScreenViewModel
 import com.yuta.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.yuta.cocktailmaster.ui.viewmodels.TopScreenViewModel
-import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
-import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
-import com.github.takahirom.roborazzi.RoborazziOptions
-import com.github.takahirom.roborazzi.captureRoboImage
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,13 +70,13 @@ class FirstRoborazzi {
         composeTestRule.setContent {
             FakeRepositoryProvider {
                 val viewModel = AddCocktailIngredientScreenViewModel(
-                    apiRepository = LocalApiRepository.current,
+                    apiRepository = LocalApiRepository.current
                 )
                 CocktailMasterTheme {
                     Surface {
                         AddCocktailIngredientScreen(
                             viewModel = viewModel,
-                            ownedIngredientList = emptyList(),
+                            ownedIngredientList = emptyList()
                         )
                     }
                 }
@@ -94,12 +94,12 @@ class FirstRoborazzi {
             FakeRepositoryProvider {
                 val viewModel = CraftableCocktailListScreenViewModel(
                     apiRepository = LocalApiRepository.current,
-                    ingredientList = emptyList(),
+                    ingredientList = emptyList()
                 )
                 CocktailMasterTheme {
                     Surface {
                         CraftableCocktailListScreen(
-                            viewModel = viewModel,
+                            viewModel = viewModel
                         )
                     }
                 }

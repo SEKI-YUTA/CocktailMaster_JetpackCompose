@@ -8,10 +8,27 @@ plugins {
     id "org.jlleitschuh.gradle.ktlint"
 }
 
+
 ktlint {
+    version = "0.48.1"
+    debug = true
+    verbose = true
+    android = true
+    outputColorName = "RED"
     ignoreFailures = true
+//    enableExperimentalRules = true
     disabledRules = [
+            "trailing-comma-on-call-site",
+            "max-line-length"
     ]
+    reporters {
+        reporter "checkstyle"
+        reporter "html"
+    }
+//    additionalEditorconfig = [
+////            "trailing-comma-on-call-site": "false"
+//"max-line-length": "20"
+//    ]
 }
 
 apollo {

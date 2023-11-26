@@ -36,7 +36,7 @@ fun MenuButton(
 ) {
     Box(
         modifier =
-        modifier.clickable(enabled = enabled, onClick = onTapAction)
+            modifier.clickable(enabled = enabled, onClick = onTapAction)
             .border(
                 border = BorderStroke(2.dp, MaterialTheme.colorScheme.surfaceVariant),
                 shape = RoundedCornerShape(99.dp)

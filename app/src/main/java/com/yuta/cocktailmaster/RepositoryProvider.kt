@@ -20,9 +20,7 @@ val LocalOwnedIngredientRepository = compositionLocalOf<OwnedIngredientRepositor
 }
 
 @Composable
-fun RepositoryProvider(
-    content: @Composable () -> Unit
-) {
+fun RepositoryProvider(content: @Composable () -> Unit) {
     val context = LocalContext.current
     CompositionLocalProvider(
         LocalApiRepository provides if (BuildConfig.FLAVOR == "gql") CocktailApolloRepository_Impl() else CocktailApiRepository_Impl(),
@@ -33,9 +31,7 @@ fun RepositoryProvider(
 }
 
 @Composable
-fun FakeRepositoryProvider(
-    content: @Composable () -> Unit
-) {
+fun FakeRepositoryProvider(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalApiRepository provides CocktailApiRepository_FakeImpl(),
         LocalOwnedIngredientRepository provides OwnedIngredientRepository_FakeImpl()

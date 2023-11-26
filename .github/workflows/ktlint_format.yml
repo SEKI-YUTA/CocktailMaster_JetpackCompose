@@ -3,7 +3,7 @@ name: Ktlint Format
 on:
   workflow_call:
   schedule:
-    - cron: '45 2 * * 0'
+    - cron: '15 3 * * 0'
 
 jobs:
   build:

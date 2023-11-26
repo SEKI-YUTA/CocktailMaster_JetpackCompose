@@ -5,7 +5,6 @@ import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.printToLog
-import androidx.compose.ui.unit.IntSize
 import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.RoborazziOptions
@@ -47,13 +46,12 @@ class FirstRoborazzi {
                     Surface {
                         TopScreen(
                             viewModel = viewModel,
-                            topAppBarSize = IntSize.Zero,
+                            isOwnedIngredientListLoading = false,
                             ownedIngredientList = emptyList(),
                             navigateToCraftableCocktail = {},
                             navigateToAddIngredient = {},
                             onDeleteOwnedIngredient = {},
                             onEditOwnedIngredient = {},
-                            onUpdateOnboardingFinished = {}
                         )
                     }
                 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 
 class OwnedIngredientRepository_Impl(
     val context: Context
-): OwnedIngredientRepository {
+) : OwnedIngredientRepository {
     override suspend fun provideAllIngredientFlow(): Flow<List<CocktailIngredient_Data>> {
         return AppDatabase.getDatabase(context).ownedIngredientDao().getAllCocktailIngredientFlow()
     }
@@ -28,6 +28,4 @@ class OwnedIngredientRepository_Impl(
     override suspend fun editOwnedIngredient(ingredient: CocktailIngredient_Data) {
         AppDatabase.getDatabase(context).ownedIngredientDao().updateIngredient(ingredient)
     }
-
-
 }

@@ -5,7 +5,7 @@ import com.yuta.cocktailmaster.ui.component.TextAreaPosition
 
 data class OnboardingState(
     val items: List<OnboardingItem> = listOf(),
-    val currentOnboardingStep: Int,
+    val currentOnboardingStep: Int
 ) {
     companion object {
         val INITIAL = OnboardingState(

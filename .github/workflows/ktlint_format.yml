@@ -2,8 +2,8 @@ name: Ktlint Format
 
 on:
   workflow_call:
-  scheduled:
-    cron: * 1 * * 6
+  schedule:
+    - cron: * 2 * * 6
 
 jobs:
   build:

@@ -57,7 +57,7 @@ fun MainHost(
     incrementOnboardingStep: () -> Unit,
     onMarkOnboardingFinished: (Boolean) -> Unit
 ) {
-    fun f(a: Int, b: Int, c: Int): Int {return 0}
+    fun f(a: Int, b: Int, c: Int): Int { return 0 }
     val x = f(
         1,
         2,
@@ -164,7 +164,7 @@ fun MainHost(
                 }
             }
             if (!mainViewState.isNetworkConnected) {
-                Popup() {
+                Popup {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()

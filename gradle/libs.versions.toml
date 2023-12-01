@@ -23,6 +23,9 @@ datastorePreferece = "1.0.0"
 constraintLayout = "1.0.1"
 apolloRuntime = "3.8.2"
 
+# runtime only
+material3WindowSizeClass = "1.2.0-alpha11"
+
 # test
 junit = "4.13.2"
 robolectric = "4.11.1"
@@ -56,6 +59,10 @@ retrofit2-kotlin-serialization-converter = { group = "com.jakewharton.retrofit",
 datastore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastorePreferece" }
 constraint-layout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayout" }
 apollo-runtime = { group = "com.apollographql.apollo3", name = "apollo-runtime", version.ref = "apolloRuntime" }
+
+# runtime only
+material3-window-size = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
+
 
 # test
 junit = { group = "junit", name = "junit", version.ref = "junit" }

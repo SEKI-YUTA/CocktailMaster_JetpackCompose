@@ -9,6 +9,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
+import java.net.ConnectException
 
 private const val BASE_URL = BuildConfig.BASE_URL
 
@@ -22,13 +23,16 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface CocktailApiService {
+    @GET("compute/cocktails")
+    @Throws(ConnectException::class)
+    suspend fun craftableCocktails(@Query("ingredients[]") querys: List<String>): List<Cocktail_Data>
+
+    @Throws(ConnectException::class)
     @GET("ingredients")
     suspend fun getAllIngredients(): List<CocktailIngredient_Data>
 
-    @GET("compute/cocktails")
-    suspend fun craftableCocktails(@Query("ingredients[]") querys: List<String>): List<Cocktail_Data>
-
     @GET("cocktails/all")
+    @Throws(ConnectException::class)
     suspend fun getAllCocktail(): List<Cocktail_Data>
 }
 

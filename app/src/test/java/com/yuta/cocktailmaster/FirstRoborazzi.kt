@@ -51,7 +51,7 @@ class FirstRoborazzi {
                             navigateToCraftableCocktail = {},
                             navigateToAddIngredient = {},
                             onDeleteOwnedIngredient = {},
-                            onEditOwnedIngredient = {},
+                            onEditOwnedIngredient = {}
                         )
                     }
                 }

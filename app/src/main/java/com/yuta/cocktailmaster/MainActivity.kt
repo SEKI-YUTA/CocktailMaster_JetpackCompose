@@ -7,6 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -24,11 +26,13 @@ import kotlinx.coroutines.launch
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "app_status")
 
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val appContainer: AppContainer = (application as CocktailMasterApplication).appContainer
         setContent {
+            val windowWidthSizeClass = calculateWindowSizeClass(this).widthSizeClass
             RepositoryProvider {
                 val ownedIngredientRepository = LocalOwnedIngredientRepository.current
                 val mainViewModel = viewModel<MainViewModel>(
@@ -49,6 +53,7 @@ class MainActivity : ComponentActivity() {
                         MainHost(
                             appContainer = appContainer,
                             mainViewState = mainViewState,
+                            windowWidthSizeClass = windowWidthSizeClass,
                             networkConnectionStateChanged = {
                                 mainViewModel.setIsNetworkConnected(it)
                             },

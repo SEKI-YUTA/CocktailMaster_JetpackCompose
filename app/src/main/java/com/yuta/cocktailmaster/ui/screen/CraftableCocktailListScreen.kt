@@ -13,6 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -33,13 +34,18 @@ import com.yuta.cocktailmaster.ui.component.CenterMessage
 import com.yuta.cocktailmaster.ui.component.CocktailListItem
 import com.yuta.cocktailmaster.ui.component.LoadingMessage
 import com.yuta.cocktailmaster.ui.component.MyDropDownMenu
+import com.yuta.cocktailmaster.ui.model.Cocktail_UI
 import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 import com.yuta.cocktailmaster.ui.viewmodels.CraftableCocktailListScreenViewModel
 import com.yuta.cocktailmaster.ui.viewmodels.TabItems
 import com.yuta.cocktailmaster.util.CocktailMasterPreviewAnnotation
 
 @Composable
-fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel) {
+fun CraftableCocktailListScreen(
+    viewModel: CraftableCocktailListScreenViewModel,
+    windowWidthSizeClass: WindowWidthSizeClass
+) {
+    println(windowWidthSizeClass)
     val viewState = viewModel.viewState.collectAsState().value
     val craftableList by remember(viewState) {
         derivedStateOf {
@@ -73,78 +79,133 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                     userSelectCategory = it
                 }
             }
-            TabRow(
-                selectedTabIndex = viewState.selectedTab.idx
-            ) {
-                CraftableCocktailListScreenViewModel.allTabs.map {
-                    Tab(
-                        text = { Text(it.title) },
-                        selected = viewState.selectedTab == it,
-                        onClick = {
-                            viewModel.setSelectedTab(it)
-                        }
+            if (windowWidthSizeClass == WindowWidthSizeClass.Expanded) {
+                Row {
+                    CraftableCocktailScreenContent(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .weight(1f),
+                        craftableList = craftableList,
+                        userSelectCategory = userSelectCategory,
+                        isCraftableCocktailFetching = viewState.isCraftableCocktailFetching,
+                        isFetchFailed = viewState.isFetchFailed
+                    )
+                    AllCocktailListScreenContent(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .weight(1f),
+                        allCocktailList = allCocktailList,
+                        userSelectCategory = userSelectCategory,
+                        isAllCocktailFetching = viewState.isCraftableCocktailFetching,
+                        isFetchFailed = viewState.isFetchFailed
                     )
                 }
-            }
-//            Text(
-//                text = stringResource(id = R.string.can_make_cocktail_str),
-//                modifier = Modifier.padding(
-//                    horizontal = 16.dp,
-//                    vertical = 8.dp
-//                ),
-//                style = TextStyle(fontSize = 22.sp)
-//            )
-            when (viewState.selectedTab) {
-                TabItems.CRAFTABLE -> {
-                    LazyColumn {
-                        items(
-                            craftableList,
-                            key = { it.name + it.cocktailId }
-                        ) { cocktail_UI ->
-                            if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
-                                CocktailListItem(cocktail_UI = cocktail_UI)
-                            }
-                        }
-                    }
-                    if (viewState.isCraftableCocktailFetching) {
-                        LoadingMessage()
-                    } else if (viewState.isFetchFailed) {
-                        CenterMessage(
-                            message = stringResource(R.string.fetch_failed_message),
-                            icon = Icons.Default.Refresh,
-                            iconTapAction = {
+
+
+            } else {
+                TabRow(
+                    selectedTabIndex = viewState.selectedTab.idx
+                ) {
+                    CraftableCocktailListScreenViewModel.allTabs.map {
+                        Tab(
+                            text = { Text(it.title) },
+                            selected = viewState.selectedTab == it,
+                            onClick = {
+                                viewModel.setSelectedTab(it)
                             }
                         )
-                    } else if (!viewState.isCraftableCocktailFetching && craftableList.isEmpty()) {
-                        CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
                     }
                 }
-
-                TabItems.ALL_COCKTAILS -> {
-                    LazyColumn {
-                        items(
-                            allCocktailList,
-                            key = { it.name + it.cocktailId }
-                        ) { cocktail_UI ->
-                            if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
-                                CocktailListItem(cocktail_UI = cocktail_UI)
-                            }
-                        }
+                when (viewState.selectedTab) {
+                    TabItems.CRAFTABLE -> {
+                        CraftableCocktailScreenContent(
+                            craftableList = craftableList,
+                            userSelectCategory = userSelectCategory,
+                            isCraftableCocktailFetching = viewState.isCraftableCocktailFetching,
+                            isFetchFailed = viewState.isFetchFailed
+                        )
                     }
 
-                    if (viewState.isAllCocktailFetching) {
-                        LoadingMessage()
-                    } else if (viewState.isFetchFailed) {
-                        CenterMessage(
-                            message = stringResource(R.string.fetch_failed_message),
-                            icon = Icons.Default.Refresh,
-                            iconTapAction = {
-                            }
+                    TabItems.ALL_COCKTAILS -> {
+                        AllCocktailListScreenContent(
+                            allCocktailList = allCocktailList,
+                            userSelectCategory = userSelectCategory,
+                            isAllCocktailFetching = viewState.isAllCocktailFetching,
+                            isFetchFailed = viewState.isFetchFailed
                         )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CraftableCocktailScreenContent(
+    modifier: Modifier = Modifier,
+    craftableList: List<Cocktail_UI>,
+    userSelectCategory: String,
+    isCraftableCocktailFetching: Boolean,
+    isFetchFailed: Boolean,
+) {
+    Box(modifier) {
+        LazyColumn(modifier) {
+            items(
+                craftableList,
+                key = { it.name + it.cocktailId }
+            ) { cocktail_UI ->
+                if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
+                    CocktailListItem(cocktail_UI = cocktail_UI)
+                }
+            }
+        }
+        if (isCraftableCocktailFetching) {
+            LoadingMessage()
+        } else if (isFetchFailed) {
+            CenterMessage(
+                message = stringResource(R.string.fetch_failed_message),
+                icon = Icons.Default.Refresh,
+                iconTapAction = {
+                }
+            )
+        } else if (!isCraftableCocktailFetching && craftableList.isEmpty()) {
+            CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
+        }
+    }
+
+}
+
+@Composable
+fun AllCocktailListScreenContent(
+    modifier: Modifier = Modifier,
+    allCocktailList: List<Cocktail_UI>,
+    userSelectCategory: String,
+    isAllCocktailFetching: Boolean,
+    isFetchFailed: Boolean
+) {
+    Box(modifier) {
+        LazyColumn(modifier) {
+            items(
+                allCocktailList,
+                key = { it.name + it.cocktailId }
+            ) { cocktail_UI ->
+                if (userSelectCategory == "すべて" || userSelectCategory == cocktail_UI.category) {
+                    CocktailListItem(cocktail_UI = cocktail_UI)
+                }
+            }
+        }
+
+        if (isAllCocktailFetching) {
+            LoadingMessage()
+        } else if (isFetchFailed) {
+            CenterMessage(
+                message = stringResource(R.string.fetch_failed_message),
+                icon = Icons.Default.Refresh,
+                iconTapAction = {
+                }
+            )
+        }
+
     }
 }
 
@@ -160,7 +221,8 @@ fun CraftableCocktailListScreenPreview() {
         CocktailMasterTheme {
             Surface {
                 CraftableCocktailListScreen(
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    windowWidthSizeClass = WindowWidthSizeClass.Medium
                 )
             }
         }

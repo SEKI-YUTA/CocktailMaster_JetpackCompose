@@ -30,3 +30,6 @@
 - https://www.apollographql.com/docs/kotlin/v2/
   スキーマダウンロードののタスクを実行するときにオプションの値を'で囲って=の間をなくしたらいけた
   ./gradlew :app:downloadApolloSchema --endpoint='http://localhost:4000/graphql' --schema='app/src/main/graphql/schema.graphqls'
+
+##  レスポンシブのレイアウト
+https://www.figma.com/file/75p0dretq0v8WzRBJ5I6Jo/CocktialMaster%E3%82%BF%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E3%83%AC%E3%82%A4%E3%82%A2%E3%82%A6%E3%83%88?type=design&node-id=1%3A11&mode=design&t=Y3NePASmh57cIIPb-1

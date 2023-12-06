@@ -81,24 +81,32 @@ fun CraftableCocktailListScreen(
             }
             if (windowWidthSizeClass == WindowWidthSizeClass.Expanded) {
                 Row {
-                    CraftableCocktailScreenContent(
+                    Column(
                         modifier = Modifier
                             .padding(16.dp)
                             .weight(1f),
-                        craftableList = craftableList,
-                        userSelectCategory = userSelectCategory,
-                        isCraftableCocktailFetching = viewState.isCraftableCocktailFetching,
-                        isFetchFailed = viewState.isFetchFailed
-                    )
-                    AllCocktailListScreenContent(
+                    ) {
+                        Text(TabItems.CRAFTABLE.title)
+                        CraftableCocktailScreenContent(
+                            craftableList = craftableList,
+                            userSelectCategory = userSelectCategory,
+                            isCraftableCocktailFetching = viewState.isCraftableCocktailFetching,
+                            isFetchFailed = viewState.isFetchFailed
+                        )
+                    }
+                    Column(
                         modifier = Modifier
                             .padding(16.dp)
                             .weight(1f),
-                        allCocktailList = allCocktailList,
-                        userSelectCategory = userSelectCategory,
-                        isAllCocktailFetching = viewState.isCraftableCocktailFetching,
-                        isFetchFailed = viewState.isFetchFailed
-                    )
+                    ) {
+                        Text(TabItems.ALL_COCKTAILS.title)
+                        AllCocktailListScreenContent(
+                            allCocktailList = allCocktailList,
+                            userSelectCategory = userSelectCategory,
+                            isAllCocktailFetching = viewState.isCraftableCocktailFetching,
+                            isFetchFailed = viewState.isFetchFailed
+                        )
+                    }
                 }
 
 

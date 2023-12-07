@@ -9,10 +9,6 @@ jobs:
   build:
     name: Build with Gradle
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        buildType: [debug, release]
-        flavor: [emulator, physical]
     steps:
       - uses: actions/checkout@v3
       - name: set up JDK 17

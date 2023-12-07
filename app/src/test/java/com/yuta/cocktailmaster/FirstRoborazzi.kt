@@ -1,6 +1,7 @@
 package com.yuta.cocktailmaster
 
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
@@ -97,7 +98,8 @@ class FirstRoborazzi {
                 CocktailMasterTheme {
                     Surface {
                         CraftableCocktailListScreen(
-                            viewModel = viewModel
+                            viewModel = viewModel,
+                            windowWidthSizeClass = WindowWidthSizeClass.Compact
                         )
                     }
                 }

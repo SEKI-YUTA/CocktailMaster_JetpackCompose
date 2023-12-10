@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,7 @@ import com.yuta.cocktailmaster.util.AppUtil
 fun MainHost(
     appContainer: AppContainer,
     mainViewState: MainViewModel.MainViewModelViewState,
+    windowWidthSizeClass: WindowWidthSizeClass,
     networkConnectionStateChanged: (Boolean) -> Unit,
     onAddOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
     onEditOwnedIngredient: (CocktailIngredient_Data) -> Unit = {},
@@ -155,7 +157,10 @@ fun MainHost(
                                 ingredientList = mainViewState.ownedIngredientList
                             )
                         )
-                    CraftableCocktailListScreen(viewModel = craftableCocktailListScreenViewModel)
+                    CraftableCocktailListScreen(
+                        viewModel = craftableCocktailListScreenViewModel,
+                        windowWidthSizeClass = windowWidthSizeClass,
+                    )
                 }
             }
             if (!mainViewState.isNetworkConnected) {

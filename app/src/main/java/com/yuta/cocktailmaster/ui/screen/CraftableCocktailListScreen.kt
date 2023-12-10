@@ -116,7 +116,9 @@ fun CraftableCocktailListScreen(viewModel: CraftableCocktailListScreenViewModel)
                             }
                         )
                     } else if (!viewState.isCraftableCocktailFetching && craftableList.isEmpty()) {
-                        CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
+                        CenterMessage(
+                            message = stringResource(R.string.craftable_cocktail_not_found)
+                        )
                     }
                 }
 

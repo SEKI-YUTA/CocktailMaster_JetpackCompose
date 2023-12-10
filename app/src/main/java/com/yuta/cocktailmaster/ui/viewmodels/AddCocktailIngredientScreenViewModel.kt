@@ -25,9 +25,7 @@ class AddCocktailIngredientScreenViewModel(
     companion object {
         var fetchedAllIngredientList = emptyList<CocktailIngredient_UI>()
 
-        fun provideFactory(
-            apiRepository: CocktailApiRepository
-        ): ViewModelProvider.Factory {
+        fun provideFactory(apiRepository: CocktailApiRepository): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {

@@ -22,11 +22,7 @@ import com.yuta.cocktailmaster.R
 import com.yuta.cocktailmaster.ui.theme.CocktailMasterTheme
 
 @Composable
-fun CenterMessage(
-    message: String,
-    icon: ImageVector? = null,
-    iconTapAction: () -> Unit = {}
-) {
+fun CenterMessage(message: String, icon: ImageVector? = null, iconTapAction: () -> Unit = {}) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center

@@ -43,9 +43,7 @@ class CraftableCocktailListScreenViewModel(
         )
     }
 
-    private suspend fun fetchCraftableCocktail(
-        ingredientList: List<String>
-    ) {
+    private suspend fun fetchCraftableCocktail(ingredientList: List<String>) {
         _viewState.value = _viewState.value.copy(
             isCraftableCocktailFetching = true
         )

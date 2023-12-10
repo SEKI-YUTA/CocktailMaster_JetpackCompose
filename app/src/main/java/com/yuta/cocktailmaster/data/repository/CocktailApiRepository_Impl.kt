@@ -1,6 +1,5 @@
 package com.yuta.cocktailmaster.data.repository
 
-import com.yuta.cocktailmaster.data.ConstantValues
 import com.yuta.cocktailmaster.data.api.CocktailApi
 import com.yuta.cocktailmaster.data.interfaces.CocktailApiRepository
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
@@ -17,7 +16,7 @@ class CocktailApiRepository_Impl : CocktailApiRepository {
             ingredientList = CocktailApi.retrofitService.getAllIngredients()
         } catch (e: SocketTimeoutException) {
             println(e)
-        } catch(e: ConnectException) {
+        } catch (e: ConnectException) {
             println(e)
         }
         return ingredientList.map { it.toUIModel() }

@@ -4,12 +4,12 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import com.yuta.cocktailmaster.BuildConfig
 import com.yuta.cocktailmaster.data.model.CocktailIngredient_Data
 import com.yuta.cocktailmaster.data.model.Cocktail_Data
+import java.net.ConnectException
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
-import java.net.ConnectException
 
 private const val BASE_URL = BuildConfig.BASE_URL
 
@@ -25,7 +25,9 @@ private val retrofit = Retrofit.Builder()
 interface CocktailApiService {
     @GET("compute/cocktails")
     @Throws(ConnectException::class)
-    suspend fun craftableCocktails(@Query("ingredients[]") querys: List<String>): List<Cocktail_Data>
+    suspend fun craftableCocktails(
+        @Query("ingredients[]") querys: List<String>
+    ): List<Cocktail_Data>
 
     @Throws(ConnectException::class)
     @GET("ingredients")

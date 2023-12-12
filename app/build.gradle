@@ -5,28 +5,9 @@ plugins {
     alias(libs.plugins.devtool.ksp)
     alias(libs.plugins.roborazzi)
     alias(libs.plugins.apollo3)
-    alias(libs.plugins.ktlint)
 }
 
 
-ktlint {
-    version = "0.48.1"
-    debug = true
-    verbose = true
-    android = true
-    outputColorName = "RED"
-    ignoreFailures = true
-    enableExperimentalRules = true
-    disabledRules = [
-            "trailing-comma-on-call-site",
-            "max-line-length",
-            "standard:wrapping"
-    ]
-    reporters {
-        reporter "checkstyle"
-        reporter "html"
-    }
-}
 
 apollo {
     service("service") {

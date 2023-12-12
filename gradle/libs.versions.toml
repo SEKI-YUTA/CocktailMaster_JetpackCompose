@@ -37,6 +37,7 @@ kotlinxCoroutinesTest = "1.7.3"
 # android test
 androidxTestExtJunit = "1.1.5"
 espresso = "3.5.1"
+org-jetbrains-kotlin-jvm = "1.8.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -95,6 +96,7 @@ devtool-ksp = { id = "com.google.devtools.ksp", version.ref = "kspPlugin"}
 roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazziPlugin"}
 apollo3 = { id = "com.apollographql.apollo3", version.ref = "apollo3Plugin"}
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlintPlugin"}
+org-jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "org-jetbrains-kotlin-jvm" }
 
 
 [bundles]

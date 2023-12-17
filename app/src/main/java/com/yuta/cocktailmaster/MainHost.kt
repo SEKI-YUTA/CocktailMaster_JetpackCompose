@@ -93,9 +93,15 @@ fun MainHost(
                     val topScreenViewModel = viewModel<TopScreenViewModel>(
                         factory = TopScreenViewModel.provideFactory()
                     )
-                    val cocktailListButtonText = stringResource(R.string.onboarding_cocktail_list_button)
-                    val addIngredientButtonText = stringResource(R.string.onboarding_add_ingredient_button)
-                    val ownedIngredientListText = stringResource(R.string.onboarding_owned_ingredient_list)
+                    val cocktailListButtonText = stringResource(
+                        R.string.onboarding_cocktail_list_button
+                    )
+                    val addIngredientButtonText = stringResource(
+                        R.string.onboarding_add_ingredient_button
+                    )
+                    val ownedIngredientListText = stringResource(
+                        R.string.onboarding_owned_ingredient_list
+                    )
                     TopScreen(
                         viewModel = topScreenViewModel,
                         isOwnedIngredientListLoading = mainViewState.isOwnedIngredientLoading,
@@ -164,7 +170,7 @@ fun MainHost(
                 }
             }
             if (!mainViewState.isNetworkConnected) {
-                Popup() {
+                Popup {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -189,7 +195,9 @@ fun MainHost(
             mainViewState.isAppStatusRead
         ) {
             val item = onboardingState.items[onboardingState.currentOnboardingStep]
-            println("onboardingState.currentOnboardingStep: ${onboardingState.currentOnboardingStep}")
+            println(
+                "onboardingState.currentOnboardingStep: ${onboardingState.currentOnboardingStep}"
+            )
             println("onboardingState.items.size - 1: ${onboardingState.items.size - 1}")
             SpotLight(
                 rect = item.pos,

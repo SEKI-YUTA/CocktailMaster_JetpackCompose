@@ -108,8 +108,6 @@ fun CraftableCocktailListScreen(
                         )
                     }
                 }
-
-
             } else {
                 TabRow(
                     selectedTabIndex = viewState.selectedTab.idx
@@ -180,7 +178,6 @@ fun CraftableCocktailScreenContent(
             CenterMessage(message = stringResource(R.string.craftable_cocktail_not_found))
         }
     }
-
 }
 
 @Composable
@@ -213,7 +210,6 @@ fun AllCocktailListScreenContent(
                 }
             )
         }
-
     }
 }
 
